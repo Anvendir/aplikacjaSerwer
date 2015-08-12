@@ -1,0 +1,3 @@
+http://cpp0x.pl/kursy/Kurs-WinSock-C++/Wywolania-systemowe/275
+http://beej.us/guide/bgnet/output/html/multipage/clientserver.html#figure2
+http://beej.us/guide/bgnet/output/html/multipage/index.html
