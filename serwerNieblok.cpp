@@ -9,6 +9,8 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
+#include <sys/fcntl.h>
+
 #define MAX_MSG_LEN 4096
 #define SERWER_PORT 8888
 #define SERWER_IP "192.168.254.1"
@@ -37,7 +39,13 @@ int main()
         perror("socket() ERROR");
         exit(-1);
     }
-    
+
+    if (fcntl(gniazdo, F_SETFL, O_NONBLOCK) < 0)
+    {
+        perror("fcntl() ERROR");
+        exit(-1);
+    }
+                                                
     socklen_t len = sizeof(serwer);
     if (bind(gniazdo, (struct sockaddr*) &serwer, len) < 0)
     {
@@ -53,6 +61,7 @@ int main()
     
     while(1)
     {
+        sleep(1);
         struct sockaddr_in from;
         int gniazdo_clienta = 0;
 
@@ -63,7 +72,7 @@ int main()
                                       (struct sockaddr*) &from,
                                       &len)) < 0)
         {
-            perror("accept() ERROR");
+           // perror("accept() ERROR");
             continue;
         }
 
@@ -90,7 +99,7 @@ int main()
 
         memset(bufor, 0, sizeof(bufor));
         strcpy(bufor, "Wyslane z serwera");
-        if ((send(gniazdo_clienta, bufor, strlen(bufor), 0)) <= 0)
+        if ((send(gniazdo_clienta, bufor, strlen(bufor), MSG_DONTWAIT)) <= 0)
         {
             perror("send() ERROR");
             exit(-1);
