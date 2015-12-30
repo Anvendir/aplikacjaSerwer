@@ -1,0 +1,5 @@
+1. Zmienna errno, co przehcowuje czy daje cos wypisywanie jej w ErrorHandler'rze?
+2. Rozwiazanie problemu z procesami zombie.
+3. Tagi vim.
+4. Makefile.
+5. Testy googleTest.
