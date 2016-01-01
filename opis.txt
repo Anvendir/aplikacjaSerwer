@@ -1,0 +1,31 @@
+/budowanie binarki
+g++ -std=c++11 main.cpp ErrorHandler.cpp Dispatcher.cpp NetworkWrappers.cpp
+
+///Budowa UT
+-> google test
+GTEST_DIR=googleTestRepo/googletest/
+g++ -isystem ${GTEST_DIR}/include -I${GTEST_DIR} -pthread -c ${GTEST_DIR}/src/gtest-all.cc
+ar -rv libgtest.a gtest-all.o
+
+g++ -isystem ${GTEST_DIR}/include -pthread path/to/your_test.cc libgtest.a -o your_test
+
+-> google mock
+GTEST_DIR=googleTestRepo/googletest/
+GMOCK_DIR=googleTestRepo/googlemock/
+g++ -isystem ${GTEST_DIR}/include -I${GTEST_DIR} -isystem ${GMOCK_DIR}/include -I${GMOCK_DIR} -pthread -c ${GTEST_DIR}/src/gtest-all.cc
+g++ -isystem ${GTEST_DIR}/include -I${GTEST_DIR} -isystem ${GMOCK_DIR}/include -I${GMOCK_DIR} -pthread -c ${GMOCK_DIR}/src/gmock-all.cc
+ar -rv libgmock.a gtest-all.o gmock-all.o
+
+g++ -isystem ${GTEST_DIR}/include -isystem ${GMOCK_DIR}/include -pthread path/to/your_test.cc libgmock.a -o your_test
+///ErrorHandlerTestSuite
+g++ -std=c++11 -isystem ${GTEST_DIR}/include -I ../ -pthread ErrorHandlerTestSuite.cpp ../ErrorHandler.cpp libgtest.a -o ErrorHandlerTests
+./ErrorHandlerTests --gtest_color=yes
+
+///DispatcherTestSuite
+g++ -std=c++11 -isystem ${GTEST_DIR}/include -I ../ -pthread DispatcherTestSuite.cpp ../Dispatcher.cpp libgtest.a -o DispatcherTests
+./DispatcherTests --gtest_color=yes
+
+///NetworkWrappersTestSuite
+g++ -std=c++11 -isystem ${GTEST_DIR}/include -isystem ${GMOCK_DIR}/include -I ../ -pthread NetworkWrappersTestSuite.cpp ../NetworkWrappers.cpp ../ErrorHandler.cpp libgmock.a -o NetworkWrappersTests
+./NetworkWrappersTests --gtest_color=yes
+
