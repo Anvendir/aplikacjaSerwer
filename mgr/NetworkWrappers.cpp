@@ -2,8 +2,8 @@
 
 #include <arpa/inet.h>
 
-NetworkWrappers::NetworkWrappers()
-    : m_error() 
+NetworkWrappers::NetworkWrappers(IErrorHandler& p_errorHandler)
+    : m_error(p_errorHandler) 
 {
 
 }

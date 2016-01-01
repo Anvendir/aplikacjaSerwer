@@ -4,7 +4,7 @@
 class NetworkWrappers : public INetworkWrappers
 {
 public:
-    NetworkWrappers();
+    NetworkWrappers(IErrorHandler& p_errorHandler);
 
     int socket(int p_protocolFamily, int p_socketType, int p_networkProtocol) override;
     void connect(int p_socketDescriptor, const GenericSockAddr* p_serverAddress, socklen_t p_addressSize) override;
@@ -21,5 +21,5 @@ public:
     uint16_t ntohs(uint16_t p_networkByteOrder) override;
 
 private:
-    ErrorHandler m_error;
+    IErrorHandler& m_error;
 };

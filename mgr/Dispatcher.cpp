@@ -9,5 +9,5 @@ Dispatcher::Dispatcher()
 
 void Dispatcher::dispatch()
 {
-    std::cout << "dispatcher started... " << std::endl;
+    std::cout << "Dispatcher started... " << std::endl;
 }
