@@ -1,6 +1,8 @@
 #include "NetworkWrappers.hpp"
 
 #include <arpa/inet.h>
+#include <cstdlib>
+#include <cstring>
 
 NetworkWrappers::NetworkWrappers(IErrorHandler& p_errorHandler)
     : m_error(p_errorHandler) 
@@ -70,7 +72,18 @@ again:
 void NetworkWrappers::listen(int p_socketDescriptor,
                              int p_maxSizeOfConnectionQueue)
 {
+    char* l_ptr;
 
+    /* for can ovverride 2nd argument with environment variable */
+    if((l_ptr = getenv("LISTENQ")) != NULL)
+    {
+        p_maxSizeOfConnectionQueue = ::atoi(l_ptr);
+    }
+
+    if(::listen(p_socketDescriptor, p_maxSizeOfConnectionQueue) < 0)
+    {
+        m_error.handleHardError("listen error");
+    }
 }
 
 const char* NetworkWrappers::ntop(int p_protocolFamily,
@@ -78,14 +91,44 @@ const char* NetworkWrappers::ntop(int p_protocolFamily,
                                   char* p_presentationAddressFormat,
                                   size_t p_addressSize)
 {
+    const char* l_ptr;
 
+    if (p_presentationAddressFormat == NULL)
+    {
+        m_error.handleHardError("NULL 3rd argument to inet_ntop");
+    }
+
+    if ((l_ptr = inet_ntop(p_protocolFamily,
+                         p_numericAddresFormat,
+                         p_presentationAddressFormat,
+                         p_addressSize)) == NULL)
+    {
+        m_error.handleHardError("inet_ntop error");
+    }
+
+    return(l_ptr);
 }
 
 void NetworkWrappers::pton(int p_protocolFamily,
                            const char* p_presentationAddressFormat,
                            void* p_numericAddresFormat)
 {
+    int l_result = inet_pton(p_protocolFamily,
+                             p_presentationAddressFormat,
+                             p_numericAddresFormat);
 
+    char l_errorPredicate[] = "inet_pton error for ";
+
+    if (l_result < 0)
+    {
+        m_error.handleHardError(strcat(l_errorPredicate,
+                                       p_presentationAddressFormat));
+    }
+    else if (l_result == 0)
+    {
+        m_error.handleHardError(strcat(l_errorPredicate,
+                                       p_presentationAddressFormat));
+    }
 }
 
 uint32_t NetworkWrappers::htonl(uint32_t p_hostByteOrder)

@@ -1,6 +1,8 @@
 #include "IErrorHandler.hpp"
 #include <string>
 
+#pragma once
+
 class ErrorHandler : public IErrorHandler
 {
 public:
