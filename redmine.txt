@@ -1,0 +1,14 @@
+1. Zmienna errno, co przehcowuje czy daje cos wypisywanie jej w ErrorHandler'rze? //zrobione
+2. Rozwiazanie problemu z procesami zombie.
+3. Tagi vim.
+4. Makefile. //czesciowo wydrukowany manula - brak papieru
+5. Testy googleTest. //zrobione
+
+//02.01.2016
+wip. Rozwiazanie problemu z procesami zombie.
+wip. Tagi vim.
+wip. Makefile.
+
+1. Dopisanie brakujacych UT z klasy NetowrkWrappers
+2. Stowrzenie klasy UnixWrappers 
+3. Stworzenie klasy Serwer 
