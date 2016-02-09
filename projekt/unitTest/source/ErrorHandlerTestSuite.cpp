@@ -48,9 +48,3 @@ TEST_F(ErrorHandlerTestSuite, testIfProperMessageIsPrintedAfterCall_success_hand
     
     EXPECT_DEATH(m_sut.handleHardError(l_errorDescription), l_expectedErrorMessage);
 }
-
-int main(int argc, char **argv)
-{
-        ::testing::InitGoogleTest(&argc, argv);
-        return RUN_ALL_TESTS();
-}

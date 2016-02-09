@@ -24,9 +24,3 @@ TEST_F(DispatcherTestSuite, testIfProperMessageIsPrintedAfterCall_dispatch)
 
     EXPECT_EQ(l_expectedText, l_actualValue);
 }
-
-int main(int argc, char** argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

@@ -76,9 +76,3 @@ TEST_F(NetworkWrappersTestSuite, testIfHandleHardErrorWillBeCalledAfterIncorrect
     EXPECT_CALL(m_errorHandler, handleHardError("bind error"));
     m_sut.bind(1, &l_genericSockAddr, sizeof(l_genericSockAddr));
 }
-
-int main(int argc, char** argv)
-{
-        ::testing::InitGoogleTest(&argc, argv);
-        return RUN_ALL_TESTS();
-}

@@ -17,9 +17,9 @@ wip. Makefile.
 Zrobione:
 Make, manual - wydrukowany w calosci 
 Makefile dla programu gotowy
+Makefile dla testow
 
 Do zrobienia:
-0. Makefile do testow
 1. Dopisanie brakujacych UT z klasy NetowrkWrappers
 2. Stowrzenie klasy UnixWrappers
 3. Stworzenie klasy Serwer
