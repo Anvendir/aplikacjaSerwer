@@ -12,3 +12,16 @@ wip. Makefile.
 1. Dopisanie brakujacych UT z klasy NetowrkWrappers
 2. Stowrzenie klasy UnixWrappers 
 3. Stworzenie klasy Serwer 
+
+//09.02.2016
+Zrobione:
+Make, manual - wydrukowany w calosci 
+Makefile dla programu gotowy
+
+Do zrobienia:
+0. Makefile do testow
+1. Dopisanie brakujacych UT z klasy NetowrkWrappers
+2. Stowrzenie klasy UnixWrappers
+3. Stworzenie klasy Serwer
+wip. Rozwiazanie problemu z procesami zombie.
+wip. Tagi vim.
