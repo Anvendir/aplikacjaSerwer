@@ -13,8 +13,8 @@ void ErrorHandler::handleSoftError(std::string p_errorMessage)
 
 void ErrorHandler::handleHardError(std::string p_errorMessage)
 {
-    std::cerr << "Error: " << p_errorMessage 
-              << " - " << strerror(errno) 
+    std::cerr << "Error: " << p_errorMessage
+              << " - " << strerror(errno)
               << ", application is going to be terminated."
               << std::endl;
 

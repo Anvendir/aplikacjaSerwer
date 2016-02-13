@@ -25,7 +25,7 @@ public:
 TEST_F(NetworkWrappersTestSuite, testIfNonNegativeNumberWillBeReturnedAfterCorrectCall_socket)
 {
     int l_result = m_sut.socket(AF_INET, SOCK_STREAM, 0);
-    EXPECT_GE(l_result , 0);   
+    EXPECT_GE(l_result , 0);
 }
 
 TEST_F(NetworkWrappersTestSuite, testIfNegativeNumberWillBeReturnedAfterIncorrectCall_socket)

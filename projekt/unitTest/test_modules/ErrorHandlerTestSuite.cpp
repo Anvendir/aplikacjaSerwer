@@ -11,7 +11,7 @@ public:
     {
 
     }
-    
+
     ErrorHandler m_sut;
 };
 
@@ -30,7 +30,9 @@ TEST_F(ErrorHandlerTestSuite, testIfProperMessageIsPrintedAfterCall_success_hand
 TEST_F(ErrorHandlerTestSuite, testIfProperMessageIsPrintedAfterCall_exampleError_handleSoftError)
 {
     std::string l_errorDescription = "Example error message";
-    std::string l_expectedErrorMessage = "Warning: " + l_errorDescription + " - Address family not supported by protocol\n";
+    std::string l_expectedErrorMessage = "Warning: " +
+                                         l_errorDescription +
+                                         " - Address family not supported by protocol\n";
 
     socket(999, SOCK_STREAM, 0);
 
@@ -44,7 +46,9 @@ TEST_F(ErrorHandlerTestSuite, testIfProperMessageIsPrintedAfterCall_exampleError
 TEST_F(ErrorHandlerTestSuite, testIfProperMessageIsPrintedAfterCall_success_handleHardError)
 {
     std::string l_errorDescription = "Example error message";
-    std::string l_expectedErrorMessage = "Error: " + l_errorDescription + " - Success, application is going to be terminated.\n";
-    
+    std::string l_expectedErrorMessage = "Error: " +
+                                         l_errorDescription +
+                                         " - Success, application is going to be terminated.\n";
+
     EXPECT_DEATH(m_sut.handleHardError(l_errorDescription), l_expectedErrorMessage);
 }
