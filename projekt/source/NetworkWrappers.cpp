@@ -5,17 +5,17 @@
 #include <cstring>
 
 NetworkWrappers::NetworkWrappers(IErrorHandler& p_errorHandler)
-    : m_error(p_errorHandler) 
+    : m_error(p_errorHandler)
 {
 
 }
 
 int NetworkWrappers::socket(int p_protocolFamily,
                             int p_socketType,
-                            int p_networkProtocol)
+                            int p_networkProtocol) const
 {
     int l_sockFd = ::socket(p_protocolFamily, p_socketType, p_networkProtocol);
- 
+
     if (l_sockFd < 0)
     {
         m_error.handleHardError("socket error");
@@ -26,7 +26,7 @@ int NetworkWrappers::socket(int p_protocolFamily,
 
 void NetworkWrappers::connect(int p_socketDescriptor,
                               const GenericSockAddr* p_serverAddress,
-                              socklen_t p_addressSize)
+                              socklen_t p_addressSize) const
 {
     if (::connect(p_socketDescriptor, p_serverAddress, p_addressSize) < 0)
     {
@@ -36,7 +36,7 @@ void NetworkWrappers::connect(int p_socketDescriptor,
 
 void NetworkWrappers::bind(int p_socketDescriptor,
                            const GenericSockAddr* p_serverAddress,
-                           socklen_t p_addressSize)
+                           socklen_t p_addressSize) const
 {
     if (::bind(p_socketDescriptor, p_serverAddress, p_addressSize) < 0)
     {
@@ -46,7 +46,7 @@ void NetworkWrappers::bind(int p_socketDescriptor,
 
 int NetworkWrappers::accept(int p_socketDescriptor,
                             GenericSockAddr* p_serverAddress,
-                            socklen_t* p_addressSize)
+                            socklen_t* p_addressSize) const
 {
     int n;
 
@@ -70,7 +70,7 @@ again:
 }
 
 void NetworkWrappers::listen(int p_socketDescriptor,
-                             int p_maxSizeOfConnectionQueue)
+                             int p_maxSizeOfConnectionQueue) const
 {
     char* l_ptr;
 
@@ -89,7 +89,7 @@ void NetworkWrappers::listen(int p_socketDescriptor,
 const char* NetworkWrappers::ntop(int p_protocolFamily,
                                   const void* p_numericAddresFormat,
                                   char* p_presentationAddressFormat,
-                                  size_t p_addressSize)
+                                  size_t p_addressSize) const
 {
     const char* l_ptr;
 
@@ -111,7 +111,7 @@ const char* NetworkWrappers::ntop(int p_protocolFamily,
 
 void NetworkWrappers::pton(int p_protocolFamily,
                            const char* p_presentationAddressFormat,
-                           void* p_numericAddresFormat)
+                           void* p_numericAddresFormat) const
 {
     int l_result = inet_pton(p_protocolFamily,
                              p_presentationAddressFormat,
@@ -131,22 +131,22 @@ void NetworkWrappers::pton(int p_protocolFamily,
     }
 }
 
-uint32_t NetworkWrappers::htonl(uint32_t p_hostByteOrder)
+uint32_t NetworkWrappers::htonl(uint32_t p_hostByteOrder) const
 {
     return ::htonl(p_hostByteOrder);
 }
 
-uint16_t NetworkWrappers::htons(uint16_t p_hostByteOrder)
+uint16_t NetworkWrappers::htons(uint16_t p_hostByteOrder) const
 {
     return ::htons(p_hostByteOrder);
 }
 
-uint32_t NetworkWrappers::ntohl(uint32_t p_networkByteOrder)
+uint32_t NetworkWrappers::ntohl(uint32_t p_networkByteOrder) const
 {
     return ::ntohl(p_networkByteOrder);
 }
 
-uint16_t NetworkWrappers::ntohs(uint16_t p_networkByteOrder)
+uint16_t NetworkWrappers::ntohs(uint16_t p_networkByteOrder) const
 {
     return ::ntohs(p_networkByteOrder);
 }

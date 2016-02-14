@@ -32,7 +32,7 @@ TEST_F(NetworkWrappersTestSuite, testIfNegativeNumberWillBeReturnedAfterIncorrec
 {
     EXPECT_CALL(m_errorHandler, handleHardError("socket error"));
     int l_result = m_sut.socket(999, SOCK_STREAM, 0);
-    EXPECT_EQ(l_result, -1); 
+    EXPECT_EQ(l_result, -1);
 }
 
 TEST_F(NetworkWrappersTestSuite, testIfNoHandleErrorWillBeCalledAfterCorrectCall_connect)

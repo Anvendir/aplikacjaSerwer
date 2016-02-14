@@ -1,8 +1,25 @@
-1. Zmienna errno, co przehcowuje czy daje cos wypisywanie jej w ErrorHandler'rze? //zrobione
-2. Rozwiazanie problemu z procesami zombie.
-3. Tagi vim.
-4. Makefile. //czesciowo wydrukowany manula - brak papieru
-5. Testy googleTest. //zrobione
+//13.02.2016
+Zrobione:
+tagi vim
+
+Do zrobienia:
+1. Dopisanie brakujacych UT z klasy NetowrkWrappers
+2. Stowrzenie klasy UnixWrappers
+3. Stworzenie klasy Serwer
+wip. Rozwiazanie problemu z procesami zombie.
+
+//09.02.2016
+Zrobione:
+Make, manual - wydrukowany w calosci
+Makefile dla programu gotowy
+Makefile dla testow
+wip. Tagi vim.
+
+Do zrobienia:
+1. Dopisanie brakujacych UT z klasy NetowrkWrappers
+2. Stowrzenie klasy UnixWrappers
+3. Stworzenie klasy Serwer
+wip. Rozwiazanie problemu z procesami zombie.
 
 //02.01.2016
 wip. Rozwiazanie problemu z procesami zombie.
@@ -10,18 +27,12 @@ wip. Tagi vim.
 wip. Makefile.
 
 1. Dopisanie brakujacych UT z klasy NetowrkWrappers
-2. Stowrzenie klasy UnixWrappers 
-3. Stworzenie klasy Serwer 
-
-//09.02.2016
-Zrobione:
-Make, manual - wydrukowany w calosci 
-Makefile dla programu gotowy
-Makefile dla testow
-
-Do zrobienia:
-1. Dopisanie brakujacych UT z klasy NetowrkWrappers
 2. Stowrzenie klasy UnixWrappers
 3. Stworzenie klasy Serwer
-wip. Rozwiazanie problemu z procesami zombie.
-wip. Tagi vim.
+
+//starsze
+1. Zmienna errno, co przehcowuje czy daje cos wypisywanie jej w ErrorHandler'rze? //zrobione
+2. Rozwiazanie problemu z procesami zombie.
+3. Tagi vim.
+4. Makefile. //czesciowo wydrukowany manula - brak papieru
+5. Testy googleTest. //zrobione

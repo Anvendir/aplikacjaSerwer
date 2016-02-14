@@ -4,14 +4,14 @@
 #include <cstdio>
 #include <cstring>
 
-void ErrorHandler::handleSoftError(std::string p_errorMessage)
+void ErrorHandler::handleSoftError(std::string p_errorMessage) const
 {
     std::cerr << "Warning: " << p_errorMessage
               << " - " << strerror(errno)
               << std::endl;
 }
 
-void ErrorHandler::handleHardError(std::string p_errorMessage)
+void ErrorHandler::handleHardError(std::string p_errorMessage) const
 {
     std::cerr << "Error: " << p_errorMessage
               << " - " << strerror(errno)
