@@ -1,11 +1,12 @@
 //15.02.2016
 Zrobione:
 Dopisanie brakujacych UT z klasy NetowrkWrappers
+Stowrzenie klasy unixwrappers, pusta klasa i testSuita + uzupelnienie Makefile'i
 
 Do zrobienia:
-1. Stowrzenie klasy UnixWrappers
+1. stowrzenie klasy unixwrappers //wip zostalo dopisac metody + UT
 2. Stworzenie klasy Serwer
-wip. Rozwiazanie problemu z procesami zombie.
+3. Rozwiazanie problemu z procesami zombie.
 
 //14.02.2016
 Zrobione:

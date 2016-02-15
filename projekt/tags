@@ -2524,6 +2524,7 @@ INTERNAL_FLAG_FOR_TESTING	unitTest/googleTestRepo/googletest/test/gtest_help_tes
 INT_OR_FLOAT_DIGITS	unitTest/googleTestRepo/googlemock/scripts/generator/cpp/tokenize.py	/^INT_OR_FLOAT_DIGITS = set('01234567890eE-+')$/;"	v
 IN_PROGRESS	unitTest/googleTestRepo/googletest/src/gtest-death-test.cc	/^enum DeathTestOutcome { IN_PROGRESS, DIED, LIVED, RETURNED, THREW };$/;"	e	enum:testing::internal::DeathTestOutcome	file:
 INetworkWrappers	include/INetworkWrappers.hpp	/^class INetworkWrappers$/;"	c
+IUnixWrappers	include/IUnixWrappers.hpp	/^class IUnixWrappers$/;"	c
 IdMap	unitTest/googleTestRepo/googletest/src/gtest.cc	/^  typedef std::map<std::string, size_t> IdMap;$/;"	t	class:testing::internal::edit_distance::__anon40::InternalStrings	file:
 IdToKey	unitTest/googleTestRepo/googletest/test/gtest_stress_test.cc	/^std::string IdToKey(int id, const char* suffix) {$/;"	f	namespace:testing::__anon22
 IdToString	unitTest/googleTestRepo/googletest/test/gtest_stress_test.cc	/^std::string IdToString(int id) {$/;"	f	namespace:testing::__anon22
@@ -3394,6 +3395,7 @@ NegatedDesc	unitTest/googleTestRepo/googlemock/include/gmock/gmock-matchers.h	/^
 NegatedDesc	unitTest/googleTestRepo/googlemock/include/gmock/gmock-matchers.h	/^  static const char* NegatedDesc() { return "isn't equal to"; }$/;"	f	class:testing::internal::EqMatcher
 NetworkWrappers	include/NetworkWrappers.hpp	/^class NetworkWrappers : public INetworkWrappers$/;"	c
 NetworkWrappers	source/NetworkWrappers.cpp	/^NetworkWrappers::NetworkWrappers(IErrorHandler& p_errorHandler)$/;"	f	class:NetworkWrappers
+NetworkWrappers	source/UnixWrappers.cpp	/^UnixWrappers::NetworkWrappers(IErrorHandler& p_errorHandler)$/;"	f	class:UnixWrappers
 NetworkWrappersTestSuite	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^    NetworkWrappersTestSuite() :$/;"	f	class:NetworkWrappersTestSuite
 NetworkWrappersTestSuite	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^class NetworkWrappersTestSuite : public ::testing::Test$/;"	c	file:
 NewEvenMatcherImpl	unitTest/googleTestRepo/googlemock/test/gmock-matchers_test.cc	/^class NewEvenMatcherImpl : public MatcherInterface<int> {$/;"	c	namespace:testing::gmock_matchers_test	file:
@@ -6795,11 +6797,20 @@ TEST_F	unitTest/test_modules/DispatcherTestSuite.cpp	/^TEST_F(DispatcherTestSuit
 TEST_F	unitTest/test_modules/ErrorHandlerTestSuite.cpp	/^TEST_F(ErrorHandlerTestSuite, testIfProperMessageIsPrintedAfterCall_exampleError_handleSoftError)$/;"	f
 TEST_F	unitTest/test_modules/ErrorHandlerTestSuite.cpp	/^TEST_F(ErrorHandlerTestSuite, testIfProperMessageIsPrintedAfterCall_success_handleHardError)$/;"	f
 TEST_F	unitTest/test_modules/ErrorHandlerTestSuite.cpp	/^TEST_F(ErrorHandlerTestSuite, testIfProperMessageIsPrintedAfterCall_success_handleSoftError)$/;"	f
+TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfFunctionCrashAfterCallFunctionWithNullArgument_ntop)$/;"	f
+TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfHandleHardErrorWillBeCalledAfterCallFunctionWithFakeProtocolFamily_ntop)$/;"	f
+TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfHandleHardErrorWillBeCalledAfterIncorrectCall_accept)$/;"	f
 TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfHandleHardErrorWillBeCalledAfterIncorrectCall_bind)$/;"	f
 TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfHandleHardErrorWillBeCalledAfterIncorrectCall_connect)$/;"	f
+TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfHandleHardErrorWillBeCalledAfterIncorrectCall_listen)$/;"	f
+TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfHandleHardErrorWillBeCalledWhenZeroOrNegativeIsReturned_pton)$/;"	f
 TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfNegativeNumberWillBeReturnedAfterIncorrectCall_socket)$/;"	f
+TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfNoHandleErrorWillBeCalledAfterCorrectCall_accept)$/;"	f
 TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfNoHandleErrorWillBeCalledAfterCorrectCall_bind)$/;"	f
 TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfNoHandleErrorWillBeCalledAfterCorrectCall_connect)$/;"	f
+TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfNoHandleErrorWillBeCalledAfterCorrectCall_listen)$/;"	f
+TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfNoHandleErrorWillBeCalledAfterCorrectCall_ntop)$/;"	f
+TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfNoHandleErrorWillBeCalledAfterCorrectCall_pton)$/;"	f
 TEST_F	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^TEST_F(NetworkWrappersTestSuite, testIfNonNegativeNumberWillBeReturnedAfterCorrectCall_socket)$/;"	f
 TEST_FILTER	unitTest/googleTestRepo/googletest/test/gtest_shuffle_test.py	/^TEST_FILTER = 'A*.A:A*.B:C*'$/;"	v
 TEST_F_before_TEST_in_same_test_case	unitTest/googleTestRepo/googletest/test/gtest_output_test_.cc	/^class TEST_F_before_TEST_in_same_test_case : public testing::Test {$/;"	c	file:
@@ -7543,6 +7554,7 @@ UniversalTersePrinter	unitTest/googleTestRepo/googletest/include/gtest/gtest-pri
 UniversalTersePrinter	unitTest/googleTestRepo/googletest/include/gtest/gtest-printers.h	/^class UniversalTersePrinter<const char*> {$/;"	c	namespace:testing::internal
 UniversalTersePrinter	unitTest/googleTestRepo/googletest/include/gtest/gtest-printers.h	/^class UniversalTersePrinter<const wchar_t*> {$/;"	c	namespace:testing::internal
 UniversalTersePrinter	unitTest/googleTestRepo/googletest/include/gtest/gtest-printers.h	/^class UniversalTersePrinter<wchar_t*> {$/;"	c	namespace:testing::internal
+UnixWrappers	include/UnixWrappers.hpp	/^class UnixWrappers : public IUnixWrappers$/;"	c
 Unlock	unitTest/googleTestRepo/googletest/include/gtest/internal/gtest-port.h	/^  void Unlock() {$/;"	f	class:testing::internal::MutexBase
 Unlock	unitTest/googleTestRepo/googletest/include/gtest/internal/gtest-port.h	/^  void Unlock() {}$/;"	f	class:testing::internal::Mutex
 Unlock	unitTest/googleTestRepo/googletest/src/gtest-port.cc	/^void Mutex::Unlock() {$/;"	f	class:testing::internal::Mutex
@@ -8811,8 +8823,8 @@ gtest_trace_stack	unitTest/googleTestRepo/googletest/src/gtest-internal-inl.h	/^
 gtest_trace_stack_	unitTest/googleTestRepo/googletest/src/gtest-internal-inl.h	/^  internal::ThreadLocal<std::vector<TraceInfo> > gtest_trace_stack_;$/;"	m	class:testing::internal::UnitTestImpl
 gtest_xml_test_utils	unitTest/googleTestRepo/googletest/test/gtest_xml_outfiles_test.py	/^import gtest_xml_test_utils$/;"	i
 gtest_xml_test_utils	unitTest/googleTestRepo/googletest/test/gtest_xml_output_unittest.py	/^import gtest_xml_test_utils$/;"	i
-handleHardError	source/ErrorHandler.cpp	/^void ErrorHandler::handleHardError(std::string p_errorMessage)$/;"	f	class:ErrorHandler
-handleSoftError	source/ErrorHandler.cpp	/^void ErrorHandler::handleSoftError(std::string p_errorMessage)$/;"	f	class:ErrorHandler
+handleHardError	source/ErrorHandler.cpp	/^void ErrorHandler::handleHardError(std::string p_errorMessage) const$/;"	f	class:ErrorHandler
+handleSoftError	source/ErrorHandler.cpp	/^void ErrorHandler::handleSoftError(std::string p_errorMessage) const$/;"	f	class:ErrorHandler
 handle_	unitTest/googleTestRepo/googletest/include/gtest/internal/gtest-port.h	/^  Handle handle_;$/;"	m	class:testing::internal::AutoHandle
 handle_asm	unitTest/googleTestRepo/googlemock/scripts/generator/cpp/ast.py	/^    def handle_asm(self):$/;"	m	class:AstBuilder
 handle_auto	unitTest/googleTestRepo/googlemock/scripts/generator/cpp/ast.py	/^    def handle_auto(self):$/;"	m	class:AstBuilder
@@ -8884,8 +8896,8 @@ head_	unitTest/googleTestRepo/googletest/samples/sample3-inl.h	/^  QueueNode<E>*
 helper_	unitTest/googleTestRepo/googlemock/test/gmock-spec-builders_test.cc	/^  LogTestHelper helper_;$/;"	m	class:__anon1::GMockLogTest	file:
 history	unitTest/googleTestRepo/googletest/test/gtest-linked_ptr_test.cc	/^Message* history = NULL;$/;"	m	namespace:__anon34	file:
 host_name_	unitTest/googleTestRepo/googletest/src/gtest-internal-inl.h	/^    const string host_name_;$/;"	m	class:testing::internal::StreamingListener::SocketWriter
-htonl	source/NetworkWrappers.cpp	/^uint32_t NetworkWrappers::htonl(uint32_t p_hostByteOrder)$/;"	f	class:NetworkWrappers
-htons	source/NetworkWrappers.cpp	/^uint16_t NetworkWrappers::htons(uint16_t p_hostByteOrder)$/;"	f	class:NetworkWrappers
+htonl	source/NetworkWrappers.cpp	/^uint32_t NetworkWrappers::htonl(uint32_t p_hostByteOrder) const$/;"	f	class:NetworkWrappers
+htons	source/NetworkWrappers.cpp	/^uint16_t NetworkWrappers::htons(uint16_t p_hostByteOrder) const$/;"	f	class:NetworkWrappers
 hunk_	unitTest/googleTestRepo/googletest/src/gtest.cc	/^  std::list<std::pair<char, const char*> > hunk_, hunk_adds_, hunk_removes_;$/;"	m	class:testing::internal::edit_distance::__anon41::Hunk	file:
 hunk_adds_	unitTest/googleTestRepo/googletest/src/gtest.cc	/^  std::list<std::pair<char, const char*> > hunk_, hunk_adds_, hunk_removes_;$/;"	m	class:testing::internal::edit_distance::__anon41::Hunk	file:
 hunk_removes_	unitTest/googleTestRepo/googletest/src/gtest.cc	/^  std::list<std::pair<char, const char*> > hunk_, hunk_adds_, hunk_removes_;$/;"	m	class:testing::internal::edit_distance::__anon41::Hunk	file:
@@ -9193,6 +9205,7 @@ location_	unitTest/googleTestRepo/googletest/include/gtest/gtest.h	/^  internal:
 logging	unitTest/googleTestRepo/googlemock/scripts/upload.py	/^import logging$/;"	i
 logging	unitTest/googleTestRepo/googletest/scripts/upload.py	/^import logging$/;"	i
 m_error	include/NetworkWrappers.hpp	/^    IErrorHandler& m_error;$/;"	m	class:NetworkWrappers
+m_error	include/UnixWrappers.hpp	/^    IErrorHandler& m_error;$/;"	m	class:UnixWrappers
 m_errorHandler	unitTest/test_modules/NetworkWrappersTestSuite.cpp	/^    StrictMock<ErrorHandlerMock> m_errorHandler;$/;"	m	class:NetworkWrappersTestSuite	file:
 m_sut	unitTest/test_modules/DispatcherTestSuite.cpp	/^    Dispatcher m_sut;$/;"	m	class:DispatcherTestSuite	file:
 m_sut	unitTest/test_modules/ErrorHandlerTestSuite.cpp	/^    ErrorHandler m_sut;$/;"	m	class:ErrorHandlerTestSuite	file:
@@ -9397,8 +9410,8 @@ next_	unitTest/googleTestRepo/googletest/samples/sample3-inl.h	/^  QueueNode* ne
 nonfatally_failed	unitTest/googleTestRepo/googletest/include/gtest/gtest-test-part.h	/^  bool nonfatally_failed() const { return type_ == kNonFatalFailure; }$/;"	f	class:testing::TestPartResult
 notifications_	unitTest/googleTestRepo/googletest/test/gtest_output_test_.cc	/^  SpawnThreadNotifications notifications_;$/;"	m	class:DeathTestAndMultiThreadsTest	file:
 notified_	unitTest/googleTestRepo/googletest/include/gtest/internal/gtest-port.h	/^  bool notified_;$/;"	m	class:testing::internal::Notification
-ntohl	source/NetworkWrappers.cpp	/^uint32_t NetworkWrappers::ntohl(uint32_t p_networkByteOrder)$/;"	f	class:NetworkWrappers
-ntohs	source/NetworkWrappers.cpp	/^uint16_t NetworkWrappers::ntohs(uint16_t p_networkByteOrder)$/;"	f	class:NetworkWrappers
+ntohl	source/NetworkWrappers.cpp	/^uint32_t NetworkWrappers::ntohl(uint32_t p_networkByteOrder) const$/;"	f	class:NetworkWrappers
+ntohs	source/NetworkWrappers.cpp	/^uint16_t NetworkWrappers::ntohs(uint16_t p_networkByteOrder) const$/;"	f	class:NetworkWrappers
 ntop	source/NetworkWrappers.cpp	/^const char* NetworkWrappers::ntop(int p_protocolFamily,$/;"	f	class:NetworkWrappers
 num	unitTest/googleTestRepo/googletest/test/gtest-linked_ptr_test.cc	/^int num;$/;"	m	namespace:__anon34	file:
 num_elements_	unitTest/googleTestRepo/googlemock/include/gmock/gmock-matchers.h	/^  size_t num_elements_;$/;"	m	class:testing::internal::MatchMatrix
@@ -9722,19 +9735,19 @@ output_	unitTest/googleTestRepo/googletest/test/gtest_unittest.cc	/^    string o
 output_dir	unitTest/googleTestRepo/googletest/xcode/Scripts/versiongenerate.py	/^  output_dir = sys.argv[2]$/;"	v
 output_file_	unitTest/googleTestRepo/googletest/src/gtest.cc	/^  const std::string output_file_;$/;"	m	class:testing::internal::XmlUnitTestResultPrinter	file:
 override	include/Dispatcher.hpp	/^    void dispatch() override;$/;"	m	class:Dispatcher
-override	include/ErrorHandler.hpp	/^    void handleHardError(std::string p_errorMessage) override;$/;"	m	class:ErrorHandler
-override	include/ErrorHandler.hpp	/^    void handleSoftError(std::string p_errorMessage) override;$/;"	m	class:ErrorHandler
-override	include/NetworkWrappers.hpp	/^    const char* ntop(int p_protocolFamily, const void* p_numericAddresFormat, char* p_presentationAddressFormat, size_t p_addressSize) override;$/;"	m	class:NetworkWrappers
-override	include/NetworkWrappers.hpp	/^    int accept(int p_socketDescriptor, GenericSockAddr* p_serverAddress, socklen_t* p_addressSize) override;$/;"	m	class:NetworkWrappers
-override	include/NetworkWrappers.hpp	/^    int socket(int p_protocolFamily, int p_socketType, int p_networkProtocol) override;$/;"	m	class:NetworkWrappers
-override	include/NetworkWrappers.hpp	/^    uint16_t htons(uint16_t p_hostByteOrder) override;$/;"	m	class:NetworkWrappers
-override	include/NetworkWrappers.hpp	/^    uint16_t ntohs(uint16_t p_networkByteOrder) override;$/;"	m	class:NetworkWrappers
-override	include/NetworkWrappers.hpp	/^    uint32_t htonl(uint32_t p_hostByteOrder) override;$/;"	m	class:NetworkWrappers
-override	include/NetworkWrappers.hpp	/^    uint32_t ntohl(uint32_t p_networkByteOrder) override;$/;"	m	class:NetworkWrappers
-override	include/NetworkWrappers.hpp	/^    void bind(int p_socketDescriptor, const GenericSockAddr* p_serverAddress, socklen_t p_addressSize) override;$/;"	m	class:NetworkWrappers
-override	include/NetworkWrappers.hpp	/^    void connect(int p_socketDescriptor, const GenericSockAddr* p_serverAddress, socklen_t p_addressSize) override;$/;"	m	class:NetworkWrappers
-override	include/NetworkWrappers.hpp	/^    void listen(int p_socketDescriptor, int p_maxSizeOfConnectionQueue) override;$/;"	m	class:NetworkWrappers
-override	include/NetworkWrappers.hpp	/^    void pton(int p_protocolFamily, const char* p_presentationAddressFormat, void* p_numericAddresFormat) override;$/;"	m	class:NetworkWrappers
+override	include/ErrorHandler.hpp	/^    void handleHardError(std::string p_errorMessage) const override;$/;"	m	class:ErrorHandler
+override	include/ErrorHandler.hpp	/^    void handleSoftError(std::string p_errorMessage) const override;$/;"	m	class:ErrorHandler
+override	include/NetworkWrappers.hpp	/^                     size_t p_addressSize) const override;$/;"	m	class:NetworkWrappers
+override	include/NetworkWrappers.hpp	/^    int accept(int p_socketDescriptor, GenericSockAddr* p_serverAddress, socklen_t* p_addressSize) const override;$/;"	m	class:NetworkWrappers
+override	include/NetworkWrappers.hpp	/^    int socket(int p_protocolFamily, int p_socketType, int p_networkProtocol) const override;$/;"	m	class:NetworkWrappers
+override	include/NetworkWrappers.hpp	/^    uint16_t htons(uint16_t p_hostByteOrder) const override;$/;"	m	class:NetworkWrappers
+override	include/NetworkWrappers.hpp	/^    uint16_t ntohs(uint16_t p_networkByteOrder) const override;$/;"	m	class:NetworkWrappers
+override	include/NetworkWrappers.hpp	/^    uint32_t htonl(uint32_t p_hostByteOrder) const override;$/;"	m	class:NetworkWrappers
+override	include/NetworkWrappers.hpp	/^    uint32_t ntohl(uint32_t p_networkByteOrder) const override;$/;"	m	class:NetworkWrappers
+override	include/NetworkWrappers.hpp	/^    void bind(int p_socketDescriptor, const GenericSockAddr* p_serverAddress, socklen_t p_addressSize) const override;$/;"	m	class:NetworkWrappers
+override	include/NetworkWrappers.hpp	/^    void connect(int p_socketDescriptor, const GenericSockAddr* p_serverAddress, socklen_t p_addressSize) const override;$/;"	m	class:NetworkWrappers
+override	include/NetworkWrappers.hpp	/^    void listen(int p_socketDescriptor, int p_maxSizeOfConnectionQueue) const override;$/;"	m	class:NetworkWrappers
+override	include/NetworkWrappers.hpp	/^    void pton(int p_protocolFamily, const char* p_presentationAddressFormat, void* p_numericAddresFormat) const override;$/;"	m	class:NetworkWrappers
 owner_	unitTest/googleTestRepo/googlemock/include/gmock/gmock-spec-builders.h	/^  FunctionMockerBase<F>* const owner_;$/;"	m	class:testing::internal::TypedExpectation
 owner_	unitTest/googleTestRepo/googletest/include/gtest/internal/gtest-port.h	/^  pthread_t owner_;  \/\/ The thread holding the mutex.$/;"	m	class:testing::internal::MutexBase
 owner_thread_id_	unitTest/googleTestRepo/googletest/include/gtest/internal/gtest-port.h	/^  unsigned int owner_thread_id_;$/;"	m	class:testing::internal::Mutex
