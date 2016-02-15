@@ -1,3 +1,24 @@
+//15.02.2016
+Zrobione:
+Dopisanie brakujacych UT z klasy NetowrkWrappers
+
+Do zrobienia:
+1. Stowrzenie klasy UnixWrappers
+2. Stworzenie klasy Serwer
+wip. Rozwiazanie problemu z procesami zombie.
+
+//14.02.2016
+Zrobione:
+Instalacja systemu fedora 18 oraz QT creatora, z gitem na starym komuterze Asi
+Checkout projektu i zaladowanie do Qt creatora
+Dodanie do repozytorium zaleznego repozytorium z testami google
+
+Do zrobienia:
+1. Dopisanie brakujacych UT z klasy NetowrkWrappers
+2. Stowrzenie klasy UnixWrappers
+3. Stworzenie klasy Serwer
+wip. Rozwiazanie problemu z procesami zombie.
+
 //13.02.2016
 Zrobione:
 tagi vim

@@ -99,9 +99,9 @@ const char* NetworkWrappers::ntop(int p_protocolFamily,
     }
 
     if ((l_ptr = inet_ntop(p_protocolFamily,
-                         p_numericAddresFormat,
-                         p_presentationAddressFormat,
-                         p_addressSize)) == NULL)
+                           p_numericAddresFormat,
+                           p_presentationAddressFormat,
+                           p_addressSize)) == NULL)
     {
         m_error.handleHardError("inet_ntop error");
     }
