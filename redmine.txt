@@ -1,3 +1,11 @@
+//16.02.2016
+Zrobione:
+Implementacja oraz testy jednostkowe dla klasy UnixWrappers
+
+Do zrobienia:
+1. Stworzenie klasy Serwer
+2. Rozwiazanie problemu z procesami zombie.
+
 //15.02.2016
 Zrobione:
 Dopisanie brakujacych UT z klasy NetowrkWrappers
