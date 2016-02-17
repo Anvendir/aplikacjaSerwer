@@ -2,7 +2,8 @@ objects = main.o \
 		  Dispatcher.o DispatcherTestSuite.o \
 		  ErrorHandler.o ErrorHandlerTestSuite.o \
 		  NetworkWrappers.o NetworkWrappersTestSuite.o \
-		  UnixWrappers.o UnixWrappersTestSuite.o
+		  UnixWrappers.o UnixWrappersTestSuite.o \
+		  Server.o ServerTestSuite.o
 
 GTEST_DIR = ./googleTestRepo/googletest
 GMOCK_DIR = ./googleTestRepo/googlemock
@@ -52,6 +53,15 @@ UnixWrappersTestSuite.o : ./test_modules/UnixWrappersTestSuite.cpp ../include/Un
 	g++ -c -std=c++11 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
 			-I ./mocks -I ../include/ \
 			./test_modules/UnixWrappersTestSuite.cpp
+
+Server.o : ../source/Server.cpp ../include/Server.hpp
+	g++ -c -std=c++11 -I ../include \
+			../source/Server.cpp
+
+ServerTestSuite.o : ./test_modules/ServerTestSuite.cpp ../include/Server.hpp
+	g++ -c -std=c++11 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
+			-I ./mocks -I ../include/ \
+			./test_modules/ServerTestSuite.cpp
 
 .PHONY : clean
 clean:
