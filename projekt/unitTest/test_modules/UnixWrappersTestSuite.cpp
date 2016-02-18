@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <cstring>
+#include <memory>
 
 using ::testing::StrictMock;
 
@@ -15,13 +16,14 @@ class UnixWrappersTestSuite : public ::testing::Test
 {
 public:
     UnixWrappersTestSuite() :
-         m_errorHandler(), m_sut(m_errorHandler)
+         m_errorHandler(std::make_shared<StrictMock<ErrorHandlerMock>>()),
+         m_sut(m_errorHandler)
     {
 
     }
 
+    std::shared_ptr<StrictMock<ErrorHandlerMock>> m_errorHandler;
     UnixWrappers m_sut;
-    StrictMock<ErrorHandlerMock> m_errorHandler;
 };
 
 TEST_F(UnixWrappersTestSuite, testIfSendFunctionWillHandleNoErrorWithProperCall)
@@ -43,7 +45,7 @@ TEST_F(UnixWrappersTestSuite, testIfSendFunctionWillHandleHardErrorWithIncorrect
 {
     int l_fakeSockFd = 1;
 
-    EXPECT_CALL(m_errorHandler, handleHardError("send error"));
+    EXPECT_CALL(*m_errorHandler, handleHardError("send error"));
     const char* l_message = "Hello world";
     m_sut.send(l_fakeSockFd, l_message, strlen(l_message));
 }
@@ -53,7 +55,7 @@ TEST_F(UnixWrappersTestSuite, testIfRecvFunctionWillHandlehardErrorWithIncorrect
     int l_fakeSockFd = 1;
     char l_receivedMessage[10];
 
-    EXPECT_CALL(m_errorHandler, handleHardError("recv error"));
+    EXPECT_CALL(*m_errorHandler, handleHardError("recv error"));
     m_sut.recv(l_fakeSockFd, l_receivedMessage, sizeof(l_receivedMessage));
 }
 
@@ -68,7 +70,7 @@ TEST_F(UnixWrappersTestSuite, testIfCloseFunctionWillHandlehardErrorWithIncorrec
 {
     int l_fakeSockFd = -41;
 
-    EXPECT_CALL(m_errorHandler, handleHardError("close error"));
+    EXPECT_CALL(*m_errorHandler, handleHardError("close error"));
     m_sut.close(l_fakeSockFd);
 }
 

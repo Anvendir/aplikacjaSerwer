@@ -1,10 +1,14 @@
 #include "INetworkWrappers.hpp"
 #include "ErrorHandler.hpp"
 
+#include <memory>
+
+#pragma once
+
 class NetworkWrappers : public INetworkWrappers
 {
 public:
-    NetworkWrappers(IErrorHandler& p_errorHandler);
+    NetworkWrappers(std::shared_ptr<IErrorHandler> p_errorHandler);
 
     int socket(int p_protocolFamily, int p_socketType, int p_networkProtocol) const override;
     void connect(int p_socketDescriptor, const GenericSockAddr* p_serverAddress, socklen_t p_addressSize) const override;
@@ -24,5 +28,5 @@ public:
     uint16_t ntohs(uint16_t p_networkByteOrder) const override;
 
 private:
-    IErrorHandler& m_error;
+    std::shared_ptr<IErrorHandler> m_error;
 };

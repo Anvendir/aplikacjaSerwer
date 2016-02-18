@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <cstring>
 
-NetworkWrappers::NetworkWrappers(IErrorHandler& p_errorHandler)
+NetworkWrappers::NetworkWrappers(std::shared_ptr<IErrorHandler> p_errorHandler)
     : m_error(p_errorHandler)
 {
 
@@ -18,7 +18,7 @@ int NetworkWrappers::socket(int p_protocolFamily,
 
     if (l_sockFd < 0)
     {
-        m_error.handleHardError("socket error");
+        m_error->handleHardError("socket error");
     }
 
     return(l_sockFd);
@@ -30,7 +30,7 @@ void NetworkWrappers::connect(int p_socketDescriptor,
 {
     if (::connect(p_socketDescriptor, p_serverAddress, p_addressSize) < 0)
     {
-        m_error.handleHardError("connect error");
+        m_error->handleHardError("connect error");
     }
 }
 
@@ -40,7 +40,7 @@ void NetworkWrappers::bind(int p_socketDescriptor,
 {
     if (::bind(p_socketDescriptor, p_serverAddress, p_addressSize) < 0)
     {
-         m_error.handleHardError("bind error");
+         m_error->handleHardError("bind error");
     }
 }
 
@@ -63,7 +63,7 @@ again:
         }
         else
         {
-            m_error.handleHardError("accept error");
+            m_error->handleHardError("accept error");
         }
     }
     return(n);
@@ -82,7 +82,7 @@ void NetworkWrappers::listen(int p_socketDescriptor,
 
     if(::listen(p_socketDescriptor, p_maxSizeOfConnectionQueue) < 0)
     {
-        m_error.handleHardError("listen error");
+        m_error->handleHardError("listen error");
     }
 }
 
@@ -95,7 +95,7 @@ const char* NetworkWrappers::ntop(int p_protocolFamily,
 
     if (p_presentationAddressFormat == NULL)
     {
-        m_error.handleHardError("NULL 3rd argument to inet_ntop");
+        m_error->handleHardError("NULL 3rd argument to inet_ntop");
     }
 
     if ((l_ptr = inet_ntop(p_protocolFamily,
@@ -103,7 +103,7 @@ const char* NetworkWrappers::ntop(int p_protocolFamily,
                            p_presentationAddressFormat,
                            p_addressSize)) == NULL)
     {
-        m_error.handleHardError("inet_ntop error");
+        m_error->handleHardError("inet_ntop error");
     }
 
     return(l_ptr);
@@ -121,12 +121,12 @@ void NetworkWrappers::pton(int p_protocolFamily,
 
     if (l_result < 0)
     {
-        m_error.handleHardError(strcat(l_errorPredicate,
+        m_error->handleHardError(strcat(l_errorPredicate,
                                        p_presentationAddressFormat));
     }
     else if (l_result == 0)
     {
-        m_error.handleHardError(strcat(l_errorPredicate,
+        m_error->handleHardError(strcat(l_errorPredicate,
                                        p_presentationAddressFormat));
     }
 }

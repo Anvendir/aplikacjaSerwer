@@ -1,5 +1,7 @@
 #include "CommonTypes.h"
 
+#pragma once
+
 class IUnixWrappers
 {
 public:

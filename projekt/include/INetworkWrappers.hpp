@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <sys/socket.h>
 
+#pragma once
+
 class INetworkWrappers
 {
 public:
@@ -26,4 +28,5 @@ public:
     virtual uint16_t htons(uint16_t p_hostByteOrder) const = 0;
     virtual uint32_t ntohl(uint32_t p_networkByteOrder) const = 0;
     virtual uint16_t ntohs(uint16_t p_networkByteOrder) const = 0;
+
 };

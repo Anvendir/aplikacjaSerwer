@@ -1,10 +1,14 @@
 #include "IUnixWrappers.hpp"
 #include "ErrorHandler.hpp"
 
+#include <memory>
+
+#pragma once
+
 class UnixWrappers : public IUnixWrappers
 {
 public:
-    UnixWrappers(IErrorHandler& p_errorHandler);
+    UnixWrappers(std::shared_ptr<IErrorHandler> p_errorHandler);
 
     void send(int p_socketDescriptor,
               const void* p_messageToSent,
@@ -20,5 +24,5 @@ public:
     pid_t fork(void) const override;
 
 private:
-    IErrorHandler& m_error;
+    std::shared_ptr<IErrorHandler> m_error;
 };

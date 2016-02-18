@@ -4,6 +4,11 @@
 #include <cstdio>
 #include <cstring>
 
+ErrorHandler::ErrorHandler()
+{
+
+}
+
 void ErrorHandler::handleSoftError(std::string p_errorMessage) const
 {
     std::cerr << "Warning: " << p_errorMessage
