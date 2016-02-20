@@ -8,7 +8,7 @@
 class INetworkWrappers
 {
 public:
-    virtual int socket(int p_protocolFamily, int p_socketType, int p_networkProtocol) const = 0;
+    virtual int socket(int p_protocolFamily, int p_socketType, int p_networkProtocol = 0) const = 0;
     virtual void connect(int p_socketDescriptor,
                          const GenericSockAddr* p_serverAddress,
                          socklen_t p_addressSize) const = 0;

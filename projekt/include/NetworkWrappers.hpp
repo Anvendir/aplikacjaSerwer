@@ -10,7 +10,7 @@ class NetworkWrappers : public INetworkWrappers
 public:
     NetworkWrappers(std::shared_ptr<IErrorHandler> p_errorHandler);
 
-    int socket(int p_protocolFamily, int p_socketType, int p_networkProtocol) const override;
+    int socket(int p_protocolFamily, int p_socketType, int p_networkProtocol = 0) const override;
     void connect(int p_socketDescriptor, const GenericSockAddr* p_serverAddress, socklen_t p_addressSize) const override;
     void bind(int p_socketDescriptor, const GenericSockAddr* p_serverAddress, socklen_t p_addressSize) const override;
     void listen(int p_socketDescriptor, int p_maxSizeOfConnectionQueue) const override;

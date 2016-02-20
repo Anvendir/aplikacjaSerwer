@@ -7,10 +7,6 @@ int main()
 {
     std::cout << "Hello World" << std::endl;
 
-    //ErrorHandler m;
-    //m.handleHardError("O kurwa!");
-    //Dispatcher d;
-    //d.dispatch();
     Server s;
     s.start();
 
