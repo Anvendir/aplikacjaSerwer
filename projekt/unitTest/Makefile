@@ -1,4 +1,4 @@
-objects = main.o \
+objects = Main.o \
 		  Dispatcher.o DispatcherTestSuite.o \
 		  ErrorHandler.o ErrorHandlerTestSuite.o \
 		  NetworkWrappers.o NetworkWrappersTestSuite.o \
@@ -8,22 +8,22 @@ objects = main.o \
 GTEST_DIR = ./googleTestRepo/googletest
 GMOCK_DIR = ./googleTestRepo/googlemock
 
-unitTests : $(objects)
-	g++ -std=c++14 -o unitTests $(objects) \
+UnitTests : $(objects)
+	g++ -std=c++14 -o UnitTests $(objects) \
 		./libs/libgtest.a  ./libs/libgmock.a -pthread \
 	   	-isystem $(GTEST_DIR)/include -isystem ${GMOCK_DIR}/include
 
-main.o : ./test_modules/main.cpp
+Main.o : ./test_modules/Main.cpp
 	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread \
 			-I ./mocks \
-			./test_modules/main.cpp
+			./test_modules/Main.cpp
 
 Dispatcher.o : ../source/Dispatcher.cpp ../include/Dispatcher.hpp
 	g++ -c -std=c++14 -I ../include \
 			../source/Dispatcher.cpp
 
 DispatcherTestSuite.o : ./test_modules/DispatcherTestSuite.cpp ../include/Dispatcher.hpp
-	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread \
+	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
 			-I ./mocks -I ../include/ \
 			./test_modules/DispatcherTestSuite.cpp
 
@@ -65,4 +65,4 @@ ServerTestSuite.o : ./test_modules/ServerTestSuite.cpp ../include/Server.hpp
 
 .PHONY : clean
 clean:
-	rm  $(objects)
+	rm  UnitTests $(objects)

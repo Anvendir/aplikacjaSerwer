@@ -2,14 +2,19 @@
 #include "ErrorHandler.hpp"
 #include "NetworkWrappers.hpp"
 #include "UnixWrappers.hpp"
+#include "Dispatcher.hpp"
 #include <cstring>
-
 #include <iostream>
+
+//do usuniecia po owrapowaniu getpid
+#include <sys/types.h>
+#include <unistd.h>
 
 Server::Server() :
     m_errorHandler(std::make_shared<ErrorHandler>()),
     m_networkWrapper(std::make_unique<NetworkWrappers>(m_errorHandler)),
-    m_unixWrapper(std::make_unique<UnixWrappers>(m_errorHandler))
+    m_unixWrapper(std::make_unique<UnixWrappers>(m_errorHandler)),
+    m_dispatcher(std::make_unique<Dispatcher>(m_errorHandler))
 {
 
 }
@@ -44,7 +49,9 @@ void Server::waitForConnection(int p_serverSocket) const
 
     while(true)
     {
-        std::cout << "Waiting for connection..." << std::endl;
+        std::cout << "PID: " << getpid() << " | "
+                  <<"Waiting for connection..." << std::endl;
+
         l_clientLen = sizeof(l_clientAddrStruct);
         l_clientSocket = m_networkWrapper->accept(p_serverSocket,
                                                   reinterpret_cast<GenericSockAddr*>(&l_clientAddrStruct),
@@ -54,7 +61,8 @@ void Server::waitForConnection(int p_serverSocket) const
         {
             m_unixWrapper->close(p_serverSocket);
 
-            std::cout << "Connection from: "
+            std::cout << "PID: " << getpid() << " | "
+                      << "Connection from: "
                       << m_networkWrapper->ntop(AF_INET, &l_clientAddrStruct.sin_addr, gowno, sizeof(gowno))
                       << " and port: "
                       << m_networkWrapper->ntohs(l_clientAddrStruct.sin_port)
@@ -84,24 +92,12 @@ void Server::processConnection(int p_clientSocket) const
 {
 	const unsigned int MAXLINE = 4096;
     ssize_t	l_receivedBytes;
-	char l_receivedMessage[MAXLINE];
+	Message l_receivedMessage = {};
 
 again:
-/*	while ((l_receivedBytes = m_unixWrapper->recv(p_clientSocket, l_receivedMessage, MAXLINE)) > 0)
+	while ((l_receivedBytes = m_unixWrapper->recv(p_clientSocket, &l_receivedMessage, MAXLINE, 0)) > 0)
     {
-        std::cout << "Otrzymano: " << l_receivedMessage << std::endl;
-
-        const char l_answer[40] = "Potwierdzam otrzymanie";
-		m_unixWrapper->send(p_clientSocket, l_answer, strlen(l_answer));
-    }*/
-
-    l_receivedBytes = m_unixWrapper->recv(p_clientSocket, l_receivedMessage, MAXLINE, 0);
-	if (l_receivedBytes > 0)
-    {
-        std::cout << "Otrzymano: " << l_receivedMessage << std::endl;
-
-        const char l_answer[40] = "Potwierdzam otrzymanie";
-		m_unixWrapper->send(p_clientSocket, l_answer, strlen(l_answer));
+        m_dispatcher->dispatch(p_clientSocket, l_receivedMessage);
     }
 
 	if (l_receivedBytes < 0 && errno == EINTR)

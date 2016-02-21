@@ -2,6 +2,7 @@
 #include "ErrorHandler.hpp"
 
 #include <memory>
+#include <string>
 
 #pragma once
 

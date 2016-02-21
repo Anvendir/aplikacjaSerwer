@@ -13,12 +13,12 @@ void str_cli(FILE *fp, int sockfd);
 void Fputs(const char *ptr, FILE *stream);
 char* Fgets(char *ptr, int n, FILE *stream);
 void sendSingleMessageTest(int p_argc, char** p_argv);
-void sendSingleMessageAndWaitForResponseTest(int p_argc, char** p_argv);
+void exchangingAFewMessagesWithServerTest(int p_argc, char** p_argv);
 
 int main(int argc, char **argv)
 {
     //sendSingleMessageTest(argc, argv);
-    sendSingleMessageAndWaitForResponseTest(argc, argv);
+    exchangingAFewMessagesWithServerTest(argc, argv);
 	exit(0);
 }
 
@@ -54,7 +54,7 @@ void sendSingleMessageTest(int p_argc, char** p_argv)
     std::cout << "Testcase " << __FUNCTION__ << " finished successfully." << std::endl;
 }
 
-void sendSingleMessageAndWaitForResponseTest(int p_argc, char** p_argv)
+void exchangingAFewMessagesWithServerTest(int p_argc, char** p_argv)
 {
     std::cout << "Testcase " << __FUNCTION__ << " started." << std::endl;
 
@@ -79,21 +79,19 @@ void sendSingleMessageAndWaitForResponseTest(int p_argc, char** p_argv)
 
 	nwr.connect(sockfd, (GenericSockAddr*)&servaddr, sizeof(servaddr));
 
-    char sendline[MAXLINE] = "Pośla", recvline[MAXLINE];
-    uwr.send(sockfd, sendline, strlen(sendline));
+    char recvline[MAXLINE];
+    Message sendline = {1, "Wlazl kotek na plotek..."};
+
+    uwr.send(sockfd, &sendline, sizeof(sendline));
 
     const unsigned int MAXLINE = 4096;
     ssize_t	l_receivedBytes;
-	char l_receivedMessage[MAXLINE];
+    Message l_receivedMessage = {};
 again:
-/*	while ((l_receivedBytes = uwr.recv(sockfd, l_receivedMessage, MAXLINE)) > 0)
+	while ((l_receivedBytes = uwr.recv(sockfd, &l_receivedMessage, MAXLINE, 0)) > 0)
     {
-        std::cout << "Otrzymano: " << l_receivedMessage << std::endl;
-    }*/
-    l_receivedBytes = uwr.recv(sockfd, l_receivedMessage, MAXLINE, 0);
-	if (l_receivedBytes > 0)
-    {
-        std::cout << "Otrzymano: " << l_receivedMessage << std::endl;
+        std::cout << "Otrzymano: " << l_receivedMessage.payload << std::endl;
+        break;
     }
 
 	if (l_receivedBytes < 0 && errno == EINTR)
@@ -105,11 +103,15 @@ again:
 		er.handleHardError("processConnection: recv error");
     }
 
+    sendline.msgId = 2;
+    strcpy(sendline.payload, "...i mruga...");
+    uwr.send(sockfd, &sendline, sizeof(sendline));
+
     uwr.close(sockfd);
     std::cout << "Testcase " << __FUNCTION__ << " finished successfully." << std::endl;
 }
 
-
+///old functions
 void str_cli(FILE *fp, int sockfd)
 {
     ErrorHandler er = ErrorHandler();

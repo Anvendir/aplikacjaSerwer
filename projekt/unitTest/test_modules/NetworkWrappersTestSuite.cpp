@@ -1,9 +1,7 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-
 #include "NetworkWrappers.hpp"
 #include "ErrorHandlerMock.hpp"
-
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <memory>

@@ -1,3 +1,29 @@
+//21.02.2016
+Zrobione:
+1. Draft klasy serwer
+2. Rozplanowany sposob handlingu wiadomosci
+3. Ustalony typ wiadomosci jak bedzie wygaldac
+4. Draft dla testow modulowych
+5. Dopisac strukture dla wiadomosci
+6. Przeniesienie handlowania msg do dispatchera.
+7. Poprawianie logowania - dodanie numeru PID.
+
+Do zrobienia:
+1. Ukonczenie klasy Server
+    - dodanie powitania zaraz polaczeniu
+    - Testy jednostkowe dla klasy serwer
+    - Dodanie mozliwosci przesylania plikow
+2. Funkcje ntop i pton w wersji socket z ksiazki, duzo bardizej urposzczone wywolania
+    - usuniecie dotychczasowego wywolania + wywalnie zmiennej gowno
+3. Rozwiazanie problemu z procesami zombie
+4. Ukonczyc jeden test modulowy dla wymiany kilku wiadomosci
+    - wymyslic sensowne wywolania wiadomosci tzn cos co sie przyda pozniej
+      w praktyce a nie bedize tylko na potrzeby testow, na przyklad przeslanie listy plikow
+5. Dopisac Wrapper do funkcji getpid
+    - usunac z klasy Server i Dispatcher niepotrzebne juz importy
+6. Testy jednostokowe dla klasy Dispatcher
+7. Dodanie enuma zamiast int do defininicji struktury Message
+
 //16.02.2016
 Zrobione:
 Implementacja oraz testy jednostkowe dla klasy UnixWrappers

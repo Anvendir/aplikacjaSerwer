@@ -2,6 +2,7 @@
 #include "IErrorHandler.hpp"
 #include "INetworkWrappers.hpp"
 #include "IUnixWrappers.hpp"
+#include "IDispatcher.hpp"
 
 #include <memory>
 #pragma once
@@ -22,4 +23,5 @@ private:
     std::shared_ptr<IErrorHandler> m_errorHandler;
     std::unique_ptr<INetworkWrappers> m_networkWrapper;
     std::unique_ptr<IUnixWrappers> m_unixWrapper;
+    std::unique_ptr<IDispatcher> m_dispatcher;
 };

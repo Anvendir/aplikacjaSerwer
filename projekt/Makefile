@@ -1,11 +1,11 @@
-objects = main.o Dispatcher.o ErrorHandler.o NetworkWrappers.o UnixWrappers.o Server.o
+objects = Main.o Dispatcher.o ErrorHandler.o NetworkWrappers.o UnixWrappers.o Server.o
 
-program : $(objects)
-	g++ -std=c++14 -o program $(objects)
+Program : $(objects)
+	g++ -std=c++14 -o Program $(objects)
 
-main.o : ./source/main.cpp ./include/Dispatcher.hpp ./include/ErrorHandler.hpp
+Main.o : ./source/Main.cpp ./include/Dispatcher.hpp ./include/ErrorHandler.hpp
 	g++ -c -std=c++14 -I ./include \
-	   	./source/main.cpp
+	   	./source/Main.cpp
 
 Dispatcher.o : ./source/Dispatcher.cpp ./include/Dispatcher.hpp
 	g++ -c -std=c++14 -I ./include \
@@ -29,4 +29,4 @@ Server.o : ./source/Server.cpp ./include/Server.hpp
 
 .PHONY : clean
 clean:
-		rm program $(objects)
+		rm Program $(objects)

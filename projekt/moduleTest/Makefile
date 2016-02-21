@@ -1,14 +1,14 @@
-objects = pierwszyTest.o \
+objects = ComponentTests.o \
 		  ErrorHandler.o \
 		  NetworkWrappers.o \
 		  UnixWrappers.o
 
-pierwszyTest : $(objects)
-	g++ -std=c++14 -o pierwszyTest $(objects) \
+ComponentTests : $(objects)
+	g++ -std=c++14 -o ComponentTests $(objects) \
 	   	-I ../include
 
-pierwszyTest.o : ./pierwszyTest.cpp
-	g++ -c -std=c++14 -I ../include pierwszyTest.cpp
+ComponentTests.o : ./ComponentTests.cpp
+	g++ -c -std=c++14 -I ../include ./ComponentTests.cpp
 
 ErrorHandler.o : ../source/ErrorHandler.cpp ../include/ErrorHandler.hpp
 	g++ -c -std=c++14 -I ../include \
@@ -24,4 +24,4 @@ UnixWrappers.o : ../source/UnixWrappers.cpp ../include/UnixWrappers.hpp
 
 .PHONY : clean
 clean:
-	rm program $(objects)
+	rm ComponentTests $(objects)
