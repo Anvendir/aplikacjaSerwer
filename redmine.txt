@@ -4,6 +4,7 @@ Zrobione:
     - usunac z klasy Server i Dispatcher niepotrzebne juz importy
 2. Mock dla klasy UnixWrapper
 3. Testy jednostokowe dla klasy Dispatcher
+4. Dodanie enuma zamiast int do defininicji struktury Message
 
 Do zrobienia:
 1. Ukonczenie klasy Server
@@ -16,7 +17,6 @@ Do zrobienia:
 4. Ukonczyc jeden test modulowy dla wymiany kilku wiadomosci
     - wymyslic sensowne wywolania wiadomosci tzn cos co sie przyda pozniej
       w praktyce a nie bedize tylko na potrzeby testow, na przyklad przeslanie listy plikow
-5. Dodanie enuma zamiast int do defininicji struktury Message
 
 //21.02.2016
 Zrobione:

@@ -80,7 +80,7 @@ void exchangingAFewMessagesWithServerTest(int p_argc, char** p_argv)
 	nwr.connect(sockfd, (GenericSockAddr*)&servaddr, sizeof(servaddr));
 
     char recvline[MAXLINE];
-    Message sendline = {1, "Wlazl kotek na plotek..."};
+    Message sendline = {FIRST_CASE, "Wlazl kotek na plotek..."};
 
     uwr.send(sockfd, &sendline, sizeof(sendline));
 
@@ -103,7 +103,7 @@ again:
 		er.handleHardError("processConnection: recv error");
     }
 
-    sendline.msgId = 2;
+    sendline.msgId = SECOND_CASE;
     strcpy(sendline.payload, "...i mruga...");
     uwr.send(sockfd, &sendline, sizeof(sendline));
 

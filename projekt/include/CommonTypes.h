@@ -7,8 +7,14 @@
 typedef sockaddr GenericSockAddr;
 typedef sockaddr_in SockAddrIn;
 
+enum EMessageId
+{
+    FIRST_CASE = 1,
+    SECOND_CASE = 2,
+};
+
 struct Message
 {
-    int msgId;
+    EMessageId msgId;
     char payload[50];
 };

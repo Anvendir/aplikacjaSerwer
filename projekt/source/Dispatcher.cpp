@@ -19,7 +19,7 @@ void Dispatcher::dispatch(int p_clientSocket, const Message p_receivedMsg) const
                       << "Case 1: , otrzymana wiadomosc to - " << p_receivedMsg.payload
                       << std::endl;
 
-            Message l_sendline = {1, "Odpowiedz"};
+            Message l_sendline = {FIRST_CASE, "Odpowiedz"};
             m_unixWrapper->send(p_clientSocket, &l_sendline, sizeof(l_sendline));
             break;
         }

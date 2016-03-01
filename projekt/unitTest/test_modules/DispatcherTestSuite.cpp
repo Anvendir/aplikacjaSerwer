@@ -25,8 +25,8 @@ public:
 TEST_F(DispatcherTestSuite, testIfMessageWillBeSentDuringDispatchingEventWithCaseOne)
 {
     const int l_someSocket = 5;
-    const Message l_msg = {1, "Sample msg"};
-    Message l_sendline = {1, "Odpowiedz"};
+    const Message l_msg = {FIRST_CASE, "Sample msg"};
+    Message l_sendline = {FIRST_CASE, "Odpowiedz"};
 
     std::string l_expectedText = "PID: 0 | Case 1: , otrzymana wiadomosc to - Sample msg\n";
     testing::internal::CaptureStdout();
@@ -42,7 +42,7 @@ TEST_F(DispatcherTestSuite, testIfMessageWillBeSentDuringDispatchingEventWithCas
 TEST_F(DispatcherTestSuite, testIfMessageWillNotBeSentDuringDispatchingEventWithCaseTwo)
 {
     const int l_someSocket = 5;
-    const Message l_msg = {2, "Sample msg"};
+    const Message l_msg = {SECOND_CASE, "Sample msg"};
 
     std::string l_expectedText = "PID: 0 | Case 2: , otrzymana wiadomosc to - Sample msg\n";
     testing::internal::CaptureStdout();
@@ -57,7 +57,7 @@ TEST_F(DispatcherTestSuite, testIfMessageWillNotBeSentDuringDispatchingEventWith
 TEST_F(DispatcherTestSuite, testIfMessageWillNotBeSentDuringDispatchingEventWithUnknownCase)
 {
     const int l_someSocket = 5;
-    const Message l_msg = {3, "Sample msg"};
+    const Message l_msg = {EMessageId(3), "Sample msg"};
 
     std::string l_expectedText = "PID: 0 | Nieznany identyfikator\n";
     testing::internal::CaptureStdout();
