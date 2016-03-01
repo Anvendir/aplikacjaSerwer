@@ -9,9 +9,9 @@
 class Dispatcher : public IDispatcher
 {
 public:
-    Dispatcher(std::shared_ptr<IErrorHandler> p_errorHandler);
+    Dispatcher(std::shared_ptr<IUnixWrappers> p_unixWrapper);
     void dispatch(int p_clientSocket, const Message p_receivedMsg) const override;
 
 private:
-    std::unique_ptr<IUnixWrappers> m_unixWrapper;
+    std::shared_ptr<IUnixWrappers> m_unixWrapper;
 };

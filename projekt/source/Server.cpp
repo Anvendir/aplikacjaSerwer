@@ -6,15 +6,11 @@
 #include <cstring>
 #include <iostream>
 
-//do usuniecia po owrapowaniu getpid
-#include <sys/types.h>
-#include <unistd.h>
-
 Server::Server() :
     m_errorHandler(std::make_shared<ErrorHandler>()),
     m_networkWrapper(std::make_unique<NetworkWrappers>(m_errorHandler)),
-    m_unixWrapper(std::make_unique<UnixWrappers>(m_errorHandler)),
-    m_dispatcher(std::make_unique<Dispatcher>(m_errorHandler))
+    m_unixWrapper(std::make_shared<UnixWrappers>(m_errorHandler)),
+    m_dispatcher(std::make_unique<Dispatcher>(m_unixWrapper))
 {
 
 }
@@ -49,8 +45,8 @@ void Server::waitForConnection(int p_serverSocket) const
 
     while(true)
     {
-        std::cout << "PID: " << getpid() << " | "
-                  <<"Waiting for connection..." << std::endl;
+        std::cout << "PID: " << m_unixWrapper->getPid() << " | "
+                  << "Waiting for connection..." << std::endl;
 
         l_clientLen = sizeof(l_clientAddrStruct);
         l_clientSocket = m_networkWrapper->accept(p_serverSocket,
@@ -61,7 +57,7 @@ void Server::waitForConnection(int p_serverSocket) const
         {
             m_unixWrapper->close(p_serverSocket);
 
-            std::cout << "PID: " << getpid() << " | "
+            std::cout << "PID: " << m_unixWrapper->getPid() << " | "
                       << "Connection from: "
                       << m_networkWrapper->ntop(AF_INET, &l_clientAddrStruct.sin_addr, gowno, sizeof(gowno))
                       << " and port: "

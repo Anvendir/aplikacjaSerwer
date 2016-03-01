@@ -3,12 +3,8 @@
 #include "CommonTypes.h"
 #include <iostream>
 
-//do usuniecia po owrapowaniu getpid
-#include <sys/types.h>
-#include <unistd.h>
-
-Dispatcher::Dispatcher(std::shared_ptr<IErrorHandler> p_errorHandler) :
-        m_unixWrapper(std::make_unique<UnixWrappers>(p_errorHandler))
+Dispatcher::Dispatcher(std::shared_ptr<IUnixWrappers> p_unixWrapper)
+    : m_unixWrapper(p_unixWrapper)
 {
 
 }
@@ -19,7 +15,7 @@ void Dispatcher::dispatch(int p_clientSocket, const Message p_receivedMsg) const
     {
         case 1:
         {
-            std::cout << "PID: " << getpid() << " | "
+            std::cout << "PID: " << m_unixWrapper->getPid() << " | "
                       << "Case 1: , otrzymana wiadomosc to - " << p_receivedMsg.payload
                       << std::endl;
 
@@ -29,13 +25,13 @@ void Dispatcher::dispatch(int p_clientSocket, const Message p_receivedMsg) const
         }
         case 2:
         {
-            std::cout << "PID: " << getpid() << " | "
+            std::cout << "PID: " << m_unixWrapper->getPid() << " | "
                       << "Case 2: , otrzymana wiadomosc to - " << p_receivedMsg.payload
                       << std::endl;
             break;
         }
         default:
-            std::cout << "PID: " << getpid() << " | "
+            std::cout << "PID: " << m_unixWrapper->getPid() << " | "
                       << "Nieznany identyfikator" << std::endl;
     }
 }

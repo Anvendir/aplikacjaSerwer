@@ -56,3 +56,9 @@ pid_t UnixWrappers::fork(void) const
     }
 	return(l_pidOfTheChildProcess);
 }
+
+pid_t UnixWrappers::getPid() const
+{
+    return ::getpid();
+}
+

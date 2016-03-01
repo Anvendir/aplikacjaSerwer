@@ -22,6 +22,6 @@ private:
 
     std::shared_ptr<IErrorHandler> m_errorHandler;
     std::unique_ptr<INetworkWrappers> m_networkWrapper;
-    std::unique_ptr<IUnixWrappers> m_unixWrapper;
+    std::shared_ptr<IUnixWrappers> m_unixWrapper;
     std::unique_ptr<IDispatcher> m_dispatcher;
 };

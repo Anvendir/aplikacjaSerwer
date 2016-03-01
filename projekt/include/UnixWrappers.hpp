@@ -23,6 +23,7 @@ public:
 
     void close(int p_socketDescriptor) const override;
     pid_t fork(void) const override;
+    pid_t getPid() const override;
 
 private:
     std::shared_ptr<IErrorHandler> m_error;
