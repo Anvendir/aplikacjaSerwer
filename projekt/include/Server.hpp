@@ -19,6 +19,7 @@ private:
     SockAddrIn initializeSocketAddresStructure(const char* p_ipAddres, const unsigned int p_portNumber) const;
     void processConnection(int p_clientSocket) const;
     void waitForConnection(int p_serverSocket) const;
+    void sendWelcomeMessage(int p_clientSocket) const;
 
     std::shared_ptr<IErrorHandler> m_errorHandler;
     std::unique_ptr<INetworkWrappers> m_networkWrapper;

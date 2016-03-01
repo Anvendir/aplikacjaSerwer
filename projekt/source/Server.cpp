@@ -41,7 +41,7 @@ void Server::waitForConnection(int p_serverSocket) const
     int l_clientSocket = 0;
     int l_childPid = 0;
     SockAddrIn l_clientAddrStruct = {};
-    static char gowno[128];
+    static char l_bufor[128];
 
     while(true)
     {
@@ -59,7 +59,7 @@ void Server::waitForConnection(int p_serverSocket) const
 
             std::cout << "PID: " << m_unixWrapper->getPid() << " | "
                       << "Connection from: "
-                      << m_networkWrapper->ntop(AF_INET, &l_clientAddrStruct.sin_addr, gowno, sizeof(gowno))
+                      << m_networkWrapper->ntop(AF_INET, &l_clientAddrStruct.sin_addr, l_bufor, sizeof(l_bufor))
                       << " and port: "
                       << m_networkWrapper->ntohs(l_clientAddrStruct.sin_port)
                       << std::endl;
@@ -84,11 +84,19 @@ SockAddrIn Server::initializeSocketAddresStructure(const char* p_ipAddres, const
     return l_sockAddr;
 }
 
+void Server::sendWelcomeMessage(int p_clientSocket) const
+{
+    Message l_welcomeMessage = {CLIENT_WELCOME_MSG_IND, "Welcome on server!"};
+    m_unixWrapper->send(p_clientSocket, &l_welcomeMessage, sizeof(l_welcomeMessage));
+}
+
 void Server::processConnection(int p_clientSocket) const
 {
 	const unsigned int MAXLINE = 4096;
     ssize_t	l_receivedBytes;
 	Message l_receivedMessage = {};
+
+    sendWelcomeMessage(p_clientSocket);
 
 again:
 	while ((l_receivedBytes = m_unixWrapper->recv(p_clientSocket, &l_receivedMessage, MAXLINE, 0)) > 0)

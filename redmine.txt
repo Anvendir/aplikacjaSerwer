@@ -5,10 +5,11 @@ Zrobione:
 2. Mock dla klasy UnixWrapper
 3. Testy jednostokowe dla klasy Dispatcher
 4. Dodanie enuma zamiast int do defininicji struktury Message
+5. Dodanie powitania zaraz po polaczeniu.
+6. Maly refactor testu komponentowego.
 
 Do zrobienia:
 1. Ukonczenie klasy Server
-    - dodanie powitania zaraz polaczeniu
     - Testy jednostkowe dla klasy serwer
     - Dodanie mozliwosci przesylania plikow
 2. Funkcje ntop i pton w wersji socket z ksiazki, duzo bardizej urposzczone wywolania

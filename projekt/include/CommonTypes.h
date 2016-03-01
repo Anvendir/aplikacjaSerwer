@@ -9,6 +9,7 @@ typedef sockaddr_in SockAddrIn;
 
 enum EMessageId
 {
+    CLIENT_WELCOME_MSG_IND = 0,
     FIRST_CASE = 1,
     SECOND_CASE = 2,
 };
