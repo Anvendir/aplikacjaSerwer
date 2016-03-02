@@ -13,8 +13,7 @@ Do zrobienia:
     - Dodanie mozliwosci przesylania plikow
 2. Funkcje ntop i pton w wersji socket z ksiazki, duzo bardizej urposzczone wywolania
     - usuniecie dotychczasowego wywolania + wywalnie zmiennej gowno
-3. Rozwiazanie problemu z procesami zombie
-4. Stworzyc przesylanie listy plikow na serwerze plus test modulowy do tego
+3. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego
 
 //01.03.2015
 Zrobione:

@@ -2,7 +2,8 @@
 
 int main(int argc, char **argv)
 {
-    void (*testcasesList[])(int, char**) = {connectToServer, exchangeAFewSimpleMessagesWithServer};
+    void (*testcasesList[])(int, char**) = {connectToServer,
+                                            exchangeAFewSimpleMessagesWithServer};
 
     for(auto i : testcasesList)
     {
@@ -62,4 +63,3 @@ void exchangeAFewSimpleMessagesWithServer(int p_argc, char** p_argv)
     g_unixWrapper.close(g_sockfd);
     std::cout << "Testcase " << __FUNCTION__ << " finished successfully." << std::endl;
 }
-
