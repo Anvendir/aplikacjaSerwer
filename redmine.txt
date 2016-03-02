@@ -1,3 +1,21 @@
+//02.03.2015
+Zrobine:
+1. Reorganizacja moduł testow
+    * podzial na pliki z testcasami, naglowek i plik z funkcjami
+    * stworzenie konwencji testow modulowych
+    * sposob na wywolywanie wielu tesotw poprzez tablice wskaznikow na funkcje
+    * prosty test z odebraniem powitania z serwera
+    * stary test dostosowany do nowej konwencji
+
+Do zrobienia:
+1. Ukonczenie klasy Server
+    - Testy jednostkowe dla klasy serwer
+    - Dodanie mozliwosci przesylania plikow
+2. Funkcje ntop i pton w wersji socket z ksiazki, duzo bardizej urposzczone wywolania
+    - usuniecie dotychczasowego wywolania + wywalnie zmiennej gowno
+3. Rozwiazanie problemu z procesami zombie
+4. Stworzyc przesylanie listy plikow na serwerze plus test modulowy do tego
+
 //01.03.2015
 Zrobione:
 1. Dopisac Wrapper do funkcji getpid

@@ -1,4 +1,5 @@
 objects = ComponentTests.o \
+		  ComponentTestsFunctions.o \
 		  ErrorHandler.o \
 		  NetworkWrappers.o \
 		  UnixWrappers.o
@@ -9,6 +10,9 @@ ComponentTests : $(objects)
 
 ComponentTests.o : ./ComponentTests.cpp
 	g++ -c -std=c++14 -I ../include ./ComponentTests.cpp
+
+ComponentTestsFunctions.o : ./ComponentTestsFunctions.cpp
+	g++ -c -std=c++14 -I ../include ./ComponentTestsFunctions.cpp
 
 ErrorHandler.o : ../source/ErrorHandler.cpp ../include/ErrorHandler.hpp
 	g++ -c -std=c++14 -I ../include \
