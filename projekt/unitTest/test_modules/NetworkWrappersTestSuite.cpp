@@ -194,3 +194,27 @@ TEST_F(NetworkWrappersTestSuite, testIfHandleHardErrorWillBeCalledAfterCallFunct
     m_sut.ntop(l_fakeProtocolFamily, &(l_addr.sin_addr), l_output, INET_ADDRSTRLEN);
 }
 
+TEST_F(NetworkWrappersTestSuite, testIfHandleHardErrorWillBeCalledAfterCallFunctionWithAddressFamilyDifferentThanAfInet_sockNtop)
+{
+    unsigned long int l_addrInNetworkFormat = 33532096;
+    SockAddrIn l_addr;
+    l_addr.sin_family = AF_INET6;
+    l_addr.sin_addr.s_addr = l_addrInNetworkFormat;
+    l_addr.sin_port = 21;
+
+    EXPECT_CALL(*m_errorHandler, handleHardError("Unsupported socket address family!"));
+    m_sut.sockNtop(reinterpret_cast<GenericSockAddr*>(&l_addr));
+}
+
+TEST_F(NetworkWrappersTestSuite, testIfFunctionWillReturnCorrectIpAddresAndIpInPresentationFormat_sockNtop)
+{
+    unsigned long int l_addrInNetworkFormat = 33532096;
+    SockAddrIn l_addr;
+    l_addr.sin_family = AF_INET;
+    l_addr.sin_addr.s_addr = l_addrInNetworkFormat;
+    l_addr.sin_port = ::htons(0b001'0110);
+
+    const char* l_result = m_sut.sockNtop(reinterpret_cast<GenericSockAddr*>(&l_addr));
+    EXPECT_STREQ("192.168.255.1:22", l_result);
+}
+

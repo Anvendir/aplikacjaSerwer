@@ -1,3 +1,17 @@
+//03.03.2015
+Zrobione:
+1. Dodano funkcje ntop, pton nie jest potrzebna, poza tym nie ma w ksiazce
+2. Usuniecie dotychczasowego wywolania + wywalnie zmiennej gowno
+3. Usuniecie zbednych zmiennych i debugow z serwera
+4. Serwer jest glowna klasa programu, nie potrzebuje do niego UT, funkcjonalnosc sprawdzam modul testami.
+
+Do zrobienia:
+1. Ukonczenie klasy Server
+    - Dodanie mozliwosci przesylania plikow, zarowno tekstowych jak i binarnych
+2. Test modułowy na przesłanie pojedynczego pliku tekstowego.
+3. Test modułowy na przesłanie pojedynczego pliku binarnego.
+4. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
+
 //02.03.2015
 Zrobine:
 1. Reorganizacja moduł testow

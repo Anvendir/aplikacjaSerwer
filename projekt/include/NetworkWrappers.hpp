@@ -20,6 +20,8 @@ public:
                      const void* p_numericAddresFormat,
                      char* p_presentationAddressFormat,
                      size_t p_addressSize) const override;
+    const char* sockNtop(const GenericSockAddr* p_genericSockAddr) const override;
+
     void pton(int p_protocolFamily, const char* p_presentationAddressFormat, void* p_numericAddresFormat) const override;
 
     uint32_t htonl(uint32_t p_hostByteOrder) const override;

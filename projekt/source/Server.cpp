@@ -37,31 +37,24 @@ void Server::stop() const
 
 void Server::waitForConnection(int p_serverSocket) const
 {
-    socklen_t l_clientLen = 0;
-    int l_clientSocket = 0;
-    int l_childPid = 0;
     SockAddrIn l_clientAddrStruct = {};
-    static char l_bufor[128];
 
     while(true)
     {
         std::cout << "PID: " << m_unixWrapper->getPid() << " | "
                   << "Waiting for connection..." << std::endl;
 
-        l_clientLen = sizeof(l_clientAddrStruct);
-        l_clientSocket = m_networkWrapper->accept(p_serverSocket,
-                                                  reinterpret_cast<GenericSockAddr*>(&l_clientAddrStruct),
-                                                  &l_clientLen);
+        socklen_t l_clientLen = sizeof(l_clientAddrStruct);
+        int l_clientSocket = m_networkWrapper->accept(p_serverSocket,
+                                                      reinterpret_cast<GenericSockAddr*>(&l_clientAddrStruct),
+                                                      &l_clientLen);
 
-        if ((l_childPid = m_unixWrapper->fork()) == 0)
+        if (m_unixWrapper->fork() == 0)
         {
             m_unixWrapper->close(p_serverSocket);
 
-            std::cout << "PID: " << m_unixWrapper->getPid() << " | "
-                      << "Connection from: "
-                      << m_networkWrapper->ntop(AF_INET, &l_clientAddrStruct.sin_addr, l_bufor, sizeof(l_bufor))
-                      << " and port: "
-                      << m_networkWrapper->ntohs(l_clientAddrStruct.sin_port)
+            std::cout << "PID: " << m_unixWrapper->getPid() << " | Connection from: "
+                      << m_networkWrapper->sockNtop(reinterpret_cast<GenericSockAddr*>(&l_clientAddrStruct))
                       << std::endl;
 
             processConnection(l_clientSocket);
@@ -74,8 +67,7 @@ void Server::waitForConnection(int p_serverSocket) const
 
 SockAddrIn Server::initializeSocketAddresStructure(const char* p_ipAddres, const unsigned int p_portNumber) const
 {
-    SockAddrIn l_sockAddr;
-    memset(&l_sockAddr, 0, sizeof(l_sockAddr));
+    SockAddrIn l_sockAddr = {};
 
     l_sockAddr.sin_family = AF_INET;
     l_sockAddr.sin_port = m_networkWrapper->htons(p_portNumber);
@@ -93,7 +85,7 @@ void Server::sendWelcomeMessage(int p_clientSocket) const
 void Server::processConnection(int p_clientSocket) const
 {
 	const unsigned int MAXLINE = 4096;
-    ssize_t	l_receivedBytes;
+    ssize_t	l_receivedBytes = 0;
 	Message l_receivedMessage = {};
 
     sendWelcomeMessage(p_clientSocket);

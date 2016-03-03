@@ -20,6 +20,8 @@ public:
                              const void* p_numericAddresFormat,
                              char* p_presentationAddressFormat,
                              size_t p_addressSize) const = 0;
+    virtual const char* sockNtop(const GenericSockAddr* p_genericSockAddr) const = 0;
+
     virtual void pton(int p_protocolFamily,
                       const char* p_presentationAddressFormat,
                       void* p_numericAddresFormat) const = 0;

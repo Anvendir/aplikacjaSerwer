@@ -109,6 +109,32 @@ const char* NetworkWrappers::ntop(int p_protocolFamily,
     return(l_ptr);
 }
 
+const char* NetworkWrappers::sockNtop(const GenericSockAddr* p_genericSockAddr) const
+{
+    char l_portStr[8];
+    static char l_ipStr[128];
+
+	if (p_genericSockAddr->sa_family == AF_INET)
+    {
+		const SockAddrIn* l_sockAddrIn = reinterpret_cast<const SockAddrIn*>(p_genericSockAddr);
+
+		if (ntop(AF_INET, &l_sockAddrIn->sin_addr, l_ipStr, sizeof(l_ipStr)) == NULL)
+        {
+			return NULL;
+        }
+        if (ntohs(l_sockAddrIn->sin_port) != 0)
+        {
+			snprintf(l_portStr, sizeof(l_portStr), ":%d", ntohs(l_sockAddrIn->sin_port));
+			strcat(l_ipStr, l_portStr);
+		}
+	}
+    else
+    {
+        m_error->handleHardError("Unsupported socket address family!");
+        return NULL;
+    }
+}
+
 void NetworkWrappers::pton(int p_protocolFamily,
                            const char* p_presentationAddressFormat,
                            void* p_numericAddresFormat) const
