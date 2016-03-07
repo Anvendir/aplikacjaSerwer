@@ -10,12 +10,12 @@ UnixWrappers::UnixWrappers(std::shared_ptr<IErrorHandler> p_errorHandler)
 }
 
 void UnixWrappers::send(int p_socketDescriptor,
-                        const void* p_messageToSent,
-                        size_t p_messageLenghtInBytes,
-                        int p_transmissionType) const
+                       const void* p_messageToSent,
+                       size_t p_messageLenghtInBytes,
+                       int p_transmissionType) const
 {
 	if (::send(p_socketDescriptor, p_messageToSent, p_messageLenghtInBytes, p_transmissionType)
-        != static_cast<ssize_t>(p_messageLenghtInBytes))
+        != static_cast<int>(p_messageLenghtInBytes))
     {
 		m_error->handleHardError("send error");
     }

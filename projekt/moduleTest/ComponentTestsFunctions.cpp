@@ -1,4 +1,5 @@
 #include "ComponentTests.hpp"
+#include <fstream>
 
 int g_sockfd = 0;
 struct sockaddr_in g_servaddr = {};
@@ -31,9 +32,45 @@ void receiveMessageFromServer()
     g_receivedBytes = 0;
     g_receivedMessage = {};
 again:
-	while ((g_receivedBytes = g_unixWrapper.recv(g_sockfd, &g_receivedMessage, MAXLINE, 0)) > 0)
+	while ((g_receivedBytes = g_unixWrapper.recv(g_sockfd, &g_receivedMessage, sizeof(Message), 0)) > 0)
     {
-        std::cout << "Otrzymano: " << g_receivedMessage.payload << std::endl;
+        std::cout << "Otrzymano:" << g_receivedMessage.msgId << std::endl;
+        break;
+    }
+
+	if (g_receivedBytes < 0 && errno == EINTR)
+    {
+		goto again;
+    }
+	else if (g_receivedBytes < 0)
+    {
+		g_errorHandler.handleHardError("processConnection: recv error");
+    }
+}
+
+void receiveMessageFromServer1(std::ofstream& p_outFile, long long& p_sumUp)
+{
+    g_receivedBytes = 0;
+
+    Message l_msg = {};
+    memset(&l_msg, 0, sizeof(l_msg));
+again:
+	while ((g_receivedBytes = g_unixWrapper.recv(g_sockfd, &l_msg, sizeof(Message), 0)) > 0)
+    {
+        p_sumUp += g_receivedBytes;
+        if(l_msg.msgId == SERVER_SEND_FILE_RESP)
+        {
+            std::cout << "Received SERVER_SEND_FILE_RESP message" << std::endl;
+        }
+        std::cout << "Received bytes: " << g_receivedBytes << std::endl;
+        std::cout << "Bytes to read: " << l_msg.bytesInPayload << std::endl;
+
+        for(int i = 0; i < l_msg.bytesInPayload; i++)
+        {
+            p_outFile << l_msg.payload[i];
+            std::cout << l_msg.payload[i];
+        }
+        memset(&l_msg, 0, sizeof(l_msg));
         break;
     }
 

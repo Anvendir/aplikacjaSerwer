@@ -1,4 +1,28 @@
-//03.03.2015
+//06.03.2016 oraz 07.03.2016
+Zrobione:
+1. Ukonczenie klasy Server
+    - Dodanie mozliwosci przesylania plikow, zarowno tekstowych jak i binarnych
+2. Test modułowy na przesłanie pojedynczego pliku tekstowego.
+3. Obsługa wiadomosci Message poprzez odczytywanie calej struktury z funkcji receive.
+4. Dodanie do Message pol wykorzystywanych przy przesylaniu plikow, rozmiar bierzacego payloadu i ilosc msg wymaganych
+   przeslania pliku.
+5. Proby przesylania duzych plikow tekstowych i binarnych (jpeg) zakonczone sukcesem.
+
+Do zrobienia:
+0. Dopisac UT (wyrownac padajace) do klsy Dispatcher
+1. Refactor testow do przesylania plikow.
+2. Test modułowy na przesłanie pojedynczego pliku binarnego duzego oraz malego.
+3. Test modulowy do przesylania pojedynczego pliku tesktowego malego.
+4. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
+5. Dodanc oddzielny msg id dla przesylania kolejnych partii plikow indication lub cos w ten desen.
+6. Klasa Handlera dla Requestu o przelsanie pliku.
+7. Test modulowy na przesylanie plikow DICOM. Proba odczytu pliku po przeslaniu. (W windows jakis program do dicom)
+8. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser
+    * konwersja DICOM do JPEG
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczy
+
+//03.03.2016
 Zrobione:
 1. Dodano funkcje ntop, pton nie jest potrzebna, poza tym nie ma w ksiazce
 2. Usuniecie dotychczasowego wywolania + wywalnie zmiennej gowno
@@ -12,7 +36,7 @@ Do zrobienia:
 3. Test modułowy na przesłanie pojedynczego pliku binarnego.
 4. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
 
-//02.03.2015
+//02.03.2016
 Zrobine:
 1. Reorganizacja moduł testow
     * podzial na pliki z testcasami, naglowek i plik z funkcjami
@@ -29,7 +53,7 @@ Do zrobienia:
     - usuniecie dotychczasowego wywolania + wywalnie zmiennej gowno
 3. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego
 
-//01.03.2015
+//01.03.2016
 Zrobione:
 1. Dopisac Wrapper do funkcji getpid
     - usunac z klasy Server i Dispatcher niepotrzebne juz importy

@@ -78,7 +78,10 @@ SockAddrIn Server::initializeSocketAddresStructure(const char* p_ipAddres, const
 
 void Server::sendWelcomeMessage(int p_clientSocket) const
 {
-    Message l_welcomeMessage = {CLIENT_WELCOME_MSG_IND, "Welcome on server!"};
+    Message l_welcomeMessage = {};
+    l_welcomeMessage.msgId = CLIENT_WELCOME_MSG_IND;
+    strcpy(l_welcomeMessage.payload, "Welcome on server!");
+
     m_unixWrapper->send(p_clientSocket, &l_welcomeMessage, sizeof(l_welcomeMessage));
 }
 
@@ -87,13 +90,18 @@ void Server::processConnection(int p_clientSocket) const
 	const unsigned int MAXLINE = 4096;
     ssize_t	l_receivedBytes = 0;
 	Message l_receivedMessage = {};
+    bool l_status = true;
 
     sendWelcomeMessage(p_clientSocket);
 
 again:
 	while ((l_receivedBytes = m_unixWrapper->recv(p_clientSocket, &l_receivedMessage, MAXLINE, 0)) > 0)
     {
-        m_dispatcher->dispatch(p_clientSocket, l_receivedMessage);
+        l_status = m_dispatcher->dispatch(p_clientSocket, l_receivedMessage);
+        if (l_status == false)
+        {
+		    m_errorHandler->handleHardError("processConnection: dispatching error");
+        }
     }
 
 	if (l_receivedBytes < 0 && errno == EINTR)

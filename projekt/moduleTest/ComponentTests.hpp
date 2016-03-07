@@ -28,7 +28,10 @@ char* Fgets(char *ptr, int n, FILE *stream);
 
 void initializeConnection(int p_argc, char** p_argv);
 void receiveMessageFromServer();
+void receiveMessageFromServer1(std::ofstream& p_outFile);
+
 //testcases
 void connectToServer(int p_argc, char** p_argv);
 void exchangeAFewSimpleMessagesWithServer(int p_argc, char** p_argv);
+void sendFileTransferRequestAndReceiveRequestedFile(int p_argc, char** p_argv);
 
