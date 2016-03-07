@@ -27,14 +27,18 @@ void initializeConnection(int p_argc, char** p_argv)
 	g_networkWrapper.connect(g_sockfd, (GenericSockAddr*)&g_servaddr, sizeof(g_servaddr));
 }
 
-void receiveMessageFromServer()
+void receiveMessageFromServer(const int p_msgId)
 {
     g_receivedBytes = 0;
     g_receivedMessage = {};
 again:
 	while ((g_receivedBytes = g_unixWrapper.recv(g_sockfd, &g_receivedMessage, sizeof(Message), 0)) > 0)
     {
-        std::cout << "Otrzymano:" << g_receivedMessage.msgId << std::endl;
+        if(!(g_receivedMessage.msgId == p_msgId))
+        {
+            std::cout << "Received message is different than expected! " << std::endl;
+            exit(0);
+        }
         break;
     }
 
@@ -48,7 +52,7 @@ again:
     }
 }
 
-void receiveMessageFromServer1(std::ofstream& p_outFile, long long& p_sumUp)
+void receiveMessageClientSendFileIndFromServer(std::ofstream& p_outFile, long long& p_sumOfReceivedBytes)
 {
     g_receivedBytes = 0;
 
@@ -57,18 +61,16 @@ void receiveMessageFromServer1(std::ofstream& p_outFile, long long& p_sumUp)
 again:
 	while ((g_receivedBytes = g_unixWrapper.recv(g_sockfd, &l_msg, sizeof(Message), 0)) > 0)
     {
-        p_sumUp += g_receivedBytes;
-        if(l_msg.msgId == SERVER_SEND_FILE_RESP)
+        p_sumOfReceivedBytes += g_receivedBytes;
+        if(!(l_msg.msgId == CLIENT_SEND_FILE_IND))
         {
-            std::cout << "Received SERVER_SEND_FILE_RESP message" << std::endl;
+            std::cout << "Received message is different than expected" << std::endl;
+            exit(0);
         }
-        std::cout << "Received bytes: " << g_receivedBytes << std::endl;
-        std::cout << "Bytes to read: " << l_msg.bytesInPayload << std::endl;
 
         for(int i = 0; i < l_msg.bytesInPayload; i++)
         {
             p_outFile << l_msg.payload[i];
-            std::cout << l_msg.payload[i];
         }
         memset(&l_msg, 0, sizeof(l_msg));
         break;

@@ -6,18 +6,6 @@
 #include <fstream>
 #include <cstring>
 
-#include <chrono>
-#include <thread>
-#include <sys/sendfile.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/sendfile.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/stat.h>
-
 Dispatcher::Dispatcher(std::shared_ptr<IUnixWrappers> p_unixWrapper)
     : m_unixWrapper(p_unixWrapper)
 {
@@ -28,19 +16,19 @@ bool Dispatcher::dispatch(int p_clientSocket, const Message p_receivedMsg) const
 {
     switch(p_receivedMsg.msgId)
     {
-        case FIRST_CASE:
+        case SERVER_TEST_FIRST_REQ:
         {
             std::cout << "PID: " << m_unixWrapper->getPid() << " | "
                       << "Case 1: , otrzymana wiadomosc to - " << p_receivedMsg.payload
                       << std::endl;
 
             Message l_sendline;
-            l_sendline.msgId = FIRST_CASE;
+            l_sendline.msgId = SERVER_TEST_FIRST_RESP;
             strcpy(l_sendline.payload, "Odpowiedz");
             m_unixWrapper->send(p_clientSocket, &l_sendline, sizeof(l_sendline));
             break;
         }
-        case SECOND_CASE:
+        case SERVER_TEST_SECOND_REQ:
         {
             std::cout << "PID: " << m_unixWrapper->getPid() << " | "
                       << "Case 2: , otrzymana wiadomosc to - " << p_receivedMsg.payload
@@ -99,16 +87,16 @@ bool Dispatcher::dispatch(int p_clientSocket, const Message p_receivedMsg) const
 
                 if(l_byteCounter == PAYLOAD_SIZE)
                 {
-                    l_sendline.msgId = SERVER_SEND_FILE_RESP;
+                    l_sendline.msgId = CLIENT_SEND_FILE_IND;
                     l_sendline.bytesInPayload = l_byteCounter;
                     m_unixWrapper->send(p_clientSocket, &l_sendline, sizeof(Message));
 
                     std::cout << "Message number: " << l_msgCounter << std::endl;
 
-                    for(int i = 0; i < PAYLOAD_SIZE; i++)
+                    /*for(int i = 0; i < PAYLOAD_SIZE; i++)
                     {
                         std::cout << l_sendline.payload[i];
-                    }
+                    }*/
                     std::cout << "Sent bytes: " << sizeof(l_sendline.payload) << std::endl;
                     l_msgCounter++;
 
@@ -118,7 +106,7 @@ bool Dispatcher::dispatch(int p_clientSocket, const Message p_receivedMsg) const
                 }
             }
 
-            l_sendline.msgId = SERVER_SEND_FILE_RESP;
+            l_sendline.msgId = CLIENT_SEND_FILE_IND;
             l_sendline.bytesInPayload = l_byteCounter;
 
             std::cout << l_byteCounter << std::endl;
@@ -127,10 +115,10 @@ bool Dispatcher::dispatch(int p_clientSocket, const Message p_receivedMsg) const
 
             m_unixWrapper->send(p_clientSocket, &l_sendline, sizeof(Message));
 
-            for(int i = 0; i < PAYLOAD_SIZE; i++)
+            /*for(int i = 0; i < PAYLOAD_SIZE; i++)
             {
                 std::cout << l_sendline.payload[i];
-            }
+            }*/
             std::cout << "Sent bytes: " << sizeof(l_sendline.payload) << std::endl;
             l_msgCounter++;
 
@@ -139,8 +127,6 @@ bool Dispatcher::dispatch(int p_clientSocket, const Message p_receivedMsg) const
 
             l_inFileDesc.close();
 
-            /*Message l_sendline1 = {SERVER_SEND_FILE_RESP, "Co jest kurwa raz dwa trzy?!"};
-            m_unixWrapper->send(p_clientSocket, &l_sendline1, sizeof(l_sendline1));*/
             break;
         }
         default:

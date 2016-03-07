@@ -7,20 +7,26 @@ Zrobione:
 4. Dodanie do Message pol wykorzystywanych przy przesylaniu plikow, rozmiar bierzacego payloadu i ilosc msg wymaganych
    przeslania pliku.
 5. Proby przesylania duzych plikow tekstowych i binarnych (jpeg) zakonczone sukcesem.
+6. Dodanc oddzielny msg id dla przesylania kolejnych partii plikow indication lub cos w ten desen.
+
 
 Do zrobienia:
+0. Dodanie do testow modulowych mozliwosci odpalania pojedynczego testu.
+0. Dodanie sposobu na wyswietlanie testow w przejrzysty sposob.
 0. Dopisac UT (wyrownac padajace) do klsy Dispatcher
 1. Refactor testow do przesylania plikow.
 2. Test modułowy na przesłanie pojedynczego pliku binarnego duzego oraz malego.
 3. Test modulowy do przesylania pojedynczego pliku tesktowego malego.
 4. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
-5. Dodanc oddzielny msg id dla przesylania kolejnych partii plikow indication lub cos w ten desen.
+5. Dodanie do testu sprawdzania czy odebrany plik jest taki sam jak wysalny (polecenie diff)?
 6. Klasa Handlera dla Requestu o przelsanie pliku.
 7. Test modulowy na przesylanie plikow DICOM. Proba odczytu pliku po przeslaniu. (W windows jakis program do dicom)
 8. Rozparsowanie pliku DICOM.
     * podgladnac jak robi to jakis darmowy parser
     * konwersja DICOM do JPEG
     * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczy
+9. System logowania zarowno dla testow modulowych jak i dla serwera.
+10. Przemyslec co by sie dzialo w sytuacjach brzegowych tzn wiadomosc nie przychodzi, przychodzi zla itd.
 
 //03.03.2016
 Zrobione:
