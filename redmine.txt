@@ -1,14 +1,15 @@
 //17.03.2015
 Zrobione:
 1. Refactor klasy dispatcher
+2. Dodanie do testow modulowych mozliwosci odpalania pojedynczego testu.
 
 Do zrobienia:
 000. W funkcji sendRequestedFile zamiast Message, towrzyc tablice o rozmiarze payload i przekazywac do funkcji sendClient*Ind wskaznik na te tablice.
 000. SPrawdzic licznik logowania wiadomisci, chyba numerowane jest od 0 zamiast od 1.
 000. Test modulowy na przesylanie jakeigos pliku obojetnie jakiego o rozmiarze takim ze po petli w sendRequestedFile nie powinno sie wysylac kolejnej wiadomosci,
      wydaje sie ze przed wysalniem tej wiaodmosci powionno sie sprawdzac l_byteCounter i jesli jest rozny od zera to wysylac. (przypadek brzegowy)
+000. Z maina modul testow wydzielic funkcjie do odpalania cloasci i pojedynczego testu.
 
-0. Dodanie do testow modulowych mozliwosci odpalania pojedynczego testu.
 0. Dodanie sposobu na wyswietlanie testow w przejrzysty sposob.
 0. Dopisac UT (wyrownac padajace) do klsy Dispatcher
 1. Refactor testow do przesylania plikow.

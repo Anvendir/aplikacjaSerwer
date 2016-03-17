@@ -10,13 +10,8 @@ ErrorHandler g_errorHandler = ErrorHandler();
 NetworkWrappers g_networkWrapper = NetworkWrappers(std::make_shared<ErrorHandler>(g_errorHandler));
 UnixWrappers g_unixWrapper = UnixWrappers(std::make_shared<ErrorHandler>(g_errorHandler));
 
-void initializeConnection(int p_argc, char** p_argv)
+void initializeConnection(char** p_argv)
 {
-	if (p_argc != 2)
-    {
-		g_errorHandler.handleHardError("usage: tcpcli <IPaddress>");
-    }
-
 	g_sockfd = g_networkWrapper.socket(AF_INET, SOCK_STREAM, 0);
 
 	bzero(&g_servaddr, sizeof(g_servaddr));

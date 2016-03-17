@@ -1,16 +1,39 @@
 #include "ComponentTests.hpp"
 #include <fstream>
+#include <string>
+#include <map>
 
 int main(int argc, char **argv)
 {
-    void (*testcasesList[])(int, char**) = {connectToServer,
-                                            exchangeAFewSimpleMessagesWithServer,
-                                            sendFileTransferRequestAndReceiveRequestedFile};
+    std::map<std::string, void(*)(char**)> l_testcaseContainer
+        = { {"connectToServer", connectToServerTest},
+            {"exchangeAFewSimpleMessagesWithServer", exchangeAFewSimpleMessagesWithServerTest},
+            {"sendFileTransferRequestAndReceiveRequestedFile", sendFileTransferRequestAndReceiveRequestedFileTest}
+          };
 
-    for(auto i : testcasesList)
+    switch (argc)
     {
-        std::cout << std::endl;
-        (*i)(argc, argv);
+        case 3:
+        {
+            void(*l_testcase)(char**) = l_testcaseContainer.find(argv[2])->second;
+            (l_testcase)(argv);
+
+            break;
+        }
+        case 2:
+        {
+            for (auto l_it = l_testcaseContainer.begin(); l_it != l_testcaseContainer.end(); ++l_it)
+            {
+                void(*l_testcase)(char**) = *l_it->second;
+                (l_testcase)(argv);
+            }
+
+            break;
+        }
+        default:
+        {
+		    g_errorHandler.handleHardError("usage: tcpcli <IPaddress>");
+        }
     }
 
 	exit(0);
@@ -23,11 +46,11 @@ int main(int argc, char **argv)
  * Step3: Close connection
 **************************************************************************/
 
-void connectToServer(int p_argc, char** p_argv)
+void connectToServerTest(char** p_argv)
 {
     std::cout << "Testcase " << __FUNCTION__ << " started." << std::endl;
 //Step1
-    initializeConnection(p_argc, p_argv);
+    initializeConnection(p_argv);
 //Step2
     receiveMessageFromServer(CLIENT_WELCOME_MSG_IND);
 //Step3
@@ -45,11 +68,11 @@ void connectToServer(int p_argc, char** p_argv)
  * Step6: Close connection
 **************************************************************************/
 
-void exchangeAFewSimpleMessagesWithServer(int p_argc, char** p_argv)
+void exchangeAFewSimpleMessagesWithServerTest(char** p_argv)
 {
     std::cout << "Testcase " << __FUNCTION__ << " started." << std::endl;
 //Step1
-    initializeConnection(p_argc, p_argv);
+    initializeConnection(p_argv);
 //Step2
     receiveMessageFromServer(CLIENT_WELCOME_MSG_IND);
 //Step3
@@ -80,11 +103,11 @@ void exchangeAFewSimpleMessagesWithServer(int p_argc, char** p_argv)
  * Step6: Check content of received file
  * Step7: Close connection
 **************************************************************************/
-void sendFileTransferRequestAndReceiveRequestedFile(int p_argc, char** p_argv)
+void sendFileTransferRequestAndReceiveRequestedFileTest(char** p_argv)
 {
     std::cout << "Testcase " << __FUNCTION__ << " started." << std::endl;
 //Step1
-    initializeConnection(p_argc, p_argv);
+    initializeConnection(p_argv);
 //Step2
     receiveMessageFromServer(CLIENT_WELCOME_MSG_IND);
 //Step3

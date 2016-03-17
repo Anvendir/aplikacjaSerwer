@@ -26,11 +26,11 @@ extern Message g_receivedMessage;
 void Fputs(const char *ptr, FILE *stream);
 char* Fgets(char *ptr, int n, FILE *stream);
 
-void initializeConnection(int p_argc, char** p_argv);
+void initializeConnection(char** p_argv);
 void receiveMessageFromServer(const int p_msgId);
 void receiveMessageClientSendFileIndFromServer(std::ofstream& p_outFile, long long& p_sumOfReceivedBytes);
 
 //testcases
-void connectToServer(int p_argc, char** p_argv);
-void exchangeAFewSimpleMessagesWithServer(int p_argc, char** p_argv);
-void sendFileTransferRequestAndReceiveRequestedFile(int p_argc, char** p_argv);
+void connectToServerTest(char** p_argv);
+void exchangeAFewSimpleMessagesWithServerTest(char** p_argv);
+void sendFileTransferRequestAndReceiveRequestedFileTest(char** p_argv);
