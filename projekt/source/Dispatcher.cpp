@@ -1,8 +1,8 @@
 #include "Dispatcher.hpp"
 #include "UnixWrappers.hpp"
 #include "CommonTypes.h"
-#include <iostream>
 
+#include <iostream>
 #include <fstream>
 #include <cstring>
 
@@ -19,7 +19,7 @@ bool Dispatcher::dispatch(int p_clientSocket, const Message p_receivedMsg) const
         case SERVER_TEST_FIRST_REQ:
         {
             std::cout << "PID: " << m_unixWrapper->getPid() << " | "
-                      << "Case 1: , otrzymana wiadomosc to - " << p_receivedMsg.payload
+                      << "Case SERVER_TEST_FIRST_REQ: received message - " << p_receivedMsg.payload
                       << std::endl;
 
             Message l_sendline;
@@ -31,110 +31,138 @@ bool Dispatcher::dispatch(int p_clientSocket, const Message p_receivedMsg) const
         case SERVER_TEST_SECOND_REQ:
         {
             std::cout << "PID: " << m_unixWrapper->getPid() << " | "
-                      << "Case 2: , otrzymana wiadomosc to - " << p_receivedMsg.payload
+                      << "Case SERVER_TEST_SECOND_REQ: received message - " << p_receivedMsg.payload
                       << std::endl;
             break;
         }
         case SERVER_SEND_FILE_REQ:
         {
             std::cout << "PID: " << m_unixWrapper->getPid() << " | "
-                      << "Case SERVER_SEND_FILE_REQ: otrzymana wiadomosc to - " << p_receivedMsg.payload
+                      << "Case SERVER_SEND_FILE_REQ: received message " << p_receivedMsg.payload
                       << std::endl;
 
-            int l_msgCounter = 0;
-            unsigned long long l_byteCounter = 0;
-            Message l_sendline;
-            memset(&l_sendline, 0, sizeof(l_sendline));
-
-            std::ifstream l_inFileDesc;
-            l_inFileDesc.open(p_receivedMsg.payload);
-
-            if (!l_inFileDesc.is_open())
-            {
-                std::cout << "File " << p_receivedMsg.payload
-                          << " is not open. Aplication is going to be terminated"
-                          << std::endl;
-                exit(-1);
-            }
-
-            //rozmiar pliku w bajtach
-            l_inFileDesc.seekg (0, l_inFileDesc.end);
-            int l_fileLength = l_inFileDesc.tellg();
-            l_inFileDesc.seekg (0, l_inFileDesc.beg);
-            std::cout << "Size of file: " << p_receivedMsg.payload
-                      << " is equal to: " << l_fileLength
-                      << " bytes." << std::endl;
-            //
-
-            Message l_sendline1;
-            int l_temp = l_fileLength / PAYLOAD_SIZE;
-            l_sendline1.msgId = SERVER_SEND_FILE_RESP;
-            l_sendline1.numOfMsgInFileTransfer = l_fileLength % PAYLOAD_SIZE ? l_temp + 1 : l_temp;
-            m_unixWrapper->send(p_clientSocket, &l_sendline1, sizeof(Message));
-
-            char l_singleByte;
-            while(l_inFileDesc.get(l_singleByte))
-            {
-                if(!l_inFileDesc.good())
-                {
-                    std::cout << "Something wrong during reading file, byte number:  "
-                              << l_byteCounter << std::endl;
-                    exit(-1);
-                }
-
-                l_sendline.payload[l_byteCounter] = l_singleByte;
-                l_byteCounter++;
-
-                if(l_byteCounter == PAYLOAD_SIZE)
-                {
-                    l_sendline.msgId = CLIENT_SEND_FILE_IND;
-                    l_sendline.bytesInPayload = l_byteCounter;
-                    m_unixWrapper->send(p_clientSocket, &l_sendline, sizeof(Message));
-
-                    std::cout << "Message number: " << l_msgCounter << std::endl;
-
-                    /*for(int i = 0; i < PAYLOAD_SIZE; i++)
-                    {
-                        std::cout << l_sendline.payload[i];
-                    }*/
-                    std::cout << "Sent bytes: " << sizeof(l_sendline.payload) << std::endl;
-                    l_msgCounter++;
-
-                    //zeruj
-                    l_byteCounter = 0;
-                    memset(&l_sendline, 0, sizeof(l_sendline));
-                }
-            }
-
-            l_sendline.msgId = CLIENT_SEND_FILE_IND;
-            l_sendline.bytesInPayload = l_byteCounter;
-
-            std::cout << l_byteCounter << std::endl;
-
-            std::cout << "Message number: " << l_msgCounter << std::endl;
-
-            m_unixWrapper->send(p_clientSocket, &l_sendline, sizeof(Message));
-
-            /*for(int i = 0; i < PAYLOAD_SIZE; i++)
-            {
-                std::cout << l_sendline.payload[i];
-            }*/
-            std::cout << "Sent bytes: " << sizeof(l_sendline.payload) << std::endl;
-            l_msgCounter++;
-
-            std::cout << "Sending of file is done!" << std::endl;
-            std::cout << "File size: " << l_fileLength << " bytes" << std::endl;
-
-            l_inFileDesc.close();
-
+            handleServerSendFileRequest(p_clientSocket, p_receivedMsg);
             break;
         }
         default:
         {
             std::cout << "PID: " << m_unixWrapper->getPid() << " | "
-                      << "Nieznany identyfikator" << std::endl;
+                      << "Unknown message identyfier" << std::endl;
             return false;
         }
     }
     return true;
 }
+
+void Dispatcher::handleServerSendFileRequest(int p_clientSocket, const Message p_receivedMsg) const
+{
+    std::ifstream l_inFileDesc;
+
+    openGivenFile(l_inFileDesc, p_receivedMsg.payload);
+    auto l_fileLength = getFileSize(l_inFileDesc, p_receivedMsg.payload);
+    std::cout << "File size: " << l_fileLength << " bytes" << std::endl;
+
+    sendSeverSendFileResp(p_clientSocket, l_fileLength);
+    sendRequestedFile(l_inFileDesc, p_clientSocket);
+
+    l_inFileDesc.close();
+}
+
+void Dispatcher::openGivenFile(std::ifstream& p_fileDescriptor, const char* p_filePath) const
+{
+    p_fileDescriptor.open(p_filePath);
+
+    if (!p_fileDescriptor.is_open())
+    {
+        std::cout << "File " << p_filePath
+                  << " is not open. Aplication is going to be terminated"
+                  << std::endl;
+        exit(-1);
+    }
+}
+
+unsigned long long Dispatcher::getFileSize(std::ifstream& p_fileDescriptor, const char* p_filePath) const
+{
+    p_fileDescriptor.seekg (0, p_fileDescriptor.end);
+    unsigned long long l_fileLength = p_fileDescriptor.tellg();
+    p_fileDescriptor.seekg (0, p_fileDescriptor.beg);
+
+    std::cout << "Size of file: " << p_filePath
+              << " is equal to: " << l_fileLength
+              << " bytes." << std::endl;
+
+    return l_fileLength;
+}
+
+unsigned int Dispatcher::getNumberOfMessagesRequiredToSentGivenBytes(unsigned long long p_numOfBytes) const
+{
+    if(p_numOfBytes % PAYLOAD_SIZE)
+    {
+        return p_numOfBytes / PAYLOAD_SIZE + 1;
+    }
+    else
+    {
+        return p_numOfBytes / PAYLOAD_SIZE;
+    }
+}
+
+void Dispatcher::sendSeverSendFileResp(int& p_clientSocket, unsigned long long p_fileLength) const
+{
+    Message l_sendline;
+    l_sendline.msgId = SERVER_SEND_FILE_RESP;
+
+    l_sendline.numOfMsgInFileTransfer = getNumberOfMessagesRequiredToSentGivenBytes(p_fileLength);
+    m_unixWrapper->send(p_clientSocket, &l_sendline, sizeof(Message));
+}
+
+void Dispatcher::sendClientSendFileInd(Message& p_sendMessage,
+                                       unsigned long long p_bytesInPayload,
+                                       int& p_clientSocket) const
+{
+    p_sendMessage.msgId = CLIENT_SEND_FILE_IND;
+    p_sendMessage.bytesInPayload = p_bytesInPayload;
+    m_unixWrapper->send(p_clientSocket, &p_sendMessage, sizeof(Message));
+}
+
+void Dispatcher::sendRequestedFile(std::ifstream& p_fileDescriptor, int& p_clientSocket) const
+{
+    unsigned int l_msgCounter = 0;
+    unsigned long long l_byteCounter = 0;
+    Message l_sendline;
+    memset(&l_sendline, 0, sizeof(l_sendline));
+
+    char l_singleByte;
+    while(p_fileDescriptor.get(l_singleByte))
+    {
+        if(!p_fileDescriptor.good())
+        {
+            std::cout << "Something wrong during reading file, byte number:  "
+                      << l_byteCounter << std::endl;
+            exit(-1);
+        }
+
+        l_sendline.payload[l_byteCounter] = l_singleByte;
+        l_byteCounter++;
+
+        if(l_byteCounter == PAYLOAD_SIZE)
+        {
+            std::cout << "Sending message number: " << l_msgCounter << std::endl;
+            sendClientSendFileInd(l_sendline, l_byteCounter, p_clientSocket);
+            std::cout << "Sent payload bytes: " << sizeof(l_sendline.payload)
+                      << " where valid is: " << l_byteCounter << std::endl;
+            l_msgCounter++;
+
+            l_byteCounter = 0;
+            memset(&l_sendline, 0, sizeof(l_sendline));
+        }
+    }
+
+    std::cout << "Sending message number: " << l_msgCounter << std::endl;
+    sendClientSendFileInd(l_sendline, l_byteCounter, p_clientSocket);
+    std::cout << "Sent payload bytes: " << sizeof(l_sendline.payload)
+              << " where valid is: " << l_byteCounter << std::endl;
+
+    l_msgCounter++;
+    std::cout << "Sending of file is done!" << std::endl;
+}
+
