@@ -8,7 +8,7 @@ int main(int p_argc, char** p_argv)
     std::map<std::string, void(*)(char**)> l_testcaseContainer
         = { {"connectToServer", connectToServerTest},
             {"exchangeAFewSimpleMessagesWithServer", exchangeAFewSimpleMessagesWithServerTest},
-            {"sendFileTransferRequestAndReceiveRequestedFile", sendFileTransferRequestAndReceiveRequestedFileTest}
+            {"sendFileTransferRequestAndReceiveRequestedFileTest_largeTextFile", sendFileTransferRequestAndReceiveRequestedFileTest_largeTextFile}
           };
 
     switch (p_argc)
@@ -100,10 +100,10 @@ void exchangeAFewSimpleMessagesWithServerTest(char** p_argv)
  * Step4: Receive SERVER_SEND_FILE_RESP message from server
  * Step5: Receive number of CLIENT_SEND_FILE_IND messages as defined in
  *        numOfMsgInFileTransfer field of SERVER_SEND_FILE_RESP
- * Step6: Check content of received file
+ * Step6: Check if received and requested file are equal
  * Step7: Close connection
 **************************************************************************/
-void sendFileTransferRequestAndReceiveRequestedFileTest(char** p_argv)
+void sendFileTransferRequestAndReceiveRequestedFileTest_largeTextFile(char** p_argv)
 {
     std::cout << "Testcase " << __FUNCTION__ << " started." << std::endl;
 //Step1
@@ -111,10 +111,11 @@ void sendFileTransferRequestAndReceiveRequestedFileTest(char** p_argv)
 //Step2
     receiveMessageFromServer(CLIENT_WELCOME_MSG_IND);
 //Step3
-    char l_sourceFilePath[] = "./moduleTest/plikiPrzykladowe/duzyTekstowy.txt";
+    std::string l_sourceFileName = "duzyTekstowy.txt";
+    std::string l_sourceFilePath = "./moduleTest/plikiPrzykladowe/" + l_sourceFileName;
     Message l_sendline = {};
     l_sendline.msgId = SERVER_SEND_FILE_REQ;
-    strcpy(l_sendline.payload, l_sourceFilePath);
+    strcpy(l_sendline.payload, l_sourceFilePath.c_str());
 
     g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
 //Step4
@@ -123,7 +124,8 @@ void sendFileTransferRequestAndReceiveRequestedFileTest(char** p_argv)
     std::cout << "Number of messages to catch: " << l_numberOfMessagesToCatch << std::endl;
 //Step5
     long long l_sumOfReceivedBytes = 0;
-    std::ofstream l_outFile("odebrany.txt");
+    std::string l_outFileName = "odebrany.txt";
+    std::ofstream l_outFile(l_outFileName);
     for (int i = 0; i < l_numberOfMessagesToCatch; i++)
     {
         receiveMessageClientSendFileIndFromServer(l_outFile, l_sumOfReceivedBytes);
@@ -131,6 +133,8 @@ void sendFileTransferRequestAndReceiveRequestedFileTest(char** p_argv)
     std::cout << "Amount of received bytes: " << l_sumOfReceivedBytes << std::endl;
     l_outFile.close();
 //Step6
+    checkIfRequestedAndReceivedFilesMatch("./plikiPrzykladowe/" + l_sourceFileName,
+                                          l_outFileName);
 //Step7
     g_unixWrapper.close(g_sockfd);
     std::cout << "Testcase " << __FUNCTION__ << " finished successfully." << std::endl;

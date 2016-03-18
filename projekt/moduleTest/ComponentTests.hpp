@@ -27,10 +27,13 @@ extern Message g_receivedMessage;
 //declaration of functions
 void Fputs(const char *ptr, FILE *stream);
 char* Fgets(char *ptr, int n, FILE *stream);
+std::string executeCommand(const char* p_cmd);
+void failTestcase(std::string p_message);
 
 void initializeConnection(char** p_argv);
 void receiveMessageFromServer(const int p_msgId);
 void receiveMessageClientSendFileIndFromServer(std::ofstream& p_outFile, long long& p_sumOfReceivedBytes);
+void checkIfRequestedAndReceivedFilesMatch(std::string p_file1, std::string p_file2);
 
 //main functions
 void runAllTestcases(std::map<std::string, void(*)(char**)>& p_testcaseContainer, char** p_argv);
@@ -41,4 +44,4 @@ std::string getUsageMessage(char** p_argv);
 //testcases
 void connectToServerTest(char** p_argv);
 void exchangeAFewSimpleMessagesWithServerTest(char** p_argv);
-void sendFileTransferRequestAndReceiveRequestedFileTest(char** p_argv);
+void sendFileTransferRequestAndReceiveRequestedFileTest_largeTextFile(char** p_argv);

@@ -1,5 +1,9 @@
 #include "ComponentTests.hpp"
 #include <fstream>
+#include <string>
+#include <iostream>
+#include <cstdio>
+#include <memory>
 
 int g_sockfd = 0;
 struct sockaddr_in g_servaddr = {};
@@ -10,6 +14,7 @@ ErrorHandler g_errorHandler = ErrorHandler();
 NetworkWrappers g_networkWrapper = NetworkWrappers(std::make_shared<ErrorHandler>(g_errorHandler));
 UnixWrappers g_unixWrapper = UnixWrappers(std::make_shared<ErrorHandler>(g_errorHandler));
 
+//function from main
 void runAllTestcases(std::map<std::string, void(*)(char**)>& p_testcaseContainer,
                      char** p_argv)
 {
@@ -55,6 +60,52 @@ std::string getUsageMessage(char** p_argv)
     return l_usageMessage;
 }
 
+///helpul
+std::string executeCommand(const char* p_cmd)
+{
+    std::shared_ptr<FILE> l_pipe(popen(p_cmd, "r"), pclose);
+    if (!l_pipe)
+    {
+        return "ERROR";
+    }
+
+    char l_buffer[128];
+    std::string l_result = "";
+    while (!feof(l_pipe.get()))
+    {
+        if (fgets(l_buffer, 128, l_pipe.get()) != NULL)
+        {
+            l_result += l_buffer;
+        }
+    }
+    return l_result;
+}
+
+void checkIfRequestedAndReceivedFilesMatch(std::string p_file1, std::string p_file2)
+{
+    std::string l_command = "diff " + p_file1 + " " + p_file2;
+    std::string l_resultOfCommand = executeCommand(l_command.c_str());
+
+    if(l_resultOfCommand.empty())
+    {
+        std::cout << "Requested and received files are equal" << std::endl;
+    }
+    else
+    {
+        failTestcase("Requested and received files are not equal!");
+        exit(0);
+    }
+}
+
+void failTestcase(std::string p_message)
+{
+    std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "() - "
+              << p_message << std::endl;
+
+}
+
+///testcases functions
+
 void initializeConnection(char** p_argv)
 {
 	g_sockfd = g_networkWrapper.socket(AF_INET, SOCK_STREAM, 0);
@@ -76,7 +127,7 @@ again:
     {
         if(!(g_receivedMessage.msgId == p_msgId))
         {
-            std::cout << "Received message is different than expected! " << std::endl;
+            failTestcase("Received message is different than expected!");
             exit(0);
         }
         break;
@@ -104,7 +155,7 @@ again:
         p_sumOfReceivedBytes += g_receivedBytes;
         if(!(l_msg.msgId == CLIENT_SEND_FILE_IND))
         {
-            std::cout << "Received message is different than expected" << std::endl;
+            failTestcase("Received message is different than expected");
             exit(0);
         }
 

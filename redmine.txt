@@ -2,27 +2,29 @@
 Zrobione:
 1. Dodanie sposobu na wyswietlanie testow w przejrzysty sposob.
 2. Z maina modul testow wydzielic funkcjie do odpalania cloasci i pojedynczego testu.
+3. Dodanie w testach modulowych sprawdzania czy plik otrzymany jest taki sam jak wysalny.
+4. Dodanie do testu sprawdzania czy odebrany plik jest taki sam jak wysalny (polecenie diff)?
+5. Refactor testow do przesylania plikow.
 
 Do zrobienia:
-000. W funkcji sendRequestedFile zamiast Message, towrzyc tablice o rozmiarze payload i przekazywac do funkcji sendClient*Ind wskaznik na te tablice.
-000. SPrawdzic licznik logowania wiadomisci, chyba numerowane jest od 0 zamiast od 1.
-000. Test modulowy na przesylanie jakeigos pliku obojetnie jakiego o rozmiarze takim ze po petli w sendRequestedFile nie powinno sie wysylac kolejnej wiadomosci,
-     wydaje sie ze przed wysalniem tej wiaodmosci powionno sie sprawdzac l_byteCounter i jesli jest rozny od zera to wysylac. (przypadek brzegowy)
-
-0. Dopisac UT (wyrownac padajace) do klsy Dispatcher
-1. Refactor testow do przesylania plikow.
-2. Test modułowy na przesłanie pojedynczego pliku binarnego duzego oraz malego.
-3. Test modulowy do przesylania pojedynczego pliku tesktowego malego.
-4. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
-5. Dodanie do testu sprawdzania czy odebrany plik jest taki sam jak wysalny (polecenie diff)?
-6. Klasa Handlera dla Requestu o przelsanie pliku.
-7. Test modulowy na przesylanie plikow DICOM. Proba odczytu pliku po przeslaniu. (W windows jakis program do dicom)
-8. Rozparsowanie pliku DICOM.
+1. W funkcji sendRequestedFile zamiast Message, towrzyc tablice o rozmiarze payload i przekazywac do funkcji
+   sendClient*Ind wskaznik na te tablice.
+2. Sprawdzic licznik logowania wiadomisci, chyba numerowane jest od 0 zamiast od 1.
+3. Test modulowy na przesylanie jakeigos pliku obojetnie jakiego o rozmiarze takim ze po petli w sendRequestedFile
+    nie powinno sie wysylac kolejnej wiadomosci, wydaje sie ze przed wysalniem tej wiaodmosci powionno sie sprawdzac
+    l_byteCounter i jesli jest rozny od zera to wysylac. (przypadek brzegowy)
+4. Dopisac UT (wyrownac padajace) do klsy Dispatcher
+6. Test modułowy na przesłanie pojedynczego pliku binarnego duzego oraz malego.
+7. Test modulowy do przesylania pojedynczego pliku tesktowego malego.
+8. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
+10. Klasa Handlera dla Requestu o przelsanie pliku.
+11. Test modulowy na przesylanie plikow DICOM. Proba odczytu pliku po przeslaniu. (W windows jakis program do dicom)
+12. Rozparsowanie pliku DICOM.
     * podgladnac jak robi to jakis darmowy parser
     * konwersja DICOM do JPEG
     * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczy
-9. System logowania zarowno dla testow modulowych jak i dla serwera.
-10. Przemyslec co by sie dzialo w sytuacjach brzegowych tzn wiadomosc nie przychodzi, przychodzi zla itd.
+13. System logowania zarowno dla testow modulowych jak i dla serwera.
+14. Przemyslec co by sie dzialo w sytuacjach brzegowych tzn wiadomosc nie przychodzi, przychodzi zla itd.
 
 //17.03.2016
 Zrobione:
