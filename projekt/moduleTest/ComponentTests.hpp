@@ -5,6 +5,8 @@
 #include <memory>
 #include <cstring>
 #include <iostream>
+#include <map>
+#include <string>
 
 #pragma once
 
@@ -29,6 +31,12 @@ char* Fgets(char *ptr, int n, FILE *stream);
 void initializeConnection(char** p_argv);
 void receiveMessageFromServer(const int p_msgId);
 void receiveMessageClientSendFileIndFromServer(std::ofstream& p_outFile, long long& p_sumOfReceivedBytes);
+
+//main functions
+void runAllTestcases(std::map<std::string, void(*)(char**)>& p_testcaseContainer, char** p_argv);
+void runSingleTestcase(std::map<std::string, void(*)(char**)>& p_testcaseContainer, char** p_argv);
+void listAllTestcases(std::map<std::string, void(*)(char**)>& p_testcaseContainer, char** p_argv);
+std::string getUsageMessage(char** p_argv);
 
 //testcases
 void connectToServerTest(char** p_argv);

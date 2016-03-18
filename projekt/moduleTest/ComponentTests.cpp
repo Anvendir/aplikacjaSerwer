@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 
-int main(int argc, char **argv)
+int main(int p_argc, char** p_argv)
 {
     std::map<std::string, void(*)(char**)> l_testcaseContainer
         = { {"connectToServer", connectToServerTest},
@@ -11,28 +11,28 @@ int main(int argc, char **argv)
             {"sendFileTransferRequestAndReceiveRequestedFile", sendFileTransferRequestAndReceiveRequestedFileTest}
           };
 
-    switch (argc)
+    switch (p_argc)
     {
-        case 3:
-        {
-            void(*l_testcase)(char**) = l_testcaseContainer.find(argv[2])->second;
-            (l_testcase)(argv);
-
-            break;
-        }
         case 2:
         {
-            for (auto l_it = l_testcaseContainer.begin(); l_it != l_testcaseContainer.end(); ++l_it)
+            if(!strcmp("list", p_argv[1]))
             {
-                void(*l_testcase)(char**) = *l_it->second;
-                (l_testcase)(argv);
+                listAllTestcases(l_testcaseContainer, p_argv);
             }
-
+            else
+            {
+                runAllTestcases(l_testcaseContainer, p_argv);
+            }
+            break;
+        }
+        case 3:
+        {
+            runSingleTestcase(l_testcaseContainer, p_argv);
             break;
         }
         default:
         {
-		    g_errorHandler.handleHardError("usage: tcpcli <IPaddress>");
+            std::cout << "Incorrect attempt of usage:\n" << getUsageMessage(p_argv) << std::endl;
         }
     }
 

@@ -10,6 +10,51 @@ ErrorHandler g_errorHandler = ErrorHandler();
 NetworkWrappers g_networkWrapper = NetworkWrappers(std::make_shared<ErrorHandler>(g_errorHandler));
 UnixWrappers g_unixWrapper = UnixWrappers(std::make_shared<ErrorHandler>(g_errorHandler));
 
+void runAllTestcases(std::map<std::string, void(*)(char**)>& p_testcaseContainer,
+                     char** p_argv)
+{
+    for (auto l_it = p_testcaseContainer.begin(); l_it != p_testcaseContainer.end(); ++l_it)
+    {
+        void(*l_testcase)(char**) = *l_it->second;
+        (l_testcase)(p_argv);
+    }
+}
+
+void runSingleTestcase(std::map<std::string, void(*)(char**)>& p_testcaseContainer,
+                       char** p_argv)
+{
+    if(p_testcaseContainer.find(p_argv[2]) == p_testcaseContainer.end())
+    {
+        std::cout << "Testcase not found!" << std::endl;
+    }
+    else
+    {
+        void(*l_testcase)(char**) = p_testcaseContainer.find(p_argv[2])->second;
+        (l_testcase)(p_argv);
+    }
+}
+
+void listAllTestcases(std::map<std::string, void(*)(char**)>& p_testcaseContainer,
+                      char** p_argv)
+{
+    std::cout << "List of all avaliable testcases: " << std::endl;
+    for (auto l_it = p_testcaseContainer.begin(); l_it != p_testcaseContainer.end(); ++l_it)
+    {
+        std::cout << "\t" << l_it->first << std::endl;
+    }
+}
+
+std::string getUsageMessage(char** p_argv)
+{
+    std::string l_usageMessage = "Instruction:\n";
+    l_usageMessage += "\t- to run all testcases: " + std::string(p_argv[0]) + " <IPaddress>\n";
+    l_usageMessage += "\t- to single all testcase: " + std::string(p_argv[0]) +
+                      " <IPaddress> <testcaseName>\n";
+    l_usageMessage += "\t- to list all testcases: " + std::string(p_argv[0]) + " list\n";
+
+    return l_usageMessage;
+}
+
 void initializeConnection(char** p_argv)
 {
 	g_sockfd = g_networkWrapper.socket(AF_INET, SOCK_STREAM, 0);
