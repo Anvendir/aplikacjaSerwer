@@ -63,6 +63,15 @@ ServerTestSuite.o : ./test_modules/ServerTestSuite.cpp ../include/Server.hpp
 			-I ./mocks -I ../include/ \
 			./test_modules/ServerTestSuite.cpp
 
+ServerSendFileRequestHandler.o : ../source/ServerSendFileRequestHandler.cpp ../include/ServerSendFileRequestHandler.hpp
+	g++ -c -std=c++14 -I ../include \
+			../source/ServerSendFileRequestHandler.cpp
+
+ServerSendFileRequestHandlerTestSuite.o : ./test_modules/ServerSendFileRequestHandlerTestSuite.cpp ../include/ServerSendFileRequestHandler.hpp
+	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
+			-I ./mocks -I ../include/ \
+			./test_modules/ServerSendFileRequestHandlerTestSuite.cpp
+
 .PHONY : clean
 clean:
 	rm -f UnitTests $(objects)

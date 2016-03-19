@@ -1,4 +1,4 @@
-//18.03.2016
+//19.03.2016
 Zrobione:
 1. Test modulowy do przesylania pojedynczego pliku tesktowego malego.
 2. Test modułowy na przesłanie pojedynczego pliku binarnego duzego oraz malego.
@@ -7,19 +7,24 @@ Zrobione:
     nie powinno sie wysylac kolejnej wiadomosci, wydaje sie ze przed wysalniem tej wiaodmosci powionno sie sprawdzac
     l_byteCounter i jesli jest rozny od zera to wysylac. (przypadek brzegowy)
 5. Sprawdzic licznik logowania wiadomisci, chyba numerowane jest od 0 zamiast od 1.
+6. Sprawdzic przesylanie na roznych hostach.
+7. Klasa Handlera dla Requestu o przelsanie pliku.
+8. Wyrownanie padajacych UT w klasie Dispatcher
 
 Do zrobienia:
-2. Dopisac UT (wyrownac padajace) do klsy Dispatcher
-3. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
-4. Klasa Handlera dla Requestu o przelsanie pliku.
-5. Rozparsowanie pliku DICOM.
+0. Mock dla kalsy Handlera do przesylania plikow.
+1. Wrzucic do Dispatchera uzycie kklasy Handlera do plikow + napisac UT dla tego przypadku.
+2. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
+3. Stworzyc UT do kalsy Handlera dla Requestu o przeslanie pliku
+4. Rozparsowanie pliku DICOM.
     * podgladnac jak robi to jakis darmowy parser
     * konwersja DICOM do JPEG
     * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczy
-6. System logowania zarowno dla testow modulowych jak i dla serwera.
-7. Przemyslec co by sie dzialo w sytuacjach brzegowych tzn wiadomosc nie przychodzi, przychodzi zla itd.
-8. Testy modulowe z przesylaniem szczegolnie wiekszych plikow czesto failuja.
-9. Sprawdzic przesylanie na roznych hostach.
+5. System logowania zarowno dla testow modulowych jak i dla serwera.
+6. Przemyslec co by sie dzialo w sytuacjach brzegowych tzn wiadomosc nie przychodzi, przychodzi zla itd.
+7. Testy modulowe z przesylaniem szczegolnie wiekszych plikow czesto failuja.
+    * na tym samym hoscie faile zdarzaja sie czesta
+    * na roznych hostach czesciej pojawia sie fail niz pass
 
 //18.03.2016
 Zrobione:

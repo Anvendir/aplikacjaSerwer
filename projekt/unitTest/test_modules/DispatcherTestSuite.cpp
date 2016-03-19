@@ -25,10 +25,15 @@ public:
 TEST_F(DispatcherTestSuite, testIfMessageWillBeSentDuringDispatchingEventWithCaseOne)
 {
     const int l_someSocket = 5;
-    const Message l_msg = {FIRST_CASE, "Sample msg"};
-    Message l_sendline = {FIRST_CASE, "Odpowiedz"};
+    Message l_msg;
+    l_msg.msgId = SERVER_TEST_FIRST_REQ;
+    strcpy(l_msg.payload, "Sample msg");
 
-    std::string l_expectedText = "PID: 0 | Case 1: , otrzymana wiadomosc to - Sample msg\n";
+    Message l_sendline;
+    l_sendline.msgId = SERVER_TEST_FIRST_RESP;
+    strcpy(l_sendline.payload, "Odpowiedz");
+
+    std::string l_expectedText = "PID: 0 | Case SERVER_TEST_FIRST_REQ: received message - Sample msg\n";
     testing::internal::CaptureStdout();
     EXPECT_CALL(*m_unixWrapperMock, getPid());
     EXPECT_CALL(*m_unixWrapperMock, send(l_someSocket, _, sizeof(l_sendline), 0));
@@ -42,9 +47,11 @@ TEST_F(DispatcherTestSuite, testIfMessageWillBeSentDuringDispatchingEventWithCas
 TEST_F(DispatcherTestSuite, testIfMessageWillNotBeSentDuringDispatchingEventWithCaseTwo)
 {
     const int l_someSocket = 5;
-    const Message l_msg = {SECOND_CASE, "Sample msg"};
+    Message l_msg;
+    l_msg.msgId = SERVER_TEST_SECOND_REQ;
+    strcpy(l_msg.payload, "Sample msg");
 
-    std::string l_expectedText = "PID: 0 | Case 2: , otrzymana wiadomosc to - Sample msg\n";
+    std::string l_expectedText = "PID: 0 | Case SERVER_TEST_SECOND_REQ: received message - Sample msg\n";
     testing::internal::CaptureStdout();
     EXPECT_CALL(*m_unixWrapperMock, getPid());
 
@@ -57,9 +64,11 @@ TEST_F(DispatcherTestSuite, testIfMessageWillNotBeSentDuringDispatchingEventWith
 TEST_F(DispatcherTestSuite, testIfMessageWillNotBeSentDuringDispatchingEventWithUnknownCase)
 {
     const int l_someSocket = 5;
-    const Message l_msg = {EMessageId(3), "Sample msg"};
+    Message l_msg;
+    l_msg.msgId = CLIENT_WELCOME_MSG_IND;
+    strcpy(l_msg.payload, "Sample msg");
 
-    std::string l_expectedText = "PID: 0 | Nieznany identyfikator\n";
+    std::string l_expectedText = "PID: 0 | Unknown message identyfier\n";
     testing::internal::CaptureStdout();
     EXPECT_CALL(*m_unixWrapperMock, getPid());
 
