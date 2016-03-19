@@ -45,3 +45,8 @@ std::string getUsageMessage(char** p_argv);
 void connectToServerTest(char** p_argv);
 void exchangeAFewSimpleMessagesWithServerTest(char** p_argv);
 void sendFileTransferRequestAndReceiveRequestedFileTest_largeTextFile(char** p_argv);
+void sendFileTransferRequestAndReceiveRequestedFileTest_smallTextFile(char** p_argv);
+void sendFileTransferRequestAndReceiveRequestedFileTest_smallBinaryFile(char** p_argv);
+void sendFileTransferRequestAndReceiveRequestedFileTest_largeBinaryFile(char** p_argv);
+void sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile(char** p_argv);
+
