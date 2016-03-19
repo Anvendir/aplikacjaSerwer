@@ -29,4 +29,4 @@ Server.o : ./source/Server.cpp ./include/Server.hpp
 
 .PHONY : clean
 clean:
-		rm Program $(objects)
+		rm -f Program $(objects)

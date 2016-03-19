@@ -65,4 +65,4 @@ ServerTestSuite.o : ./test_modules/ServerTestSuite.cpp ../include/Server.hpp
 
 .PHONY : clean
 clean:
-	rm  UnitTests $(objects)
+	rm -f UnitTests $(objects)

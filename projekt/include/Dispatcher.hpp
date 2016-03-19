@@ -18,6 +18,7 @@ private:
     void openGivenFile(std::ifstream& p_fileDescriptor, const char* p_filePath) const;
     unsigned long long getFileSize(std::ifstream& p_fileDescriptor, const char* p_filePath) const;
     unsigned int getNumberOfMessagesRequiredToSentGivenBytes(unsigned long long p_numOfBytes) const;
+    void checkIfReadByteSucceded(std::ifstream& p_fileDescriptor, int p_byteCounter) const;
 
     void sendSeverSendFileResp(int& p_clientSocket, unsigned long long p_fileLength) const;
     void sendRequestedFile(std::ifstream& p_fileDescriptor, int& p_clientSocket) const;

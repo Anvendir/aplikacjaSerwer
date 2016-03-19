@@ -122,11 +122,24 @@ void Dispatcher::sendClientSendFileInd(Message& p_sendMessage,
     p_sendMessage.msgId = CLIENT_SEND_FILE_IND;
     p_sendMessage.bytesInPayload = p_bytesInPayload;
     m_unixWrapper->send(p_clientSocket, &p_sendMessage, sizeof(Message));
+
+    std::cout << "Sent payload bytes: " << sizeof(p_sendMessage.payload)
+              << " where valid is: " << p_bytesInPayload << std::endl;
+}
+
+void Dispatcher::checkIfReadByteSucceded(std::ifstream& p_fileDescriptor, int p_byteCounter) const
+{
+    if(!p_fileDescriptor.good())
+    {
+        std::cout << "Something wrong during reading file, byte number:  "
+                  << p_byteCounter << std::endl;
+        exit(-1);
+    }
 }
 
 void Dispatcher::sendRequestedFile(std::ifstream& p_fileDescriptor, int& p_clientSocket) const
 {
-    unsigned int l_msgCounter = 0;
+    unsigned int l_msgCounter = 1;
     unsigned long long l_byteCounter = 0;
     Message l_sendline;
     memset(&l_sendline, 0, sizeof(l_sendline));
@@ -134,13 +147,7 @@ void Dispatcher::sendRequestedFile(std::ifstream& p_fileDescriptor, int& p_clien
     char l_singleByte;
     while(p_fileDescriptor.get(l_singleByte))
     {
-        if(!p_fileDescriptor.good())
-        {
-            std::cout << "Something wrong during reading file, byte number:  "
-                      << l_byteCounter << std::endl;
-            exit(-1);
-        }
-
+        checkIfReadByteSucceded(p_fileDescriptor, l_byteCounter);
         l_sendline.payload[l_byteCounter] = l_singleByte;
         l_byteCounter++;
 
@@ -148,8 +155,6 @@ void Dispatcher::sendRequestedFile(std::ifstream& p_fileDescriptor, int& p_clien
         {
             std::cout << "Sending message number: " << l_msgCounter << std::endl;
             sendClientSendFileInd(l_sendline, l_byteCounter, p_clientSocket);
-            std::cout << "Sent payload bytes: " << sizeof(l_sendline.payload)
-                      << " where valid is: " << l_byteCounter << std::endl;
             l_msgCounter++;
 
             l_byteCounter = 0;
@@ -157,12 +162,12 @@ void Dispatcher::sendRequestedFile(std::ifstream& p_fileDescriptor, int& p_clien
         }
     }
 
-    std::cout << "Sending message number: " << l_msgCounter << std::endl;
-    sendClientSendFileInd(l_sendline, l_byteCounter, p_clientSocket);
-    std::cout << "Sent payload bytes: " << sizeof(l_sendline.payload)
-              << " where valid is: " << l_byteCounter << std::endl;
-
-    l_msgCounter++;
+    if(l_byteCounter)
+    {
+        std::cout << "Sending message number: " << l_msgCounter << std::endl;
+        sendClientSendFileInd(l_sendline, l_byteCounter, p_clientSocket);
+        l_msgCounter++;
+    }
     std::cout << "Sending of file is done!" << std::endl;
 }
 

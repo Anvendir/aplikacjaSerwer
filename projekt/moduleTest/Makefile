@@ -28,4 +28,4 @@ UnixWrappers.o : ../source/UnixWrappers.cpp ../include/UnixWrappers.hpp
 
 .PHONY : clean
 clean:
-	rm ComponentTests $(objects)
+	rm -f ComponentTests odebrany.txt odebrany.jpg odebrany.dcm $(objects)

@@ -49,4 +49,6 @@ void sendFileTransferRequestAndReceiveRequestedFileTest_smallTextFile(char** p_a
 void sendFileTransferRequestAndReceiveRequestedFileTest_smallBinaryFile(char** p_argv);
 void sendFileTransferRequestAndReceiveRequestedFileTest_largeBinaryFile(char** p_argv);
 void sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile(char** p_argv);
+void sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024(char** p_argv);
+
 
