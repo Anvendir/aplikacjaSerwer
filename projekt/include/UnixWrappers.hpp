@@ -12,12 +12,12 @@ public:
     UnixWrappers(std::shared_ptr<IErrorHandler> p_errorHandler);
 
     void send(int p_socketDescriptor,
-              const void* p_messageToSent,
+              const Message* p_messageToSent,
               size_t p_messageLenghtInBytes,
               int p_transmissionType = 0) const override;
 
     ssize_t recv(int p_socketDescriptor,
-                 void* p_receivedMessage,
+                 Message* p_receivedMessage,
                  size_t p_messageLenghtInBytes,
                  int p_transmissionType = MSG_WAITALL) const override;
 

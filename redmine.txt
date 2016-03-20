@@ -1,3 +1,26 @@
+//20.03.2016
+Zrobione:
+1. Zmiana w funkcjach recv i send typu z void* na Message*
+2. Stowrozne UT klasy Handlera sendSeverSendFileResp i sendClientSendFileInd
+3. Poprawione UT z kalsy UnixWrappera - nie testowały typu wiadomosci Message
+
+Do zrobienia:
+0. Mock dla klasy Handlera do przesylania plikow.
+1. Wrzucic do Dispatchera uzycie klasy Handlera do plikow + napisac UT dla tego przypadku.
+2. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
+3. Stworzyc UT do klasy Handlera dla:
+   * sendRequestedFile
+   * handle
+4. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser
+    * konwersja DICOM do JPEG
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczy
+5. System logowania zarowno dla testow modulowych jak i dla serwera.
+6. Przemyslec co by sie dzialo w sytuacjach brzegowych tzn wiadomosc nie przychodzi, przychodzi zla itd.
+7. Testy modulowe z przesylaniem szczegolnie wiekszych plikow czesto failuja.
+    * na tym samym hoscie faile zdarzaja sie czesta
+    * na roznych hostach czesciej pojawia sie fail niz pass
+
 //19.03.2016
 Zrobione:
 1. Test modulowy do przesylania pojedynczego pliku tesktowego malego.
@@ -12,7 +35,7 @@ Zrobione:
 8. Wyrownanie padajacych UT w klasie Dispatcher
 
 Do zrobienia:
-0. Mock dla kalsy Handlera do przesylania plikow.
+0. Mock dla klasy Handlera do przesylania plikow.
 1. Wrzucic do Dispatchera uzycie kklasy Handlera do plikow + napisac UT dla tego przypadku.
 2. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
 3. Stworzyc UT do kalsy Handlera dla Requestu o przeslanie pliku

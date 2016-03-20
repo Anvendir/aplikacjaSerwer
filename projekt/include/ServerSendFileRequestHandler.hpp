@@ -9,7 +9,7 @@ class ServerSendFileRequestHandler : public IServerSendFileRequestHandler
 {
 public:
     ServerSendFileRequestHandler(std::shared_ptr<IUnixWrappers> p_unixWrapper);
-    void handle(int p_clientSocket, const Message p_receivedMsg) const;
+    void handle(int p_clientSocket, const Message p_receivedMsg) const override;
 
 protected:
     void sendSeverSendFileResp(int& p_clientSocket, unsigned long long p_fileLength) const;

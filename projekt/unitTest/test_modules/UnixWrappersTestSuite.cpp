@@ -37,8 +37,9 @@ TEST_F(UnixWrappersTestSuite, testIfSendFunctionWillHandleNoErrorWithProperCall)
     ::inet_pton(AF_INET, "127.0.0.1", &l_sockAddr.sin_addr);
     ::connect(l_sockFd, reinterpret_cast<GenericSockAddr*>(&l_sockAddr), sizeof(l_sockAddr));
 
-    const char* l_message = "Hello world";
-    m_sut.send(l_sockFd, l_message, strlen(l_message));
+    Message l_message;
+    strcpy(l_message.payload, "Hello world");
+    m_sut.send(l_sockFd, &l_message, sizeof(Message));
 }
 
 TEST_F(UnixWrappersTestSuite, testIfSendFunctionWillHandleHardErrorWithIncorrectCall)
@@ -46,17 +47,18 @@ TEST_F(UnixWrappersTestSuite, testIfSendFunctionWillHandleHardErrorWithIncorrect
     int l_fakeSockFd = 1;
 
     EXPECT_CALL(*m_errorHandler, handleHardError("send error"));
-    const char* l_message = "Hello world";
-    m_sut.send(l_fakeSockFd, l_message, strlen(l_message));
+    Message l_message;
+    strcpy(l_message.payload, "Hello world");
+    m_sut.send(l_fakeSockFd, &l_message, sizeof(Message));
 }
 
 TEST_F(UnixWrappersTestSuite, testIfRecvFunctionWillHandlehardErrorWithIncorrectCall)
 {
     int l_fakeSockFd = 1;
-    char l_receivedMessage[10];
+    Message l_receivedMessage;
 
     EXPECT_CALL(*m_errorHandler, handleHardError("recv error"));
-    m_sut.recv(l_fakeSockFd, l_receivedMessage, sizeof(l_receivedMessage));
+    m_sut.recv(l_fakeSockFd, &l_receivedMessage, sizeof(Message));
 }
 
 TEST_F(UnixWrappersTestSuite, testIfCloseFunctionWillHandleNoErrorWithProperCall)

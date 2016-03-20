@@ -6,11 +6,11 @@ class UnixWrappersMock : public IUnixWrappers
 {
 public:
     MOCK_CONST_METHOD4(send, void(int,
-                                  const void*,
+                                  const Message*,
                                   size_t,
                                   int));
     MOCK_CONST_METHOD4(recv, ssize_t(int,
-                                     void*,
+                                     Message*,
                                      size_t,
                                      int));
     MOCK_CONST_METHOD1(close, void(int));

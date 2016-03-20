@@ -3,7 +3,8 @@ objects = Main.o \
 		  ErrorHandler.o ErrorHandlerTestSuite.o \
 		  NetworkWrappers.o NetworkWrappersTestSuite.o \
 		  UnixWrappers.o UnixWrappersTestSuite.o \
-		  Server.o ServerTestSuite.o
+		  Server.o ServerTestSuite.o \
+		  ServerSendFileRequestHandler.o ServerSendFileRequestHandlerTestSuite.o
 
 GTEST_DIR = ./googleTestRepo/googletest
 GMOCK_DIR = ./googleTestRepo/googlemock

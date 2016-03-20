@@ -77,7 +77,7 @@ void ServerSendFileRequestHandler::checkIfReadByteSucceded(std::ifstream& p_file
 
 void ServerSendFileRequestHandler::sendSeverSendFileResp(int& p_clientSocket, unsigned long long p_fileLength) const
 {
-    Message l_sendline;
+    Message l_sendline = {};
     l_sendline.msgId = SERVER_SEND_FILE_RESP;
 
     l_sendline.numOfMsgInFileTransfer = getNumberOfMessagesRequiredToSentGivenBytes(p_fileLength);
@@ -88,6 +88,14 @@ void ServerSendFileRequestHandler::sendClientSendFileInd(Message& p_sendMessage,
                                                          unsigned long long p_bytesInPayload,
                                                          int& p_clientSocket) const
 {
+    if(p_bytesInPayload > PAYLOAD_SIZE)
+    {
+        std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): "
+                  << "Size of valid bytes in payload is greater than payload size!"
+                  << std::endl;
+        exit(-1);
+    }
+
     p_sendMessage.msgId = CLIENT_SEND_FILE_IND;
     p_sendMessage.bytesInPayload = p_bytesInPayload;
     m_unixWrapper->send(p_clientSocket, &p_sendMessage, sizeof(Message));
