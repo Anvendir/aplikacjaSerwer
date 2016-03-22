@@ -3,6 +3,7 @@
 
 #include "ServerSendFileRequestHandler.hpp"
 #include "UnixWrapperMock.hpp"
+#include "StreamWrapper.hpp"
 
 #include <string>
 #include <fstream>
@@ -29,7 +30,7 @@ public:
     {
         ServerSendFileRequestHandler::sendClientSendFileInd(p_sendMessage, p_bytesInPayload, p_clientSocket);
     }
-    void sendRequestedFile(std::ifstream& p_fileDescriptor, int& p_clientSocket) const
+    void sendRequestedFile(std::shared_ptr<IStreamWrapper> p_fileDescriptor, int& p_clientSocket) const
     {
         ServerSendFileRequestHandler::sendRequestedFile(p_fileDescriptor, p_clientSocket);
     }
@@ -152,8 +153,12 @@ TEST_F(ServerSendFileRequestHandlerTestSuite, sendClientSendFileIndTest_whenNumb
 TEST_F(ServerSendFileRequestHandlerTestSuite, sendRequestedFileTest)
 {
     int l_clientSocket = 0;
-    std::ifstream l_fileDescriptor = {};
+    std::shared_ptr<FstreamMock> l_fileDescriptor;
+    const bool i = false;
 
-    m_sut.sendRequestedFile(l_fileDescriptor,  l_clientSocket);
+    char l_byte;
+//    EXPECT_CALL(*l_fileDescriptor, get(_)).WillRepeatedly(ReturnRef(*l_fileDescriptor));
+    EXPECT_CALL(*l_fileDescriptor, get(_)).WillRepeatedly(ReturnRef(*l_fileDescriptor);
+    m_sut.sendRequestedFile(l_fileDescriptor, l_clientSocket);
 }
 

@@ -1,5 +1,7 @@
 #include "ServerSendFileRequestHandler.hpp"
 #include "UnixWrappers.hpp"
+#include "StreamWrapper.hpp"
+#include "IStreamWrapper.hpp"
 #include "CommonTypes.h"
 
 #include <iostream>
@@ -14,7 +16,7 @@ ServerSendFileRequestHandler::ServerSendFileRequestHandler(std::shared_ptr<IUnix
 
 void ServerSendFileRequestHandler::handle(int p_clientSocket, const Message p_receivedMsg) const
 {
-    std::ifstream l_inFileDesc;
+    std::shared_ptr<StreamWrapper> l_inFileDesc;
 
     openGivenFile(l_inFileDesc, p_receivedMsg.payload);
     auto l_fileLength = getFileSize(l_inFileDesc, p_receivedMsg.payload);
@@ -23,14 +25,14 @@ void ServerSendFileRequestHandler::handle(int p_clientSocket, const Message p_re
     sendSeverSendFileResp(p_clientSocket, l_fileLength);
     sendRequestedFile(l_inFileDesc, p_clientSocket);
 
-    l_inFileDesc.close();
+    l_inFileDesc->close();
 }
 
-void ServerSendFileRequestHandler::openGivenFile(std::ifstream& p_fileDescriptor, const char* p_filePath) const
+void ServerSendFileRequestHandler::openGivenFile(std::shared_ptr<IStreamWrapper> p_fileDescriptor, const char* p_filePath) const
 {
-    p_fileDescriptor.open(p_filePath);
+    p_fileDescriptor->open(p_filePath);
 
-    if (!p_fileDescriptor.is_open())
+    if (!p_fileDescriptor->is_open())
     {
         std::cout << "File " << p_filePath
                   << " is not open. Aplication is going to be terminated"
@@ -39,12 +41,12 @@ void ServerSendFileRequestHandler::openGivenFile(std::ifstream& p_fileDescriptor
     }
 }
 
-unsigned long long ServerSendFileRequestHandler::getFileSize(std::ifstream& p_fileDescriptor,
+unsigned long long ServerSendFileRequestHandler::getFileSize(std::shared_ptr<IStreamWrapper> p_fileDescriptor,
                                                              const char* p_filePath) const
 {
-    p_fileDescriptor.seekg (0, p_fileDescriptor.end);
-    unsigned long long l_fileLength = p_fileDescriptor.tellg();
-    p_fileDescriptor.seekg (0, p_fileDescriptor.beg);
+    p_fileDescriptor->seekg (0, p_fileDescriptor->end());
+    unsigned long long l_fileLength = p_fileDescriptor->tellg();
+    p_fileDescriptor->seekg (0, p_fileDescriptor->beg());
 
     std::cout << "Size of file: " << p_filePath
               << " is equal to: " << l_fileLength
@@ -65,9 +67,9 @@ unsigned int ServerSendFileRequestHandler::getNumberOfMessagesRequiredToSentGive
     }
 }
 
-void ServerSendFileRequestHandler::checkIfReadByteSucceded(std::ifstream& p_fileDescriptor, int p_byteCounter) const
+void ServerSendFileRequestHandler::checkIfReadByteSucceded(std::shared_ptr<IStreamWrapper> p_fileDescriptor, int p_byteCounter) const
 {
-    if(!p_fileDescriptor.good())
+    if(!p_fileDescriptor->good())
     {
         std::cout << "Something wrong during reading file, byte number:  "
                   << p_byteCounter << std::endl;
@@ -104,7 +106,7 @@ void ServerSendFileRequestHandler::sendClientSendFileInd(Message& p_sendMessage,
               << " where valid is: " << p_bytesInPayload << std::endl;
 }
 
-void ServerSendFileRequestHandler::sendRequestedFile(std::ifstream& p_fileDescriptor, int& p_clientSocket) const
+void ServerSendFileRequestHandler::sendRequestedFile(std::shared_ptr<IStreamWrapper> p_fileDescriptor, int& p_clientSocket) const
 {
     unsigned int l_msgCounter = 1;
     unsigned long long l_byteCounter = 0;
@@ -112,7 +114,7 @@ void ServerSendFileRequestHandler::sendRequestedFile(std::ifstream& p_fileDescri
     memset(&l_sendline, 0, sizeof(l_sendline));
 
     char l_singleByte;
-    while(p_fileDescriptor.get(l_singleByte))
+    while(l_singleByte = p_fileDescriptor->get())
     {
         checkIfReadByteSucceded(p_fileDescriptor, l_byteCounter);
         l_sendline.payload[l_byteCounter] = l_singleByte;
