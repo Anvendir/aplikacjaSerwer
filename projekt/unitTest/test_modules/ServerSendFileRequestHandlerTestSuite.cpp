@@ -3,6 +3,7 @@
 
 #include "ServerSendFileRequestHandler.hpp"
 #include "UnixWrapperMock.hpp"
+#include "StreamWrapperMock.hpp"
 #include "StreamWrapper.hpp"
 
 #include <string>
@@ -11,6 +12,7 @@
 using ::testing::StrictMock;
 using ::testing::_;
 using ::testing::Field;
+using ::testing::Return;
 
 class ServerSendFileRequestHandlerTestTable : public ServerSendFileRequestHandler
 {
@@ -51,6 +53,8 @@ public:
 
     void setExpectationsForSendSeverSendFileResp(int p_clientSocket, Message p_sendline);
     void setExpectationsForSendClientSendFileInd(int p_clientSocket, Message p_sendline);
+    void setExpectationsForGettingSpecifiedNumberOfBytes(std::shared_ptr<StreamWrapperMock> p_fileDescriptorMock,
+                                                         int p_numOfBytes);
 
     std::shared_ptr<StrictMock<UnixWrappersMock>> m_unixWrapperMock;
     ServerSendFileRequestHandlerTestTable m_sut;
@@ -58,12 +62,12 @@ public:
 
 void ServerSendFileRequestHandlerTestSuite::SetUp()
 {
-    testing::internal::CaptureStdout();
+ //   testing::internal::CaptureStdout();
 }
 
 void ServerSendFileRequestHandlerTestSuite::TearDown()
 {
-    testing::internal::GetCapturedStdout();
+//    testing::internal::GetCapturedStdout();
 }
 
 void ServerSendFileRequestHandlerTestSuite::setExpectationsForSendSeverSendFileResp(int p_clientSocket,
@@ -86,6 +90,20 @@ void ServerSendFileRequestHandlerTestSuite::setExpectationsForSendClientSendFile
                                                Field(&Message::bytesInPayload, p_sendline.bytesInPayload)),
                                          sizeof(Message),
                                          0));
+}
+
+void ServerSendFileRequestHandlerTestSuite::setExpectationsForGettingSpecifiedNumberOfBytes(std::shared_ptr<StreamWrapperMock> p_fileDescriptorMock,
+                                                                                            int p_numOfBytes)
+{
+    {
+        using testing::InSequence;
+        InSequence l_sequence;
+        EXPECT_CALL(*p_fileDescriptorMock, get()).Times(p_numOfBytes)
+                                                 .WillRepeatedly(Return('c'));
+        EXPECT_CALL(*p_fileDescriptorMock, get()).WillOnce(Return(0));
+    }
+
+    EXPECT_CALL(*p_fileDescriptorMock, good()).WillRepeatedly(Return(true));
 }
 
 TEST_F(ServerSendFileRequestHandlerTestSuite, sendSeverSendFileRespTest_whenFileLengthIsBellowPayloadSize)
@@ -150,15 +168,64 @@ TEST_F(ServerSendFileRequestHandlerTestSuite, sendClientSendFileIndTest_whenNumb
     EXPECT_DEATH(m_sut.sendClientSendFileInd(l_sendline, l_sendline.bytesInPayload, l_clientSocket), "");
 }
 
-TEST_F(ServerSendFileRequestHandlerTestSuite, sendRequestedFileTest)
+TEST_F(ServerSendFileRequestHandlerTestSuite, sendRequestedFileTest_whenFirstReadByteIsZero)
 {
     int l_clientSocket = 0;
-    std::shared_ptr<FstreamMock> l_fileDescriptor;
-    const bool i = false;
+    std::shared_ptr<StreamWrapperMock> l_fileDescriptorMock = std::make_shared<StreamWrapperMock>();
 
-    char l_byte;
-//    EXPECT_CALL(*l_fileDescriptor, get(_)).WillRepeatedly(ReturnRef(*l_fileDescriptor));
-    EXPECT_CALL(*l_fileDescriptor, get(_)).WillRepeatedly(ReturnRef(*l_fileDescriptor);
-    m_sut.sendRequestedFile(l_fileDescriptor, l_clientSocket);
+    EXPECT_CALL(*l_fileDescriptorMock, get()).WillOnce(Return(0));
+    m_sut.sendRequestedFile(l_fileDescriptorMock, l_clientSocket);
+}
+
+TEST_F(ServerSendFileRequestHandlerTestSuite, sendRequestedFileTest_whenInputFileHasOneByteLength)
+{
+    int l_clientSocket = 0;
+    Message l_sendline = {};
+    l_sendline.msgId = CLIENT_SEND_FILE_IND;
+    l_sendline.bytesInPayload = 1;
+
+    std::shared_ptr<StreamWrapperMock> l_fileDescriptorMock = std::make_shared<StreamWrapperMock>();
+
+    EXPECT_CALL(*l_fileDescriptorMock, get()).Times(2)
+                                             .WillOnce(Return('c'))
+                                             .WillOnce(Return(0));
+    EXPECT_CALL(*l_fileDescriptorMock, good()).WillRepeatedly(Return(true));
+    setExpectationsForSendClientSendFileInd(l_clientSocket, l_sendline);
+
+    m_sut.sendRequestedFile(l_fileDescriptorMock, l_clientSocket);
+}
+
+TEST_F(ServerSendFileRequestHandlerTestSuite, sendRequestedFileTest_whenInputFileHas1024ByteLength)
+{
+    int l_clientSocket = 0;
+    const int l_numOfBytesInInputFile = 1024;
+    Message l_sendline = {};
+    l_sendline.msgId = CLIENT_SEND_FILE_IND;
+    l_sendline.bytesInPayload = 1024;
+
+    std::shared_ptr<StreamWrapperMock> l_fileDescriptorMock = std::make_shared<StreamWrapperMock>();
+
+    setExpectationsForGettingSpecifiedNumberOfBytes(l_fileDescriptorMock, l_numOfBytesInInputFile);
+    setExpectationsForSendClientSendFileInd(l_clientSocket, l_sendline);
+
+    m_sut.sendRequestedFile(l_fileDescriptorMock, l_clientSocket);
+}
+
+TEST_F(ServerSendFileRequestHandlerTestSuite, sendRequestedFileTest_whenInputFileHas1025ByteLength)
+{
+    int l_clientSocket = 0;
+    const int l_numOfBytesInInputFile = 1025;
+    Message l_sendline = {};
+    l_sendline.msgId = CLIENT_SEND_FILE_IND;
+    l_sendline.bytesInPayload = 1024;
+
+    std::shared_ptr<StreamWrapperMock> l_fileDescriptorMock = std::make_shared<StreamWrapperMock>();
+
+    setExpectationsForGettingSpecifiedNumberOfBytes(l_fileDescriptorMock, l_numOfBytesInInputFile);
+    setExpectationsForSendClientSendFileInd(l_clientSocket, l_sendline);
+    l_sendline.bytesInPayload = 1;
+    setExpectationsForSendClientSendFileInd(l_clientSocket, l_sendline);
+
+    m_sut.sendRequestedFile(l_fileDescriptorMock, l_clientSocket);
 }
 

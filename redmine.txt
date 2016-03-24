@@ -1,3 +1,25 @@
+//24.03.2016
+Zrobione:
+1. Stworzyc UT do klasy Handlera dla:
+   * sendRequestedFile
+2. Mock dla klasy StreamWrappera
+
+Do zrobienia:
+0. Mock dla klasy Handlera do przesylania plikow.
+1. Wrzucic do Dispatchera uzycie klasy Handlera do plikow + napisac UT dla tego przypadku.
+2. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
+3. Stworzyc UT do klasy Handlera dla:
+   * handle
+4. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser
+    * konwersja DICOM do JPEG
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczy
+5. System logowania zarowno dla testow modulowych jak i dla serwera.
+6. Przemyslec co by sie dzialo w sytuacjach brzegowych tzn wiadomosc nie przychodzi, przychodzi zla itd.
+7. Testy modulowe z przesylaniem szczegolnie wiekszych plikow czesto failuja.
+    * na tym samym hoscie faile zdarzaja sie czesta
+    * na roznych hostach czesciej pojawia sie fail niz pass
+
 //22.03.2016
 Zrobione:
 1. Dodanie klasy StreamWrapper
