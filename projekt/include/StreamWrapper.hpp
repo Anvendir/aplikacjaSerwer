@@ -8,6 +8,9 @@ using namespace std;
 class StreamWrapper : public IStreamWrapper
 {
 public:
+    StreamWrapper() : m_stream()
+    {
+    }
 
     char get() override
     {
@@ -55,5 +58,5 @@ public:
     }
 
 private:
-    std::fstream& m_stream;
+    std::fstream m_stream;
 };
