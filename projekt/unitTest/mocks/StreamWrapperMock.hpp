@@ -10,6 +10,9 @@ class StreamWrapperMock : public IStreamWrapper
 {
 public:
     MOCK_METHOD0(get, char(void));
+    MOCK_METHOD1(get, bool(char&));
+    MOCK_METHOD0(peek, char(void));
+    MOCK_METHOD0(clear, void(void));
     MOCK_METHOD0(close, void(void));
     MOCK_METHOD2(open, void(const char*, ios_base::openmode));
     MOCK_CONST_METHOD0(is_open, bool(void));

@@ -10,7 +10,8 @@ Server::Server() :
     m_errorHandler(std::make_shared<ErrorHandler>()),
     m_networkWrapper(std::make_unique<NetworkWrappers>(m_errorHandler)),
     m_unixWrapper(std::make_shared<UnixWrappers>(m_errorHandler)),
-    m_dispatcher(std::make_unique<Dispatcher>(m_unixWrapper))
+    m_dispatcher(std::make_unique<Dispatcher>(m_unixWrapper,
+                                              std::make_shared<ServerSendFileRequestHandler>(m_unixWrapper)))
 {
 
 }

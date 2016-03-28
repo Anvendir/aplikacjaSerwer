@@ -17,7 +17,7 @@ ServerSendFileRequestHandler::ServerSendFileRequestHandler(std::shared_ptr<IUnix
 
 }
 
-void ServerSendFileRequestHandler::handle(int p_clientSocket, const Message p_receivedMsg) const
+void ServerSendFileRequestHandler::handle(int p_clientSocket, const Message& p_receivedMsg) const
 {
     openGivenFile(p_receivedMsg.payload);
     auto l_fileLength = getFileSize(p_receivedMsg.payload);
@@ -31,6 +31,7 @@ void ServerSendFileRequestHandler::handle(int p_clientSocket, const Message p_re
 
 void ServerSendFileRequestHandler::openGivenFile(const std::string& p_filePath) const
 {
+    m_inFileDesc->clear();
     m_inFileDesc->open(p_filePath.c_str());
 
     if (!m_inFileDesc->is_open())
@@ -110,11 +111,11 @@ void ServerSendFileRequestHandler::sendRequestedFile(int& p_clientSocket) const
 {
     unsigned int l_msgCounter = 1;
     unsigned long long l_byteCounter = 0;
-    Message l_sendline;
+    Message l_sendline = {};
     memset(&l_sendline, 0, sizeof(l_sendline));
 
     char l_singleByte;
-    while(l_singleByte = m_inFileDesc->get())
+    while(m_inFileDesc->get(l_singleByte))
     {
         checkIfReadByteSucceded(l_byteCounter);
         l_sendline.payload[l_byteCounter] = l_singleByte;

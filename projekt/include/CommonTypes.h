@@ -1,7 +1,6 @@
 //Here are collected all common typedefs
 #include <sys/socket.h>
 #include <netinet/in.h>
-
 #pragma once
 
 typedef sockaddr GenericSockAddr;
@@ -27,4 +26,15 @@ struct Message
     unsigned int numOfMsgInFileTransfer;
     unsigned int bytesInPayload;
     char payload[PAYLOAD_SIZE];
+
+    bool operator==(const Message& A) const
+    {
+        if(this->msgId == A.msgId and
+           this->numOfMsgInFileTransfer == A.numOfMsgInFileTransfer and
+           this->bytesInPayload == A.bytesInPayload)
+        {
+            return true;
+        }
+        return false;
+    }
 };

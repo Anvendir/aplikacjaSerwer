@@ -3,6 +3,7 @@
 #include "Dispatcher.hpp"
 #include "ErrorHandlerMock.hpp"
 #include "UnixWrapperMock.hpp"
+#include "ServerSendFileRequestHandlerMock.hpp"
 #include <string>
 
 using ::testing::StrictMock;
@@ -13,14 +14,34 @@ class DispatcherTestSuite : public testing::Test
 public:
     DispatcherTestSuite()
         : m_unixWrapperMock(std::make_shared<StrictMock<UnixWrappersMock>>()),
-          m_sut(m_unixWrapperMock)
+          m_serverSendFileRequestHandlerMock(std::make_shared<StrictMock<ServerSendFileRequestHandlerMock>>()),
+          m_sut(m_unixWrapperMock, m_serverSendFileRequestHandlerMock)
     {
 
     }
 
+    void fillMessageStructureForServerSendFileReq(Message& p_msg, const std::string& p_fileName);
+    void checkCapturedStdOutput(const std::string& p_expectedText);
+
     std::shared_ptr<StrictMock<UnixWrappersMock>> m_unixWrapperMock;
+    std::shared_ptr<StrictMock<ServerSendFileRequestHandlerMock>> m_serverSendFileRequestHandlerMock;
     Dispatcher m_sut;
 };
+
+void DispatcherTestSuite::fillMessageStructureForServerSendFileReq(Message& p_msg,
+                                                                   const std::string& p_fileName)
+{
+    p_msg.msgId = SERVER_SEND_FILE_REQ;
+    strcpy(p_msg.payload, p_fileName.c_str());
+    p_msg.bytesInPayload = strlen(p_fileName.c_str());
+    p_msg.numOfMsgInFileTransfer = 1;
+}
+
+void DispatcherTestSuite::checkCapturedStdOutput(const std::string& p_expectedText)
+{
+    std::string l_actualValue = testing::internal::GetCapturedStdout();
+    EXPECT_EQ(p_expectedText, l_actualValue);
+}
 
 TEST_F(DispatcherTestSuite, testIfMessageWillBeSentDuringDispatchingEventWithCaseOne)
 {
@@ -39,9 +60,7 @@ TEST_F(DispatcherTestSuite, testIfMessageWillBeSentDuringDispatchingEventWithCas
     EXPECT_CALL(*m_unixWrapperMock, send(l_someSocket, _, sizeof(l_sendline), 0));
 
     m_sut.dispatch(l_someSocket, l_msg);
-
-    std::string l_actualValue = testing::internal::GetCapturedStdout();
-    EXPECT_EQ(l_expectedText, l_actualValue);
+    checkCapturedStdOutput(l_expectedText);
 }
 
 TEST_F(DispatcherTestSuite, testIfMessageWillNotBeSentDuringDispatchingEventWithCaseTwo)
@@ -56,9 +75,24 @@ TEST_F(DispatcherTestSuite, testIfMessageWillNotBeSentDuringDispatchingEventWith
     EXPECT_CALL(*m_unixWrapperMock, getPid());
 
     m_sut.dispatch(l_someSocket, l_msg);
+    checkCapturedStdOutput(l_expectedText);
+}
 
-    std::string l_actualValue = testing::internal::GetCapturedStdout();
-    EXPECT_EQ(l_expectedText, l_actualValue);
+TEST_F(DispatcherTestSuite, testIfServerSendFileRequestHandlerWillBeCalledDuringDispatchingEventServerSendFileReq)
+{
+    const int l_someSocket = 5;
+    std::string l_fileName = "Sample.txt";
+    Message l_msg = {};
+
+    fillMessageStructureForServerSendFileReq(l_msg, l_fileName);
+    std::string l_expectedText = "PID: 0 | Case SERVER_SEND_FILE_REQ: received message - Sample.txt\n";
+    testing::internal::CaptureStdout();
+
+    EXPECT_CALL(*m_unixWrapperMock, getPid());
+    EXPECT_CALL(*m_serverSendFileRequestHandlerMock, handle(l_someSocket, l_msg));
+
+    m_sut.dispatch(l_someSocket, l_msg);
+    checkCapturedStdOutput(l_expectedText);
 }
 
 TEST_F(DispatcherTestSuite, testIfMessageWillNotBeSentDuringDispatchingEventWithUnknownCase)
@@ -73,7 +107,5 @@ TEST_F(DispatcherTestSuite, testIfMessageWillNotBeSentDuringDispatchingEventWith
     EXPECT_CALL(*m_unixWrapperMock, getPid());
 
     m_sut.dispatch(l_someSocket, l_msg);
-
-    std::string l_actualValue = testing::internal::GetCapturedStdout();
-    EXPECT_EQ(l_expectedText, l_actualValue);
+    checkCapturedStdOutput(l_expectedText);
 }

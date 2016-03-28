@@ -17,6 +17,25 @@ public:
         return m_stream.get();
     }
 
+    bool get(char& p_readByte)
+    {
+        if(m_stream.get(p_readByte))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    char peek() override
+    {
+        return m_stream.peek();
+    }
+
+    void clear() override
+    {
+        m_stream.clear();
+    }
+
     void close() override
     {
         m_stream.close();

@@ -1,3 +1,41 @@
+//28.03.2016
+Zrobione:
+1. Mock dla klasy Handlera do przesylania plikow.
+2. Wrzucic do Dispatchera uzycie klasy Handlera do plikow + napisac UT dla tego przypadku.
+
+Do zrobienia:
+1. W testach do Handlera wywalic l_onlyToMakeWork_toRemoveInFuture;
+2. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
+3. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser
+    * konwersja DICOM do JPEG
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczy
+4. System logowania zarowno dla testow modulowych jak i dla serwera.
+5. Przemyslec co by sie dzialo w sytuacjach brzegowych tzn wiadomosc nie przychodzi, przychodzi zla itd.
+6. Testy modulowe z przesylaniem szczegolnie wiekszych plikow czesto failuja.
+    * na tym samym hoscie faile zdarzaja sie czesta
+    * na roznych hostach czesciej pojawia sie fail niz pass
+
+//25.03.2016
+Zrobione:
+1. Stworzyc UT do klasy Handlera dla:
+   * handle
+
+Do zrobienia:
+1. W testach do Handlera wywalic l_onlyToMakeWork_toRemoveInFuture;
+2. Mock dla klasy Handlera do przesylania plikow.
+3. Wrzucic do Dispatchera uzycie klasy Handlera do plikow + napisac UT dla tego przypadku.
+4. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
+5. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser
+    * konwersja DICOM do JPEG
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczy
+6. System logowania zarowno dla testow modulowych jak i dla serwera.
+7. Przemyslec co by sie dzialo w sytuacjach brzegowych tzn wiadomosc nie przychodzi, przychodzi zla itd.
+8. Testy modulowe z przesylaniem szczegolnie wiekszych plikow czesto failuja.
+    * na tym samym hoscie faile zdarzaja sie czesta
+    * na roznych hostach czesciej pojawia sie fail niz pass
+
 //24.03.2016
 Zrobione:
 1. Stworzyc UT do klasy Handlera dla:

@@ -11,8 +11,3 @@ class ServerTestSuite : public ::testing::Test
 
     Server m_sut;
 };
-
-TEST(ServerTestSuite, fillme)
-{
-
-}

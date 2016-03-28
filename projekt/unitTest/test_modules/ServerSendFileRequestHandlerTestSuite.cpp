@@ -1,11 +1,9 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-
 #include "ServerSendFileRequestHandler.hpp"
 #include "UnixWrapperMock.hpp"
 #include "StreamWrapperMock.hpp"
 #include "StreamWrapper.hpp"
-
 #include <string>
 #include <fstream>
 
@@ -105,9 +103,9 @@ void ServerSendFileRequestHandlerTestSuite::setExpectationsForGettingSpecifiedNu
     {
         using testing::InSequence;
         InSequence l_sequence;
-        EXPECT_CALL(*m_streamWrapperMock, get()).Times(p_numOfBytes)
-                                                .WillRepeatedly(Return('c'));
-        EXPECT_CALL(*m_streamWrapperMock, get()).WillOnce(Return(0));
+        EXPECT_CALL(*m_streamWrapperMock, get(_)).Times(p_numOfBytes)
+                                                .WillRepeatedly(Return(true));
+        EXPECT_CALL(*m_streamWrapperMock, get(_)).WillOnce(Return(false));
     }
 
     EXPECT_CALL(*m_streamWrapperMock, good()).WillRepeatedly(Return(true));
@@ -221,7 +219,7 @@ TEST_F(ServerSendFileRequestHandlerTestSuite, sendClientSendFileIndTest_whenNumb
 TEST_F(ServerSendFileRequestHandlerTestSuite, sendRequestedFileTest_whenFirstReadByteIsZero)
 {
     int l_clientSocket = 0;
-    EXPECT_CALL(*m_streamWrapperMock, get()).WillOnce(Return(0));
+    EXPECT_CALL(*m_streamWrapperMock, get(_)).WillOnce(Return(false));
 
     m_sut.sendRequestedFile(l_clientSocket);
 }
@@ -233,9 +231,9 @@ TEST_F(ServerSendFileRequestHandlerTestSuite, sendRequestedFileTest_whenInputFil
     l_sendline.msgId = CLIENT_SEND_FILE_IND;
     l_sendline.bytesInPayload = 1;
 
-    EXPECT_CALL(*m_streamWrapperMock, get()).Times(2)
-                                             .WillOnce(Return('c'))
-                                             .WillOnce(Return(0));
+    EXPECT_CALL(*m_streamWrapperMock, get(_)).Times(2)
+                                             .WillOnce(Return(true))
+                                             .WillOnce(Return(false));
     EXPECT_CALL(*m_streamWrapperMock, good()).WillRepeatedly(Return(true));
     setExpectationsForSendClientSendFileInd(l_clientSocket, l_sendline);
 
@@ -281,6 +279,7 @@ TEST_F(ServerSendFileRequestHandlerTestSuite, handleTestSuccessfulScenario)
     Message l_receivedMsg = {};
     fillMsgStructForServerSendFileReq(l_receivedMsg, l_fileName);
 
+    EXPECT_CALL(*m_streamWrapperMock, clear());
     EXPECT_CALL(*m_streamWrapperMock, open(StrEq(l_fileName), _));
     EXPECT_CALL(*m_streamWrapperMock, is_open()).WillRepeatedly(Return(true));
     setExpectationsForGetFileSizeFunction(l_sizeOfRequestedFileInBytes);
