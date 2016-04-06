@@ -4,6 +4,7 @@
 #include "ErrorHandlerMock.hpp"
 #include "UnixWrapperMock.hpp"
 #include "ServerSendFileRequestHandlerMock.hpp"
+#include "ServerSendFileListRequestHandlerMock.hpp"
 #include <string>
 
 using ::testing::StrictMock;
@@ -15,7 +16,8 @@ public:
     DispatcherTestSuite()
         : m_unixWrapperMock(std::make_shared<StrictMock<UnixWrappersMock>>()),
           m_serverSendFileRequestHandlerMock(std::make_shared<StrictMock<ServerSendFileRequestHandlerMock>>()),
-          m_sut(m_unixWrapperMock, m_serverSendFileRequestHandlerMock)
+          m_serverSendFileListRequestHandlerMock(std::make_shared<StrictMock<ServerSendFileListRequestHandlerMock>>()),
+          m_sut(m_unixWrapperMock, m_serverSendFileRequestHandlerMock, m_serverSendFileListRequestHandlerMock)
     {
 
     }
@@ -25,6 +27,7 @@ public:
 
     std::shared_ptr<StrictMock<UnixWrappersMock>> m_unixWrapperMock;
     std::shared_ptr<StrictMock<ServerSendFileRequestHandlerMock>> m_serverSendFileRequestHandlerMock;
+    std::shared_ptr<StrictMock<ServerSendFileListRequestHandlerMock>> m_serverSendFileListRequestHandlerMock;
     Dispatcher m_sut;
 };
 
@@ -90,6 +93,23 @@ TEST_F(DispatcherTestSuite, testIfServerSendFileRequestHandlerWillBeCalledDuring
 
     EXPECT_CALL(*m_unixWrapperMock, getPid());
     EXPECT_CALL(*m_serverSendFileRequestHandlerMock, handle(l_someSocket, l_msg));
+
+    m_sut.dispatch(l_someSocket, l_msg);
+    checkCapturedStdOutput(l_expectedText);
+}
+
+TEST_F(DispatcherTestSuite, testIfServerSendFileListRequestHandlerWillBeCalledDuringDispatchingEventServerSendFileListReq)
+{
+    const int l_someSocket = 5;
+    Message l_msg = {};
+    l_msg.msgId = SERVER_SEND_FILE_LIST_REQ;
+    strcpy(l_msg.payload, "File list request.");
+
+    std::string l_expectedText = "PID: 0 | Case SERVER_SEND_FILE_LIST_REQ: received message - File list request.\n";
+    testing::internal::CaptureStdout();
+
+    EXPECT_CALL(*m_unixWrapperMock, getPid());
+    EXPECT_CALL(*m_serverSendFileListRequestHandlerMock, handle(l_someSocket, l_msg));
 
     m_sut.dispatch(l_someSocket, l_msg);
     checkCapturedStdOutput(l_expectedText);

@@ -4,7 +4,8 @@ objects = Main.o \
 		  NetworkWrappers.o NetworkWrappersTestSuite.o \
 		  UnixWrappers.o UnixWrappersTestSuite.o \
 		  Server.o ServerTestSuite.o \
-		  ServerSendFileRequestHandler.o ServerSendFileRequestHandlerTestSuite.o
+		  ServerSendFileRequestHandler.o ServerSendFileRequestHandlerTestSuite.o \
+	      ServerSendFileListRequestHandler.o ServerSendFileListRequestHandlerTestSuite.o
 
 GTEST_DIR = ./googleTestRepo/googletest
 GMOCK_DIR = ./googleTestRepo/googlemock
@@ -72,6 +73,15 @@ ServerSendFileRequestHandlerTestSuite.o : ./test_modules/ServerSendFileRequestHa
 	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
 			-I ./mocks -I ../include/ \
 			./test_modules/ServerSendFileRequestHandlerTestSuite.cpp
+
+ServerSendFileListRequestHandler.o : ../source/ServerSendFileListRequestHandler.cpp ../include/ServerSendFileListRequestHandler.hpp
+	g++ -c -std=c++14 -I ../include \
+			../source/ServerSendFileListRequestHandler.cpp
+
+ServerSendFileListRequestHandlerTestSuite.o : ./test_modules/ServerSendFileListRequestHandlerTestSuite.cpp ../include/ServerSendFileListRequestHandler.hpp
+	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
+			-I ./mocks -I ../include/ \
+			./test_modules/ServerSendFileListRequestHandlerTestSuite.cpp
 
 .PHONY : clean
 clean:

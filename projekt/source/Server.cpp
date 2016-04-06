@@ -3,6 +3,8 @@
 #include "NetworkWrappers.hpp"
 #include "UnixWrappers.hpp"
 #include "Dispatcher.hpp"
+#include "ServerSendFileRequestHandler.hpp"
+#include "ServerSendFileListRequestHandler.hpp"
 #include <cstring>
 #include <iostream>
 
@@ -11,7 +13,8 @@ Server::Server() :
     m_networkWrapper(std::make_unique<NetworkWrappers>(m_errorHandler)),
     m_unixWrapper(std::make_shared<UnixWrappers>(m_errorHandler)),
     m_dispatcher(std::make_unique<Dispatcher>(m_unixWrapper,
-                                              std::make_shared<ServerSendFileRequestHandler>(m_unixWrapper)))
+                                              std::make_shared<ServerSendFileRequestHandler>(m_unixWrapper),
+                                              std::make_shared<ServerSendFileListRequestHandler>(m_unixWrapper)))
 {
 
 }
