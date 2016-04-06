@@ -1,3 +1,21 @@
+//06.04.2016
+Zrobione:
+1. Testy modulowe z przesylaniem szczegolnie wiekszych plikow czesto failuja.
+    * na tym samym hoscie faile zdarzaja sie czesta
+    * na roznych hostach czesciej pojawia sie fail niz pass
+    * rozwiazaniem okazalo sie MSG_WAIT_ALL przy receive, takze tak czy siak problem lezal po stronie modul
+      testow
+
+Do zrobienia:
+1. W testach do Handlera wywalic l_onlyToMakeWork_toRemoveInFuture;
+2. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze plus test modulowy do tego.
+3. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser
+    * konwersja DICOM do JPEG
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczy
+4. System logowania zarowno dla testow modulowych jak i dla serwera.
+5. Przemyslec co by sie dzialo w sytuacjach brzegowych tzn wiadomosc nie przychodzi, przychodzi zla itd.
+
 //28.03.2016
 Zrobione:
 1. Mock dla klasy Handlera do przesylania plikow.

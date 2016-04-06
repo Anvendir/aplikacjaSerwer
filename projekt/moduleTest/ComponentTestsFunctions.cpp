@@ -123,10 +123,12 @@ void receiveMessageFromServer(const int p_msgId)
     g_receivedBytes = 0;
     g_receivedMessage = {};
 again:
-	while ((g_receivedBytes = g_unixWrapper.recv(g_sockfd, &g_receivedMessage, sizeof(Message), 0)) > 0)
+	while ((g_receivedBytes = g_unixWrapper.recv(g_sockfd, &g_receivedMessage, sizeof(Message))) > 0)
     {
-        if(!(g_receivedMessage.msgId == p_msgId))
+        if(g_receivedMessage.msgId != p_msgId)
         {
+            std::cout << "Received msg id: " << g_receivedMessage.msgId << std::endl;
+            std::cout << "Received bytes: " << g_receivedBytes << std::endl;
             failTestcase("Received message is different than expected!");
             exit(0);
         }
@@ -150,11 +152,13 @@ void receiveMessageClientSendFileIndFromServer(std::ofstream& p_outFile, long lo
     Message l_msg = {};
     memset(&l_msg, 0, sizeof(l_msg));
 again:
-	while ((g_receivedBytes = g_unixWrapper.recv(g_sockfd, &l_msg, sizeof(Message), 0)) > 0)
+	while ((g_receivedBytes = g_unixWrapper.recv(g_sockfd, &l_msg, sizeof(Message))) > 0)
     {
         p_sumOfReceivedBytes += g_receivedBytes;
-        if(!(l_msg.msgId == CLIENT_SEND_FILE_IND))
+        if(l_msg.msgId != CLIENT_SEND_FILE_IND)
         {
+            std::cout << "Received msg id: " << g_receivedMessage.msgId << std::endl;
+            std::cout << "Received bytes: " << g_receivedBytes << std::endl;
             failTestcase("Received message is different than expected");
             exit(0);
         }
