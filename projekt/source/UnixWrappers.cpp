@@ -1,5 +1,5 @@
 #include "UnixWrappers.hpp"
-
+#include <string>
 #include <sys/socket.h>
 #include <unistd.h>
 
@@ -60,5 +60,25 @@ pid_t UnixWrappers::fork(void) const
 pid_t UnixWrappers::getPid() const
 {
     return ::getpid();
+}
+
+std::string UnixWrappers::executeCommand(const char* p_cmd) const
+{
+    std::shared_ptr<FILE> l_pipe(popen(p_cmd, "r"), pclose);
+    if (!l_pipe)
+    {
+        return "ERROR";
+    }
+
+    char l_buffer[128];
+    std::string l_result = "";
+    while (!feof(l_pipe.get()))
+    {
+        if (fgets(l_buffer, 128, l_pipe.get()) != NULL)
+        {
+            l_result += l_buffer;
+        }
+    }
+    return l_result;
 }
 

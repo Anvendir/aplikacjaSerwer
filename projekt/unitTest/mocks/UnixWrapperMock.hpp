@@ -16,4 +16,5 @@ public:
     MOCK_CONST_METHOD1(close, void(int));
     MOCK_CONST_METHOD0(fork, pid_t(void));
     MOCK_CONST_METHOD0(getPid, pid_t(void));
+    MOCK_CONST_METHOD1(executeCommand, std::string(const char*));
 };

@@ -1,3 +1,20 @@
+//07.04.2016
+Zrobione:
+1. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze
+   * dopisac implemetacje dla klasy handlera
+2. Dodanie execute command do UnixWrappers
+
+Do zrobienia:
+1. W testach do Handlera wywalic l_onlyToMakeWork_toRemoveInFuture;
+2. Stworzyc test modulowy do funkcjonalnosci przesylania listy plikow na serwerze
+   * dopisac test modulowy
+3. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser
+    * konwersja DICOM do JPEG
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczy
+4. System logowania zarowno dla testow modulowych jak i dla serwera.
+5. Przemyslec co by sie dzialo w sytuacjach brzegowych tzn wiadomosc nie przychodzi, przychodzi zla itd.
+
 //06.04.2016
 Zrobione:
 1. Testy modulowe z przesylaniem szczegolnie wiekszych plikow czesto failuja.

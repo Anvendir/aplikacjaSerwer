@@ -1,4 +1,5 @@
 #include "CommonTypes.h"
+#include <string>
 
 #pragma once
 
@@ -19,5 +20,6 @@ public:
     virtual void close(int p_socketDescriptor) const = 0;
     virtual pid_t fork(void) const = 0;
     virtual pid_t getPid(void) const = 0;
+    virtual std::string executeCommand(const char* p_cmd) const = 0;
 
 };
