@@ -3,11 +3,13 @@ Zrobione:
 1. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze
    * dopisac implemetacje dla klasy handlera
 2. Dodanie execute command do UnixWrappers
+3. Test modulowy dla funkconalnosci o przeslanie listy plikow
 
 Do zrobienia:
 1. W testach do Handlera wywalic l_onlyToMakeWork_toRemoveInFuture;
 2. Stworzyc test modulowy do funkcjonalnosci przesylania listy plikow na serwerze
-   * dopisac test modulowy
+   * dopisac test modulowy kiedy pytamy o liste plikow, otrzymujemy, nastepenie wybieramy
+     plik z listy i wysylamy request o niego i odbieramy ten plik
 3. Rozparsowanie pliku DICOM.
     * podgladnac jak robi to jakis darmowy parser
     * konwersja DICOM do JPEG
