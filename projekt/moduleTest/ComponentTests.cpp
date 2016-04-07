@@ -13,7 +13,8 @@ int main(int p_argc, char** p_argv)
             {"sendFileTransferRequestAndReceiveRequestedFileTest_smallBinaryFile", sendFileTransferRequestAndReceiveRequestedFileTest_smallBinaryFile},
             {"sendFileTransferRequestAndReceiveRequestedFileTest_largeBinaryFile", sendFileTransferRequestAndReceiveRequestedFileTest_largeBinaryFile},
             {"sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile", sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile},
-            {"sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024", sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024}
+            {"sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024", sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024},
+            {"sendFileListRequestAndReceiveResponseWithProperFileListTest", sendFileListRequestAndReceiveResponseWithProperFileListTest}
           };
 
     switch (p_argc)
@@ -382,6 +383,37 @@ void sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024(cha
     checkIfRequestedAndReceivedFilesMatch("./plikiPrzykladowe/" + l_sourceFileName,
                                           l_outFileName);
 //Step7
+    g_unixWrapper.close(g_sockfd);
+    std::cout << "Testcase " << __FUNCTION__ << " finished successfully." << std::endl;
+}
+
+/**************************************************************************
+ * Test scenario:
+ * Step1: Setup connection with server with address 192.168.254.1
+ * Step2: Receive CLIENT_WELCOME_MSG_IND message from server
+ * Step3: Send message SERVER_SEND_FILE_LIST_REQ to the server
+ * Step4: Receive SERVER_SEND_FILE_LIST_RESP message from server
+ * Step5: Check if received list is equal to real list of file
+ * Step6: Close connection
+**************************************************************************/
+void sendFileListRequestAndReceiveResponseWithProperFileListTest(char** p_argv)
+{
+    std::cout << "Testcase " << __FUNCTION__ << " started." << std::endl;
+//Step1
+    initializeConnection(p_argv);
+//Step2
+    receiveMessageFromServer(CLIENT_WELCOME_MSG_IND);
+//Step3
+    Message l_sendline = {};
+    l_sendline.msgId = SERVER_SEND_FILE_LIST_REQ;
+    strcpy(l_sendline.payload, "File list request.");
+
+    g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
+//Step4
+    receiveMessageFromServer(SERVER_SEND_FILE_LIST_RESP);
+//Step5
+    checkIfReceivedAndActualFileListMatch();
+//Step6
     g_unixWrapper.close(g_sockfd);
     std::cout << "Testcase " << __FUNCTION__ << " finished successfully." << std::endl;
 }

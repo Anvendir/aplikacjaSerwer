@@ -34,6 +34,7 @@ void initializeConnection(char** p_argv);
 void receiveMessageFromServer(const int p_msgId);
 void receiveMessageClientSendFileIndFromServer(std::ofstream& p_outFile, long long& p_sumOfReceivedBytes);
 void checkIfRequestedAndReceivedFilesMatch(std::string p_file1, std::string p_file2);
+void checkIfReceivedAndActualFileListMatch();
 
 //main functions
 void runAllTestcases(std::map<std::string, void(*)(char**)>& p_testcaseContainer, char** p_argv);
@@ -50,5 +51,6 @@ void sendFileTransferRequestAndReceiveRequestedFileTest_smallBinaryFile(char** p
 void sendFileTransferRequestAndReceiveRequestedFileTest_largeBinaryFile(char** p_argv);
 void sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile(char** p_argv);
 void sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024(char** p_argv);
+void sendFileListRequestAndReceiveResponseWithProperFileListTest(char** p_argv);
 
 

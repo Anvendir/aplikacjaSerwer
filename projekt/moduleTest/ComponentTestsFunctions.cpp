@@ -97,6 +97,30 @@ void checkIfRequestedAndReceivedFilesMatch(std::string p_file1, std::string p_fi
     }
 }
 
+void checkIfReceivedAndActualFileListMatch()
+{
+    std::string l_repositoryRootPath = executeCommand("git rev-parse --show-toplevel");
+    l_repositoryRootPath.back() = '/';
+    std::string l_filesPath = l_repositoryRootPath + "projekt/moduleTest/plikiPrzykladowe/";
+    std::string l_actualFileList = executeCommand(("ls " + l_filesPath).c_str());
+
+    std::string l_receivedFileList;
+    l_receivedFileList.append(g_receivedMessage.payload, g_receivedMessage.bytesInPayload);
+
+    if(not l_actualFileList.compare(l_receivedFileList))
+    {
+        std::cout << "Received and actual lists are equal" << std::endl;
+    }
+    else
+    {
+        failTestcase("Received and actual lists are not equal!");
+        std::cout << "Actual file list: " << l_actualFileList << std::endl;
+        std::cout << "Received file lsit " << l_receivedFileList << std::endl;
+        exit(0);
+    }
+
+}
+
 void failTestcase(std::string p_message)
 {
     std::cout << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "() - "
