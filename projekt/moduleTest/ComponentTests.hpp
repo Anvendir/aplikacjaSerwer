@@ -7,6 +7,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <vector>
 
 #pragma once
 
@@ -29,6 +30,7 @@ void Fputs(const char *ptr, FILE *stream);
 char* Fgets(char *ptr, int n, FILE *stream);
 std::string executeCommand(const char* p_cmd);
 void failTestcase(std::string p_message);
+std::vector<std::string> splitString(const std::string& l_str, const std::string& l_delimiter);
 
 void initializeConnection(char** p_argv);
 void receiveMessageFromServer(const int p_msgId);
@@ -52,5 +54,6 @@ void sendFileTransferRequestAndReceiveRequestedFileTest_largeBinaryFile(char** p
 void sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile(char** p_argv);
 void sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024(char** p_argv);
 void sendFileListRequestAndReceiveResponseWithProperFileListTest(char** p_argv);
+void sendFileListRequestNextChoseOneFileAndRequestForIt(char** p_argv);
 
 

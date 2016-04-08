@@ -1,3 +1,18 @@
+//08.04.2016
+Zrobione:
+1. Stworzyc test modulowy do funkcjonalnosci przesylania listy plikow na serwerze
+   * dopisac test modulowy kiedy pytamy o liste plikow, otrzymujemy, nastepenie wybieramy
+     plik z listy i wysylamy request o niego i odbieramy ten plik
+
+Do zrobienia:
+1. W testach do Handlera wywalic l_onlyToMakeWork_toRemoveInFuture;
+2. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser
+    * konwersja DICOM do JPEG
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczy
+3. System logowania zarowno dla testow modulowych jak i dla serwera.
+4. Przemyslec co by sie dzialo w sytuacjach brzegowych tzn wiadomosc nie przychodzi, przychodzi zla itd.
+
 //07.04.2016
 Zrobione:
 1. Stworzyc funkcjonalnosc przesylania listy plikow na serwerze

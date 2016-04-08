@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdio>
 #include <memory>
+#include <vector>
 
 int g_sockfd = 0;
 struct sockaddr_in g_servaddr = {};
@@ -79,6 +80,25 @@ std::string executeCommand(const char* p_cmd)
         }
     }
     return l_result;
+}
+
+std::vector<std::string> splitString(const std::string& l_str,
+                                     const std::string& l_delimiter)
+{
+    std::vector<std::string> l_strings;
+
+    std::string::size_type l_pos = 0;
+    std::string::size_type l_prev = 0;
+    while ((l_pos = l_str.find(l_delimiter, l_prev)) != std::string::npos)
+    {
+        l_strings.push_back(l_str.substr(l_prev, l_pos - l_prev));
+        l_prev = l_pos + 1;
+    }
+
+    // To get the last substring (or only, if delimiter is not found)
+    l_strings.push_back(l_str.substr(l_prev));
+
+    return l_strings;
 }
 
 void checkIfRequestedAndReceivedFilesMatch(std::string p_file1, std::string p_file2)
