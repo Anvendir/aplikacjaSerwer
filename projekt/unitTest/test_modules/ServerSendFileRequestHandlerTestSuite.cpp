@@ -115,15 +115,15 @@ void ServerSendFileRequestHandlerTestSuite::setExpectationsForGetFileSizeFunctio
 {
     ios_base::seekdir l_seekDirBeg = ios_base::beg;
     ios_base::seekdir l_seekDirEnd = ios_base::end;
-    std::fstream l_onlyToMakeWork_toRemoveInFuture;
+    std::fstream l_positionReturnedBySeekg;
 
     EXPECT_CALL(*m_streamWrapperMock, beg()).WillRepeatedly(Return(l_seekDirBeg));
     EXPECT_CALL(*m_streamWrapperMock, seekg(0, l_seekDirBeg))
-        .WillRepeatedly(ReturnRef(l_onlyToMakeWork_toRemoveInFuture));
+        .WillRepeatedly(ReturnRef(l_positionReturnedBySeekg));
     EXPECT_CALL(*m_streamWrapperMock, tellg()).WillRepeatedly(Return(p_numberOfReadBytes));
     EXPECT_CALL(*m_streamWrapperMock, end()).WillRepeatedly(Return(l_seekDirEnd));
     EXPECT_CALL(*m_streamWrapperMock, seekg(0, l_seekDirEnd))
-        .WillRepeatedly(ReturnRef(l_onlyToMakeWork_toRemoveInFuture));
+        .WillRepeatedly(ReturnRef(l_positionReturnedBySeekg));
 }
 
 void ServerSendFileRequestHandlerTestSuite::fillMsgStructForServerSendFileReq(Message& p_msg,
