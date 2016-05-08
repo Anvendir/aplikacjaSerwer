@@ -40,3 +40,12 @@ struct Message
         return false;
     }
 };
+
+struct RawMessage
+{
+    char msgId[3];
+    char numOfMsgInFileTransfer[10];
+    char intbytesInPayload[10];
+    char payload[PAYLOAD_SIZE];
+};
+

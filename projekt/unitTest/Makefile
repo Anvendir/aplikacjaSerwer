@@ -5,7 +5,8 @@ objects = Main.o \
 		  UnixWrappers.o UnixWrappersTestSuite.o \
 		  Server.o ServerTestSuite.o \
 		  ServerSendFileRequestHandler.o ServerSendFileRequestHandlerTestSuite.o \
-	      ServerSendFileListRequestHandler.o ServerSendFileListRequestHandlerTestSuite.o
+	      ServerSendFileListRequestHandler.o ServerSendFileListRequestHandlerTestSuite.o \
+		  MessageConverter.o MessageConverterTestSuite.o
 
 GTEST_DIR = ./googleTestRepo/googletest
 GMOCK_DIR = ./googleTestRepo/googlemock
@@ -82,6 +83,15 @@ ServerSendFileListRequestHandlerTestSuite.o : ./test_modules/ServerSendFileListR
 	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
 			-I ./mocks -I ../include/ \
 			./test_modules/ServerSendFileListRequestHandlerTestSuite.cpp
+
+MessageConverter.o : ../source/MessageConverter.cpp ../include/MessageConverter.hpp
+	g++ -c -std=c++14 -I ../include \
+			../source/MessageConverter.cpp
+
+MessageConverterTestSuite.o : ./test_modules/MessageConverterTestSuite.cpp ../include/MessageConverter.hpp
+	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
+			-I ./mocks -I ../include/ \
+			./test_modules/MessageConverterTestSuite.cpp
 
 .PHONY : clean
 clean:

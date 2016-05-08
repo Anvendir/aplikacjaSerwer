@@ -1,5 +1,6 @@
 #include "IUnixWrappers.hpp"
 #include "ErrorHandler.hpp"
+#include "CommonTypes.h"
 #include <memory>
 #include <string>
 
@@ -12,12 +13,12 @@ public:
 
     void send(int p_socketDescriptor,
               const Message* p_messageToSent,
-              size_t p_messageLenghtInBytes,
+              size_t p_messageLenghtInBytes = sizeof(RawMessage),
               int p_transmissionType = 0) const override;
 
     ssize_t recv(int p_socketDescriptor,
                  Message* p_receivedMessage,
-                 size_t p_messageLenghtInBytes,
+                 size_t p_messageLenghtInBytes = sizeof(RawMessage),
                  int p_transmissionType = MSG_WAITALL) const override;
 
     void close(int p_socketDescriptor) const override;

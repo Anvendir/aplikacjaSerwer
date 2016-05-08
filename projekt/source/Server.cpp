@@ -7,6 +7,7 @@
 #include "ServerSendFileListRequestHandler.hpp"
 #include <cstring>
 #include <iostream>
+#include <climits>
 
 Server::Server() :
     m_errorHandler(std::make_shared<ErrorHandler>()),
@@ -23,6 +24,7 @@ void Server::start() const
 {
     int l_serverSocket = m_networkWrapper->socket(AF_INET, SOCK_STREAM);
     SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.254.1", 9878);
+    //SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.1.6", 9878);
 
     m_networkWrapper->bind(l_serverSocket,
                            reinterpret_cast<GenericSockAddr*>(&l_serverAddrStruct),
@@ -99,7 +101,7 @@ void Server::processConnection(int p_clientSocket) const
     sendWelcomeMessage(p_clientSocket);
 
 again:
-	while ((l_receivedBytes = m_unixWrapper->recv(p_clientSocket, &l_receivedMessage, MAXLINE, 0)) > 0)
+	while ((l_receivedBytes = m_unixWrapper->recv(p_clientSocket, &l_receivedMessage, sizeof(Message), 0)) > 0)
     {
         l_status = m_dispatcher->dispatch(p_clientSocket, l_receivedMessage);
         if (l_status == false)

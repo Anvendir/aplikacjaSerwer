@@ -1,5 +1,5 @@
 objects = Main.o Dispatcher.o ErrorHandler.o NetworkWrappers.o UnixWrappers.o Server.o \
-		  ServerSendFileRequestHandler.o ServerSendFileListRequestHandler.o
+		  ServerSendFileRequestHandler.o ServerSendFileListRequestHandler.o MessageConverter.o
 
 Program : $(objects)
 	g++ -std=c++14 -o Program $(objects)
@@ -35,6 +35,10 @@ ServerSendFileRequestHandler.o : ./source/ServerSendFileRequestHandler.cpp ./inc
 ServerSendFileListRequestHandler.o : ./source/ServerSendFileListRequestHandler.cpp ./include/ServerSendFileListRequestHandler.hpp
 	g++ -c -std=c++14 -I ./include \
 	   	./source/ServerSendFileListRequestHandler.cpp
+
+MessageConverter.o : ./source/MessageConverter.cpp ./include/MessageConverter.hpp
+	g++ -c -std=c++14 -I ./include \
+	   	./source/MessageConverter.cpp
 
 .PHONY : clean
 clean:
