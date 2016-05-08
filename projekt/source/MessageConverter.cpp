@@ -23,7 +23,7 @@ void MessageConverter::convertMsgIdToChar(const Message& p_msg, RawMessage& p_ra
 
 void MessageConverter::convertNumOfMsgInFileTransferToChar(const Message& p_msg, RawMessage& p_rawMsg) const
 {
-    if(p_msg.numOfMsgInFileTransfer > 4000000000)
+    if(p_msg.numOfMsgInFileTransfer > 999999999)
     {
         m_error->handleHardError("Message converter error: numOfMsgInFileTransfer of of range!");
     }
@@ -34,7 +34,7 @@ void MessageConverter::convertNumOfMsgInFileTransferToChar(const Message& p_msg,
 
 void MessageConverter::convertBytesInPayloadToChar(const Message& p_msg, RawMessage& p_rawMsg) const
 {
-    if(p_msg.bytesInPayload > 4000000000)
+    if(p_msg.bytesInPayload > 999999999)
     {
         m_error->handleHardError("Message converter error: numOfMsgInFileTransfer of of range!");
     }
@@ -62,7 +62,7 @@ void MessageConverter::convertMsgIdToEnum(const RawMessage& p_rawMsg, Message& p
         unsigned int l_tempInt = boost::lexical_cast<unsigned int>(p_rawMsg.msgId);
         p_msg.msgId = static_cast<EMessageId>(l_tempInt);
     }
-    catch (boost::bad_lexical_cast &)
+    catch (boost::bad_lexical_cast&)
     {
         m_error->handleHardError("Message converter error: bad_lexical_cast");
     }
@@ -70,12 +70,26 @@ void MessageConverter::convertMsgIdToEnum(const RawMessage& p_rawMsg, Message& p
 
 void MessageConverter::convertNumOfMsgInFileTransferToInt(const RawMessage& p_rawMsg, Message& p_msg) const
 {
-
+    try
+    {
+        p_msg.numOfMsgInFileTransfer = boost::lexical_cast<unsigned int>(p_rawMsg.numOfMsgInFileTransfer);
+    }
+    catch (boost::bad_lexical_cast&)
+    {
+        m_error->handleHardError("Message converter error: bad_lexical_cast");
+    }
 }
 
 void MessageConverter::convertBytesInPayloadInt(const RawMessage& p_rawMsg, Message& p_msg) const
 {
-
+    try
+    {
+        p_msg.bytesInPayload = boost::lexical_cast<unsigned int>(p_rawMsg.bytesInPayload);
+    }
+    catch (boost::bad_lexical_cast&)
+    {
+        m_error->handleHardError("Message converter error: bad_lexical_cast");
+    }
 }
 
 Message MessageConverter::convertRawMessageToMessage(const RawMessage& p_rawMsg) const
@@ -83,6 +97,8 @@ Message MessageConverter::convertRawMessageToMessage(const RawMessage& p_rawMsg)
     Message l_msg = {};
 
     convertMsgIdToEnum(p_rawMsg, l_msg);
+    convertNumOfMsgInFileTransferToInt(p_rawMsg, l_msg);
+    //convertBytesInPayloadInt(p_rawMsg, l_msg);
     strcpy(l_msg.payload, p_rawMsg.payload);
 
     return l_msg;

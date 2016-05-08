@@ -9,6 +9,7 @@ b) znalazenie sposobu na konwertowanie, wynalezienie "klockow" na zasadzie ktory
     * boost lexical cast po stronie odbierania C++
     * konwersja odczytanej tablicy char na String i Integer.parseInt() z biblioteki Java'y (plik Test1.java)
 c) imlementacja UT dla konwersji z Message na RawMessage
+d) implementacja dla konwersji z RawMessage na Messaga + UT dla msgId
 
 Do zrobienia:
 1. Rozparsowanie pliku DICOM.
@@ -20,7 +21,7 @@ Do zrobienia:
 -> request pliku ktorego nie ma
 -> wiadomosc nie przychodzi dlugi czas ( kiedy zamykac polaczenia, timery?)
 3. Stworzenie konwertera z wiadomosci Message na RawMessage i odwrotnie
-a) implementaja + UT dla konwersji z RawMessage na Message
+a) UT dla numOfmessages i bytesInPayload i calosci
 4. Wpiecie konwertera z punktu 3 do UnixWrapera do metody recv i send
 
 //08.04.2016

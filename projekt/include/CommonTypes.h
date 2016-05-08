@@ -43,7 +43,7 @@ struct Message
 
 struct RawMessage
 {
-    char msgId[3];
+    char msgId[4];
     char numOfMsgInFileTransfer[10];
     char bytesInPayload[10];
     char payload[PAYLOAD_SIZE];
