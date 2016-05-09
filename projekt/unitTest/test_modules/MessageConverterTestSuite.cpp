@@ -634,8 +634,245 @@ TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testConversionOfMsgIdWh
     m_sut.convertRawMessageToMessage(l_inputMsg);
 }
 
-//gdzies pozniej tylko jako przyklad
 TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTransferForValueEqualTo0)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.numOfMsgInFileTransfer[0] = '0';
+    l_inputMsg.numOfMsgInFileTransfer[1] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[2] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[3] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(0, l_convertedMsg.numOfMsgInFileTransfer);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTransferWhenEmpty)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.numOfMsgInFileTransfer[0] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[1] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[2] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[3] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    EXPECT_CALL(*m_errorHandler, handleHardError(::testing::_));
+    m_sut.convertRawMessageToMessage(l_inputMsg);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTransferWhenInvalid)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.numOfMsgInFileTransfer[0] = 'c';
+    l_inputMsg.numOfMsgInFileTransfer[1] = 'd';
+    l_inputMsg.numOfMsgInFileTransfer[2] = 'a';
+    l_inputMsg.numOfMsgInFileTransfer[3] = 'b';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    EXPECT_CALL(*m_errorHandler, handleHardError(::testing::_));
+    m_sut.convertRawMessageToMessage(l_inputMsg);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTransferForValueFrom0To9)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.numOfMsgInFileTransfer[0] = '9';
+    l_inputMsg.numOfMsgInFileTransfer[1] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[2] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[3] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(9, l_convertedMsg.numOfMsgInFileTransfer);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTransferForValueFrom10To99)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.numOfMsgInFileTransfer[0] = '9';
+    l_inputMsg.numOfMsgInFileTransfer[1] = '1';
+    l_inputMsg.numOfMsgInFileTransfer[2] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[3] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(91, l_convertedMsg.numOfMsgInFileTransfer);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTransferForValueFrom100To999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.numOfMsgInFileTransfer[0] = '9';
+    l_inputMsg.numOfMsgInFileTransfer[1] = '1';
+    l_inputMsg.numOfMsgInFileTransfer[2] = '2';
+    l_inputMsg.numOfMsgInFileTransfer[3] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(912, l_convertedMsg.numOfMsgInFileTransfer);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTransferForValueFrom1000To9999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.numOfMsgInFileTransfer[0] = '9';
+    l_inputMsg.numOfMsgInFileTransfer[1] = '1';
+    l_inputMsg.numOfMsgInFileTransfer[2] = '2';
+    l_inputMsg.numOfMsgInFileTransfer[3] = '3';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(9123, l_convertedMsg.numOfMsgInFileTransfer);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTransferForValueFrom10000To99999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.numOfMsgInFileTransfer[0] = '9';
+    l_inputMsg.numOfMsgInFileTransfer[1] = '1';
+    l_inputMsg.numOfMsgInFileTransfer[2] = '2';
+    l_inputMsg.numOfMsgInFileTransfer[3] = '3';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '4';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(91234, l_convertedMsg.numOfMsgInFileTransfer);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTransferForValueFrom100000To999999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.numOfMsgInFileTransfer[0] = '9';
+    l_inputMsg.numOfMsgInFileTransfer[1] = '1';
+    l_inputMsg.numOfMsgInFileTransfer[2] = '2';
+    l_inputMsg.numOfMsgInFileTransfer[3] = '3';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '4';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '3';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(912343, l_convertedMsg.numOfMsgInFileTransfer);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTransferForValueFrom1000000To9999999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.numOfMsgInFileTransfer[0] = '9';
+    l_inputMsg.numOfMsgInFileTransfer[1] = '1';
+    l_inputMsg.numOfMsgInFileTransfer[2] = '2';
+    l_inputMsg.numOfMsgInFileTransfer[3] = '3';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '4';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '3';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '2';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(9123432, l_convertedMsg.numOfMsgInFileTransfer);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTransferForValueFrom10000000To99999999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.numOfMsgInFileTransfer[0] = '9';
+    l_inputMsg.numOfMsgInFileTransfer[1] = '1';
+    l_inputMsg.numOfMsgInFileTransfer[2] = '2';
+    l_inputMsg.numOfMsgInFileTransfer[3] = '3';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '4';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '3';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '2';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '8';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(91234328, l_convertedMsg.numOfMsgInFileTransfer);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTransferForValueFrom100000000To999999999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.numOfMsgInFileTransfer[0] = '9';
+    l_inputMsg.numOfMsgInFileTransfer[1] = '1';
+    l_inputMsg.numOfMsgInFileTransfer[2] = '2';
+    l_inputMsg.numOfMsgInFileTransfer[3] = '3';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '4';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '3';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '2';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '8';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '1';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(912343281, l_convertedMsg.numOfMsgInFileTransfer);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueEqualTo0)
 {
     RawMessage l_inputMsg = {};
     initializeRawMessagesWithDefaultValues(l_inputMsg);
@@ -653,5 +890,265 @@ TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testNumOfMsgInFileTrans
     Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
 
     ASSERT_EQ(0, l_convertedMsg.bytesInPayload);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadWhenEmpty)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.bytesInPayload[0] = '\0';
+    l_inputMsg.bytesInPayload[1] = '\0';
+    l_inputMsg.bytesInPayload[2] = '\0';
+    l_inputMsg.bytesInPayload[3] = '\0';
+    l_inputMsg.bytesInPayload[4] = '\0';
+    l_inputMsg.bytesInPayload[5] = '\0';
+    l_inputMsg.bytesInPayload[6] = '\0';
+    l_inputMsg.bytesInPayload[7] = '\0';
+    l_inputMsg.bytesInPayload[8] = '\0';
+    l_inputMsg.bytesInPayload[9] = '\0';
+
+    EXPECT_CALL(*m_errorHandler, handleHardError(::testing::_));
+    m_sut.convertRawMessageToMessage(l_inputMsg);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadWhenInvalid)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.bytesInPayload[0] = 'a';
+    l_inputMsg.bytesInPayload[1] = 'd';
+    l_inputMsg.bytesInPayload[2] = 'd';
+    l_inputMsg.bytesInPayload[3] = 'b';
+    l_inputMsg.bytesInPayload[4] = '\0';
+    l_inputMsg.bytesInPayload[5] = '\0';
+    l_inputMsg.bytesInPayload[6] = '\0';
+    l_inputMsg.bytesInPayload[7] = '\0';
+    l_inputMsg.bytesInPayload[8] = '\0';
+    l_inputMsg.bytesInPayload[9] = '\0';
+
+    EXPECT_CALL(*m_errorHandler, handleHardError(::testing::_));
+    m_sut.convertRawMessageToMessage(l_inputMsg);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom0To9)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.bytesInPayload[0] = '9';
+    l_inputMsg.bytesInPayload[1] = '\0';
+    l_inputMsg.bytesInPayload[2] = '\0';
+    l_inputMsg.bytesInPayload[3] = '\0';
+    l_inputMsg.bytesInPayload[4] = '\0';
+    l_inputMsg.bytesInPayload[5] = '\0';
+    l_inputMsg.bytesInPayload[6] = '\0';
+    l_inputMsg.bytesInPayload[7] = '\0';
+    l_inputMsg.bytesInPayload[8] = '\0';
+    l_inputMsg.bytesInPayload[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(9, l_convertedMsg.bytesInPayload);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom10To99)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.bytesInPayload[0] = '9';
+    l_inputMsg.bytesInPayload[1] = '1';
+    l_inputMsg.bytesInPayload[2] = '\0';
+    l_inputMsg.bytesInPayload[3] = '\0';
+    l_inputMsg.bytesInPayload[4] = '\0';
+    l_inputMsg.bytesInPayload[5] = '\0';
+    l_inputMsg.bytesInPayload[6] = '\0';
+    l_inputMsg.bytesInPayload[7] = '\0';
+    l_inputMsg.bytesInPayload[8] = '\0';
+    l_inputMsg.bytesInPayload[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(91, l_convertedMsg.bytesInPayload);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom100To999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.bytesInPayload[0] = '9';
+    l_inputMsg.bytesInPayload[1] = '1';
+    l_inputMsg.bytesInPayload[2] = '2';
+    l_inputMsg.bytesInPayload[3] = '\0';
+    l_inputMsg.bytesInPayload[4] = '\0';
+    l_inputMsg.bytesInPayload[5] = '\0';
+    l_inputMsg.bytesInPayload[6] = '\0';
+    l_inputMsg.bytesInPayload[7] = '\0';
+    l_inputMsg.bytesInPayload[8] = '\0';
+    l_inputMsg.bytesInPayload[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(912, l_convertedMsg.bytesInPayload);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom1000To9999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.bytesInPayload[0] = '9';
+    l_inputMsg.bytesInPayload[1] = '1';
+    l_inputMsg.bytesInPayload[2] = '2';
+    l_inputMsg.bytesInPayload[3] = '3';
+    l_inputMsg.bytesInPayload[4] = '\0';
+    l_inputMsg.bytesInPayload[5] = '\0';
+    l_inputMsg.bytesInPayload[6] = '\0';
+    l_inputMsg.bytesInPayload[7] = '\0';
+    l_inputMsg.bytesInPayload[8] = '\0';
+    l_inputMsg.bytesInPayload[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(9123, l_convertedMsg.bytesInPayload);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom10000To99999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.bytesInPayload[0] = '9';
+    l_inputMsg.bytesInPayload[1] = '1';
+    l_inputMsg.bytesInPayload[2] = '2';
+    l_inputMsg.bytesInPayload[3] = '3';
+    l_inputMsg.bytesInPayload[4] = '4';
+    l_inputMsg.bytesInPayload[5] = '\0';
+    l_inputMsg.bytesInPayload[6] = '\0';
+    l_inputMsg.bytesInPayload[7] = '\0';
+    l_inputMsg.bytesInPayload[8] = '\0';
+    l_inputMsg.bytesInPayload[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(91234, l_convertedMsg.bytesInPayload);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom100000To999999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.bytesInPayload[0] = '9';
+    l_inputMsg.bytesInPayload[1] = '1';
+    l_inputMsg.bytesInPayload[2] = '2';
+    l_inputMsg.bytesInPayload[3] = '3';
+    l_inputMsg.bytesInPayload[4] = '4';
+    l_inputMsg.bytesInPayload[5] = '3';
+    l_inputMsg.bytesInPayload[6] = '\0';
+    l_inputMsg.bytesInPayload[7] = '\0';
+    l_inputMsg.bytesInPayload[8] = '\0';
+    l_inputMsg.bytesInPayload[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(912343, l_convertedMsg.bytesInPayload);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom1000000To9999999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.bytesInPayload[0] = '9';
+    l_inputMsg.bytesInPayload[1] = '1';
+    l_inputMsg.bytesInPayload[2] = '2';
+    l_inputMsg.bytesInPayload[3] = '3';
+    l_inputMsg.bytesInPayload[4] = '4';
+    l_inputMsg.bytesInPayload[5] = '3';
+    l_inputMsg.bytesInPayload[6] = '2';
+    l_inputMsg.bytesInPayload[7] = '\0';
+    l_inputMsg.bytesInPayload[8] = '\0';
+    l_inputMsg.bytesInPayload[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(9123432, l_convertedMsg.bytesInPayload);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom10000000To99999999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.bytesInPayload[0] = '9';
+    l_inputMsg.bytesInPayload[1] = '1';
+    l_inputMsg.bytesInPayload[2] = '2';
+    l_inputMsg.bytesInPayload[3] = '3';
+    l_inputMsg.bytesInPayload[4] = '4';
+    l_inputMsg.bytesInPayload[5] = '3';
+    l_inputMsg.bytesInPayload[6] = '2';
+    l_inputMsg.bytesInPayload[7] = '8';
+    l_inputMsg.bytesInPayload[8] = '\0';
+    l_inputMsg.bytesInPayload[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(91234328, l_convertedMsg.bytesInPayload);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom100000000To999999999)
+{
+    RawMessage l_inputMsg = {};
+    initializeRawMessagesWithDefaultValues(l_inputMsg);
+    l_inputMsg.bytesInPayload[0] = '9';
+    l_inputMsg.bytesInPayload[1] = '1';
+    l_inputMsg.bytesInPayload[2] = '2';
+    l_inputMsg.bytesInPayload[3] = '3';
+    l_inputMsg.bytesInPayload[4] = '4';
+    l_inputMsg.bytesInPayload[5] = '3';
+    l_inputMsg.bytesInPayload[6] = '2';
+    l_inputMsg.bytesInPayload[7] = '8';
+    l_inputMsg.bytesInPayload[8] = '1';
+    l_inputMsg.bytesInPayload[9] = '\0';
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(912343281, l_convertedMsg.bytesInPayload);
+}
+
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testConvertRawMessageToMessageAsAWhole)
+{
+    std::string l_payload = "Welcome on Server!";
+
+    RawMessage l_inputMsg;
+
+    l_inputMsg.msgId[0] = '5';
+    l_inputMsg.msgId[1] = '\0';
+    l_inputMsg.msgId[2] = '\0';
+
+    l_inputMsg.numOfMsgInFileTransfer[0] = '1';
+    l_inputMsg.numOfMsgInFileTransfer[1] = '0';
+    l_inputMsg.numOfMsgInFileTransfer[2] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[3] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[4] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[5] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[6] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[7] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[8] = '\0';
+    l_inputMsg.numOfMsgInFileTransfer[9] = '\0';
+
+    l_inputMsg.bytesInPayload[0] = '1';
+    l_inputMsg.bytesInPayload[1] = '8';
+    l_inputMsg.bytesInPayload[2] = '\0';
+    l_inputMsg.bytesInPayload[3] = '\0';
+    l_inputMsg.bytesInPayload[4] = '\0';
+    l_inputMsg.bytesInPayload[5] = '\0';
+    l_inputMsg.bytesInPayload[6] = '\0';
+    l_inputMsg.bytesInPayload[7] = '\0';
+    l_inputMsg.bytesInPayload[8] = '\0';
+    l_inputMsg.bytesInPayload[9] = '\0';
+
+    strcpy(l_inputMsg.payload, l_payload.c_str());
+
+    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
+
+    ASSERT_EQ(SERVER_SEND_FILE_REQ, l_convertedMsg.msgId);
+    ASSERT_EQ(10, l_convertedMsg.numOfMsgInFileTransfer);
+    ASSERT_EQ(strlen(l_payload.c_str()), l_convertedMsg.bytesInPayload);
+    ASSERT_STREQ(l_inputMsg.payload, l_convertedMsg.payload);
 }
 

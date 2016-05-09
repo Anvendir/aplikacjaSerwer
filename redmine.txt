@@ -1,3 +1,20 @@
+//09.05.2016
+Zrobione:
+1. Stworzenie konwertera z wiadomosci Message na RawMessage i odwrotnie
+a) UT dla numOfmessages i bytesInPayload i calosci
+
+Do zrobienia:
+1. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser
+    * konwersja DICOM do JPEG
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczyoraz UT
+2. Obsluga sytuacji brzegowyvch:
+-> zerwanie połaczenia w trakcie trnsmisji przez klienta
+-> request pliku ktorego nie ma
+-> wiadomosc nie przychodzi dlugi czas ( kiedy zamykac polaczenia, timery?)
+4. Wpiecie konwertera z punktu 1 do UnixWrapera do metody recv i send
+
+
 //08.05.2016
 Zrobione:
 0. Połaczenie z klienta na serwer!

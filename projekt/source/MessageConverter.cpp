@@ -98,7 +98,7 @@ Message MessageConverter::convertRawMessageToMessage(const RawMessage& p_rawMsg)
 
     convertMsgIdToEnum(p_rawMsg, l_msg);
     convertNumOfMsgInFileTransferToInt(p_rawMsg, l_msg);
-    //convertBytesInPayloadInt(p_rawMsg, l_msg);
+    convertBytesInPayloadInt(p_rawMsg, l_msg);
     strcpy(l_msg.payload, p_rawMsg.payload);
 
     return l_msg;
