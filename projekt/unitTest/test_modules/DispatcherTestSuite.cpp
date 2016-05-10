@@ -60,7 +60,7 @@ TEST_F(DispatcherTestSuite, testIfMessageWillBeSentDuringDispatchingEventWithCas
     std::string l_expectedText = "PID: 0 | Case SERVER_TEST_FIRST_REQ: received message - Sample msg\n";
     testing::internal::CaptureStdout();
     EXPECT_CALL(*m_unixWrapperMock, getPid());
-    EXPECT_CALL(*m_unixWrapperMock, send(l_someSocket, _, sizeof(l_sendline), 0));
+    EXPECT_CALL(*m_unixWrapperMock, send(l_someSocket, _, sizeof(RawMessage), 0));
 
     m_sut.dispatch(l_someSocket, l_msg);
     checkCapturedStdOutput(l_expectedText);

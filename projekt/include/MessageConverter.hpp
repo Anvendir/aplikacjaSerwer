@@ -8,10 +8,10 @@
 class MessageConverter : public IMessageConverter
 {
 public:
-    MessageConverter(std::shared_ptr<IErrorHandler> p_errorHandler);
+    MessageConverter(std::shared_ptr<IErrorHandler> p_errorHandler = std::make_shared<ErrorHandler>());
 
-    RawMessage convertMessageToRawMessage(const Message& p_msg) const override;
-    Message convertRawMessageToMessage(const RawMessage& p_rawMsg) const override;
+    RawMessage convertMessageToRawMessage(const Message p_msg) const override;
+    Message convertRawMessageToMessage(const RawMessage p_rawMsg) const override;
 
 private:
     void convertMsgIdToChar(const Message& p_msg, RawMessage& p_rawMsg) const;

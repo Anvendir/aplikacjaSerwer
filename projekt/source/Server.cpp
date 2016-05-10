@@ -88,7 +88,7 @@ void Server::sendWelcomeMessage(int p_clientSocket) const
     l_welcomeMessage.msgId = CLIENT_WELCOME_MSG_IND;
     strcpy(l_welcomeMessage.payload, "Welcome on server!");
 
-    m_unixWrapper->send(p_clientSocket, &l_welcomeMessage, sizeof(l_welcomeMessage));
+    m_unixWrapper->send(p_clientSocket, &l_welcomeMessage);
 }
 
 void Server::processConnection(int p_clientSocket) const
@@ -101,7 +101,7 @@ void Server::processConnection(int p_clientSocket) const
     sendWelcomeMessage(p_clientSocket);
 
 again:
-	while ((l_receivedBytes = m_unixWrapper->recv(p_clientSocket, &l_receivedMessage, sizeof(Message), 0)) > 0)
+	while ((l_receivedBytes = m_unixWrapper->recv(p_clientSocket, &l_receivedMessage)) > 0)
     {
         l_status = m_dispatcher->dispatch(p_clientSocket, l_receivedMessage);
         if (l_status == false)

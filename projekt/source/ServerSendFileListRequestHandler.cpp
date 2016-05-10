@@ -44,5 +44,5 @@ void ServerSendFileListRequestHandler::sendServerFileListRequestResponse(int p_c
     l_msg.bytesInPayload = p_fileList.size();
     strcpy(l_msg.payload, p_fileList.c_str());
 
-    m_unixWrapper->send(p_clientSocket, &l_msg, sizeof(Message));
+    m_unixWrapper->send(p_clientSocket, &l_msg);
 }

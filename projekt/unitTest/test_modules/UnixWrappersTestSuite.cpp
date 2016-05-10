@@ -3,6 +3,7 @@
 
 #include "UnixWrappers.hpp"
 #include "ErrorHandlerMock.hpp"
+#include "MessageConverterMock.hpp"
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -11,18 +12,21 @@
 #include <memory>
 
 using ::testing::StrictMock;
+using ::testing::Return;
 
 class UnixWrappersTestSuite : public ::testing::Test
 {
 public:
     UnixWrappersTestSuite() :
          m_errorHandler(std::make_shared<StrictMock<ErrorHandlerMock>>()),
-         m_sut(m_errorHandler)
+         m_messageConverterMock(std::make_shared<StrictMock<MessageConverterMock>>()),
+         m_sut(m_errorHandler, m_messageConverterMock)
     {
 
     }
 
     std::shared_ptr<StrictMock<ErrorHandlerMock>> m_errorHandler;
+    std::shared_ptr<StrictMock<MessageConverterMock>> m_messageConverterMock;
     UnixWrappers m_sut;
 };
 
@@ -39,7 +43,12 @@ TEST_F(UnixWrappersTestSuite, testIfSendFunctionWillHandleNoErrorWithProperCall)
 
     Message l_message;
     strcpy(l_message.payload, "Hello world");
-    m_sut.send(l_sockFd, &l_message, sizeof(Message));
+
+    RawMessage l_rawMessage = {};
+    EXPECT_CALL(*m_messageConverterMock,
+                convertMessageToRawMessage(l_message)).WillOnce(Return(l_rawMessage));
+
+    m_sut.send(l_sockFd, &l_message, sizeof(RawMessage));
 }
 
 TEST_F(UnixWrappersTestSuite, testIfSendFunctionWillHandleHardErrorWithIncorrectCall)
@@ -49,7 +58,12 @@ TEST_F(UnixWrappersTestSuite, testIfSendFunctionWillHandleHardErrorWithIncorrect
     EXPECT_CALL(*m_errorHandler, handleHardError("send error"));
     Message l_message;
     strcpy(l_message.payload, "Hello world");
-    m_sut.send(l_fakeSockFd, &l_message, sizeof(Message));
+
+    RawMessage l_rawMessage = {};
+    EXPECT_CALL(*m_messageConverterMock,
+                convertMessageToRawMessage(l_message)).WillOnce(Return(l_rawMessage));
+
+    m_sut.send(l_fakeSockFd, &l_message, sizeof(RawMessage));
 }
 
 TEST_F(UnixWrappersTestSuite, testIfRecvFunctionWillHandlehardErrorWithIncorrectCall)

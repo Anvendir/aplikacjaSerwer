@@ -1,10 +1,14 @@
 #include "UnixWrappers.hpp"
+#include "CommonTypes.h"
 #include <string>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <iostream>
 
-UnixWrappers::UnixWrappers(std::shared_ptr<IErrorHandler> p_errorHandler)
-    : m_error(p_errorHandler)
+UnixWrappers::UnixWrappers(std::shared_ptr<IErrorHandler> p_errorHandler,
+                           std::shared_ptr<IMessageConverter> p_msgConverter)
+    : m_error(p_errorHandler),
+      m_msgConverter(p_msgConverter)
 {
 
 }
@@ -14,8 +18,12 @@ void UnixWrappers::send(int p_socketDescriptor,
                         size_t p_messageLenghtInBytes,
                         int p_transmissionType) const
 {
-	if (::send(p_socketDescriptor, p_messageToSent, p_messageLenghtInBytes, p_transmissionType)
-        != static_cast<int>(p_messageLenghtInBytes))
+    RawMessage l_rawMsg = m_msgConverter->convertMessageToRawMessage(*p_messageToSent);
+
+	if (::send(p_socketDescriptor,
+               &l_rawMsg,
+               p_messageLenghtInBytes,
+               p_transmissionType) != static_cast<int>(p_messageLenghtInBytes))
     {
 		m_error->handleHardError("send error");
     }
@@ -27,13 +35,19 @@ ssize_t UnixWrappers::recv(int p_socketDescriptor,
                            int p_transmissionType) const
 {
 	ssize_t	l_receivedMessageInBytes;
+    RawMessage l_rawMsg = {};
 
 	if ((l_receivedMessageInBytes = ::recv(p_socketDescriptor,
-                                           p_receivedMessage,
+                                           &l_rawMsg,
                                            p_messageLenghtInBytes,
                                            p_transmissionType)) < 0)
     {
 		m_error->handleHardError("recv error");
+    }
+
+    if (l_receivedMessageInBytes > 0)
+    {
+        *p_receivedMessage = m_msgConverter->convertRawMessageToMessage(l_rawMsg);
     }
 	return(l_receivedMessageInBytes);
 }

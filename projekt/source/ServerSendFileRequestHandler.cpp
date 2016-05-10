@@ -84,7 +84,7 @@ void ServerSendFileRequestHandler::sendSeverSendFileResp(int& p_clientSocket, un
     l_sendline.msgId = SERVER_SEND_FILE_RESP;
 
     l_sendline.numOfMsgInFileTransfer = getNumberOfMessagesRequiredToSentGivenBytes(p_fileLength);
-    m_unixWrapper->send(p_clientSocket, &l_sendline, sizeof(Message));
+    m_unixWrapper->send(p_clientSocket, &l_sendline);
 }
 
 void ServerSendFileRequestHandler::sendClientSendFileInd(Message& p_sendMessage,
@@ -101,7 +101,7 @@ void ServerSendFileRequestHandler::sendClientSendFileInd(Message& p_sendMessage,
 
     p_sendMessage.msgId = CLIENT_SEND_FILE_IND;
     p_sendMessage.bytesInPayload = p_bytesInPayload;
-    m_unixWrapper->send(p_clientSocket, &p_sendMessage, sizeof(Message));
+    m_unixWrapper->send(p_clientSocket, &p_sendMessage);
 
     std::cout << "Sent payload bytes: " << sizeof(p_sendMessage.payload)
               << " where valid is: " << p_bytesInPayload << std::endl;
@@ -138,6 +138,7 @@ void ServerSendFileRequestHandler::sendRequestedFile(int& p_clientSocket) const
         sendClientSendFileInd(l_sendline, l_byteCounter, p_clientSocket);
         l_msgCounter++;
     }
-    std::cout << "Sending of file is done!" << std::endl;
+
+    std::cout << m_unixWrapper->getPid() << ": Sending of file is done!" << std::endl;
 }
 

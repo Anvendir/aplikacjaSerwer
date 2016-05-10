@@ -2,7 +2,8 @@ objects = ComponentTests.o \
 		  ComponentTestsFunctions.o \
 		  ErrorHandler.o \
 		  NetworkWrappers.o \
-		  UnixWrappers.o
+		  UnixWrappers.o \
+		  MessageConverter.o
 
 ComponentTests : $(objects)
 	g++ -std=c++14 -o ComponentTests $(objects) \
@@ -25,6 +26,10 @@ NetworkWrappers.o : ../source/NetworkWrappers.cpp ../include/NetworkWrappers.hpp
 UnixWrappers.o : ../source/UnixWrappers.cpp ../include/UnixWrappers.hpp
 	g++ -c -std=c++14 -I ../include \
             ../source/UnixWrappers.cpp
+
+MessageConverter.o : ../source/MessageConverter.cpp ../include/MessageConverter.hpp
+	g++ -c -std=c++14 -I ../include \
+	   	../source/MessageConverter.cpp
 
 .PHONY : clean
 clean:

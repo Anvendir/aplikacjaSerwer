@@ -83,7 +83,7 @@ void ServerSendFileRequestHandlerTestSuite::setExpectationsForSendSeverSendFileR
                                          AllOf(Field(&Message::msgId, p_sendline.msgId),
                                                Field(&Message::numOfMsgInFileTransfer, p_sendline.numOfMsgInFileTransfer),
                                                Field(&Message::bytesInPayload, 0)),
-                                         sizeof(Message),
+                                         sizeof(RawMessage),
                                          0));
 }
 
@@ -94,7 +94,7 @@ void ServerSendFileRequestHandlerTestSuite::setExpectationsForSendClientSendFile
                                          AllOf(Field(&Message::msgId, p_sendline.msgId),
                                                Field(&Message::numOfMsgInFileTransfer, 0),
                                                Field(&Message::bytesInPayload, p_sendline.bytesInPayload)),
-                                         sizeof(Message),
+                                         sizeof(RawMessage),
                                          0));
 }
 
@@ -219,7 +219,9 @@ TEST_F(ServerSendFileRequestHandlerTestSuite, sendClientSendFileIndTest_whenNumb
 TEST_F(ServerSendFileRequestHandlerTestSuite, sendRequestedFileTest_whenFirstReadByteIsZero)
 {
     int l_clientSocket = 0;
+
     EXPECT_CALL(*m_streamWrapperMock, get(_)).WillOnce(Return(false));
+    EXPECT_CALL(*m_unixWrapperMock, getPid());
 
     m_sut.sendRequestedFile(l_clientSocket);
 }
@@ -231,6 +233,7 @@ TEST_F(ServerSendFileRequestHandlerTestSuite, sendRequestedFileTest_whenInputFil
     l_sendline.msgId = CLIENT_SEND_FILE_IND;
     l_sendline.bytesInPayload = 1;
 
+    EXPECT_CALL(*m_unixWrapperMock, getPid());
     EXPECT_CALL(*m_streamWrapperMock, get(_)).Times(2)
                                              .WillOnce(Return(true))
                                              .WillOnce(Return(false));
@@ -250,6 +253,7 @@ TEST_F(ServerSendFileRequestHandlerTestSuite, sendRequestedFileTest_whenInputFil
 
     setExpectationsForGettingSpecifiedNumberOfBytes(l_numOfBytesInInputFile);
     setExpectationsForSendClientSendFileInd(l_clientSocket, l_sendline);
+    EXPECT_CALL(*m_unixWrapperMock, getPid());
 
     m_sut.sendRequestedFile(l_clientSocket);
 }
@@ -266,6 +270,7 @@ TEST_F(ServerSendFileRequestHandlerTestSuite, sendRequestedFileTest_whenInputFil
     setExpectationsForSendClientSendFileInd(l_clientSocket, l_sendline);
     l_sendline.bytesInPayload = 1;
     setExpectationsForSendClientSendFileInd(l_clientSocket, l_sendline);
+    EXPECT_CALL(*m_unixWrapperMock, getPid());
 
     m_sut.sendRequestedFile(l_clientSocket);
 }
@@ -286,6 +291,7 @@ TEST_F(ServerSendFileRequestHandlerTestSuite, handleTestSuccessfulScenario)
     setExpectationsForSendSeverSendFileResp(l_clientSocket);
     setExpectationsForSendRequestedFile(l_clientSocket, l_sizeOfRequestedFileInBytes);
     EXPECT_CALL(*m_streamWrapperMock, close());
+    EXPECT_CALL(*m_unixWrapperMock, getPid());
 
     m_sut.handle(l_clientSocket, l_receivedMsg);
 }

@@ -1,5 +1,12 @@
-objects = Main.o Dispatcher.o ErrorHandler.o NetworkWrappers.o UnixWrappers.o Server.o \
-		  ServerSendFileRequestHandler.o ServerSendFileListRequestHandler.o MessageConverter.o
+objects = Main.o \
+		  Dispatcher.o \
+		  ErrorHandler.o \
+		  NetworkWrappers.o \
+		  UnixWrappers.o \
+		  Server.o \
+		  ServerSendFileRequestHandler.o \
+		  ServerSendFileListRequestHandler.o \
+		  MessageConverter.o
 
 Program : $(objects)
 	g++ -std=c++14 -o Program $(objects)

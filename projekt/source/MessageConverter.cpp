@@ -14,7 +14,7 @@ void MessageConverter::convertMsgIdToChar(const Message& p_msg, RawMessage& p_ra
 {
     if(p_msg.msgId > 999)
     {
-        m_error->handleHardError("Message converter error: msgId of of range!");
+        m_error->handleHardError(__FUNCTION__ + std::string(" - error: msgId of of range!"));
     }
 
     std::string l_tempString = boost::lexical_cast<std::string>(p_msg.msgId);
@@ -25,7 +25,7 @@ void MessageConverter::convertNumOfMsgInFileTransferToChar(const Message& p_msg,
 {
     if(p_msg.numOfMsgInFileTransfer > 999999999)
     {
-        m_error->handleHardError("Message converter error: numOfMsgInFileTransfer of of range!");
+        m_error->handleHardError(__FUNCTION__ + std::string(" - error: numOfMsgInFileTransfer of of range!"));
     }
 
     std::string l_tempString = boost::lexical_cast<std::string>(p_msg.numOfMsgInFileTransfer);
@@ -34,23 +34,23 @@ void MessageConverter::convertNumOfMsgInFileTransferToChar(const Message& p_msg,
 
 void MessageConverter::convertBytesInPayloadToChar(const Message& p_msg, RawMessage& p_rawMsg) const
 {
-    if(p_msg.bytesInPayload > 999999999)
+    if(p_msg.bytesInPayload > PAYLOAD_SIZE)
     {
-        m_error->handleHardError("Message converter error: numOfMsgInFileTransfer of of range!");
+        m_error->handleHardError(__FUNCTION__ + std::string(" - error: bytesInPayload of of range!"));
     }
 
     std::string l_tempString = boost::lexical_cast<std::string>(p_msg.bytesInPayload);
     strcpy(p_rawMsg.bytesInPayload, l_tempString.c_str());
 }
 
-RawMessage MessageConverter::convertMessageToRawMessage(const Message& p_msg) const
+RawMessage MessageConverter::convertMessageToRawMessage(const Message p_msg) const
 {
     RawMessage l_rawMsg = {};
 
     convertMsgIdToChar(p_msg, l_rawMsg);
     convertNumOfMsgInFileTransferToChar(p_msg, l_rawMsg);
     convertBytesInPayloadToChar(p_msg, l_rawMsg);
-    strcpy(l_rawMsg.payload, p_msg.payload);
+    memcpy(l_rawMsg.payload, p_msg.payload, p_msg.bytesInPayload);
 
     return l_rawMsg;
 }
@@ -64,7 +64,7 @@ void MessageConverter::convertMsgIdToEnum(const RawMessage& p_rawMsg, Message& p
     }
     catch (boost::bad_lexical_cast&)
     {
-        m_error->handleHardError("Message converter error: bad_lexical_cast");
+        m_error->handleHardError(__FUNCTION__ + std::string(" - error: bad_lexical_cast"));
     }
 }
 
@@ -76,7 +76,7 @@ void MessageConverter::convertNumOfMsgInFileTransferToInt(const RawMessage& p_ra
     }
     catch (boost::bad_lexical_cast&)
     {
-        m_error->handleHardError("Message converter error: bad_lexical_cast");
+        m_error->handleHardError(__FUNCTION__ + std::string(" - error: bad_lexical_cast"));
     }
 }
 
@@ -88,18 +88,18 @@ void MessageConverter::convertBytesInPayloadInt(const RawMessage& p_rawMsg, Mess
     }
     catch (boost::bad_lexical_cast&)
     {
-        m_error->handleHardError("Message converter error: bad_lexical_cast");
+        m_error->handleHardError(__FUNCTION__ + std::string(" - error: bad_lexical_cast"));
     }
 }
 
-Message MessageConverter::convertRawMessageToMessage(const RawMessage& p_rawMsg) const
+Message MessageConverter::convertRawMessageToMessage(const RawMessage p_rawMsg) const
 {
     Message l_msg = {};
 
     convertMsgIdToEnum(p_rawMsg, l_msg);
     convertNumOfMsgInFileTransferToInt(p_rawMsg, l_msg);
     convertBytesInPayloadInt(p_rawMsg, l_msg);
-    strcpy(l_msg.payload, p_rawMsg.payload);
+    memcpy(l_msg.payload, p_rawMsg.payload, l_msg.bytesInPayload);
 
     return l_msg;
 }

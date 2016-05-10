@@ -1,5 +1,7 @@
 #include "IUnixWrappers.hpp"
 #include "ErrorHandler.hpp"
+#include "IMessageConverter.hpp"
+#include "MessageConverter.hpp"
 #include "CommonTypes.h"
 #include <memory>
 #include <string>
@@ -9,7 +11,8 @@
 class UnixWrappers : public IUnixWrappers
 {
 public:
-    UnixWrappers(std::shared_ptr<IErrorHandler> p_errorHandler);
+    UnixWrappers(std::shared_ptr<IErrorHandler> p_errorHandler,
+                 std::shared_ptr<IMessageConverter> p_msgConverter = std::make_shared<MessageConverter>());
 
     void send(int p_socketDescriptor,
               const Message* p_messageToSent,
@@ -28,4 +31,5 @@ public:
 
 private:
     std::shared_ptr<IErrorHandler> m_error;
+    std::shared_ptr<IMessageConverter> m_msgConverter;
 };

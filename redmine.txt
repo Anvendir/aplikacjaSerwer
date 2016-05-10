@@ -1,5 +1,23 @@
 //09.05.2016
 Zrobione:
+1. Wpiecie konwertera z punktu 1 do UnixWrapera do metody recv i send
+    * rozwiazanie prolemow z przesylanie
+    * ilosc bajtow detrminowana na podstawie sizeof RawMessage
+    * zamizast strcpy uzycie memcpy ze wzgledu na kopiowanie danych binarncyh
+    * zmniejszenie mozliwego rozmiary bytes in payload do 1024 - wiecej nie ma sensu
+
+Do zrobienia:
+1. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser
+    * konwersja DICOM do JPEG
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczyoraz UT
+2. Obsluga sytuacji brzegowyvch:
+-> zerwanie połaczenia w trakcie trnsmisji przez klienta
+-> request pliku ktorego nie ma
+-> wiadomosc nie przychodzi dlugi czas ( kiedy zamykac polaczenia, timery?)
+
+//09.05.2016
+Zrobione:
 1. Stworzenie konwertera z wiadomosci Message na RawMessage i odwrotnie
 a) UT dla numOfmessages i bytesInPayload i calosci
 
@@ -13,7 +31,6 @@ Do zrobienia:
 -> request pliku ktorego nie ma
 -> wiadomosc nie przychodzi dlugi czas ( kiedy zamykac polaczenia, timery?)
 4. Wpiecie konwertera z punktu 1 do UnixWrapera do metody recv i send
-
 
 //08.05.2016
 Zrobione:

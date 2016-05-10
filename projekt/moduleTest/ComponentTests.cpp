@@ -84,17 +84,21 @@ void exchangeAFewSimpleMessagesWithServerTest(char** p_argv)
 //Step2
     receiveMessageFromServer(CLIENT_WELCOME_MSG_IND);
 //Step3
+    std::string l_samplePayload = "Wlazl kotek na plotek...";
     Message l_sendline = {};
     l_sendline.msgId = SERVER_TEST_FIRST_REQ;
-    strcpy(l_sendline.payload, "Wlazl kotek na plotek...");
+    l_sendline.bytesInPayload = strlen(l_samplePayload.c_str()) + 1;
+    strcpy(l_sendline.payload, l_samplePayload.c_str());
 
-    g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
+    g_unixWrapper.send(g_sockfd, &l_sendline);
 //Step4
     receiveMessageFromServer(SERVER_TEST_FIRST_RESP);
 //Step5
+    l_samplePayload = "...i mruga...";
     l_sendline.msgId = SERVER_TEST_SECOND_REQ;
-    strcpy(l_sendline.payload, "...i mruga...");
-    g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
+    l_sendline.bytesInPayload = strlen(l_samplePayload.c_str()) + 1;
+    strcpy(l_sendline.payload, l_samplePayload.c_str());
+    g_unixWrapper.send(g_sockfd, &l_sendline);
 //Step6
     g_unixWrapper.close(g_sockfd);
     std::cout << "Testcase " << __FUNCTION__ << " finished successfully." << std::endl;
@@ -123,9 +127,10 @@ void sendFileTransferRequestAndReceiveRequestedFileTest_largeTextFile(char** p_a
     std::string l_sourceFilePath = "./moduleTest/plikiPrzykladowe/" + l_sourceFileName;
     Message l_sendline = {};
     l_sendline.msgId = SERVER_SEND_FILE_REQ;
+    l_sendline.bytesInPayload = strlen(l_sourceFilePath.c_str()) + 1;
     strcpy(l_sendline.payload, l_sourceFilePath.c_str());
 
-    g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
+    g_unixWrapper.send(g_sockfd, &l_sendline);
 //Step4
     receiveMessageFromServer(SERVER_SEND_FILE_RESP);
     int l_numberOfMessagesToCatch = g_receivedMessage.numOfMsgInFileTransfer;
@@ -170,10 +175,11 @@ void sendFileTransferRequestAndReceiveRequestedFileTest_smallTextFile(char** p_a
     std::string l_sourceFileName = "prostyPlik.txt";
     std::string l_sourceFilePath = "./moduleTest/plikiPrzykladowe/" + l_sourceFileName;
     Message l_sendline = {};
+    l_sendline.bytesInPayload = strlen(l_sourceFilePath.c_str()) + 1;
     l_sendline.msgId = SERVER_SEND_FILE_REQ;
     strcpy(l_sendline.payload, l_sourceFilePath.c_str());
 
-    g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
+    g_unixWrapper.send(g_sockfd, &l_sendline);
 //Step4
     receiveMessageFromServer(SERVER_SEND_FILE_RESP);
     int l_numberOfMessagesToCatch = g_receivedMessage.numOfMsgInFileTransfer;
@@ -218,10 +224,11 @@ void sendFileTransferRequestAndReceiveRequestedFileTest_smallBinaryFile(char** p
     std::string l_sourceFileName = "malyJpeg.jpg";
     std::string l_sourceFilePath = "./moduleTest/plikiPrzykladowe/" + l_sourceFileName;
     Message l_sendline = {};
+    l_sendline.bytesInPayload = strlen(l_sourceFilePath.c_str()) + 1;
     l_sendline.msgId = SERVER_SEND_FILE_REQ;
     strcpy(l_sendline.payload, l_sourceFilePath.c_str());
 
-    g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
+    g_unixWrapper.send(g_sockfd, &l_sendline);
 //Step4
     receiveMessageFromServer(SERVER_SEND_FILE_RESP);
     int l_numberOfMessagesToCatch = g_receivedMessage.numOfMsgInFileTransfer;
@@ -266,10 +273,11 @@ void sendFileTransferRequestAndReceiveRequestedFileTest_largeBinaryFile(char** p
     std::string l_sourceFileName = "duzyJpeg.jpg";
     std::string l_sourceFilePath = "./moduleTest/plikiPrzykladowe/" + l_sourceFileName;
     Message l_sendline = {};
+    l_sendline.bytesInPayload = strlen(l_sourceFilePath.c_str()) + 1;
     l_sendline.msgId = SERVER_SEND_FILE_REQ;
     strcpy(l_sendline.payload, l_sourceFilePath.c_str());
 
-    g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
+    g_unixWrapper.send(g_sockfd, &l_sendline);
 //Step4
     receiveMessageFromServer(SERVER_SEND_FILE_RESP);
     int l_numberOfMessagesToCatch = g_receivedMessage.numOfMsgInFileTransfer;
@@ -315,9 +323,10 @@ void sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile(char** p_argv)
     std::string l_sourceFilePath = "./moduleTest/plikiPrzykladowe/" + l_sourceFileName;
     Message l_sendline = {};
     l_sendline.msgId = SERVER_SEND_FILE_REQ;
+    l_sendline.bytesInPayload = strlen(l_sourceFilePath.c_str()) + 1;
     strcpy(l_sendline.payload, l_sourceFilePath.c_str());
 
-    g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
+    g_unixWrapper.send(g_sockfd, &l_sendline);
 //Step4
     receiveMessageFromServer(SERVER_SEND_FILE_RESP);
     int l_numberOfMessagesToCatch = g_receivedMessage.numOfMsgInFileTransfer;
@@ -364,9 +373,10 @@ void sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024(cha
     std::string l_sourceFilePath = "./moduleTest/plikiPrzykladowe/" + l_sourceFileName;
     Message l_sendline = {};
     l_sendline.msgId = SERVER_SEND_FILE_REQ;
+    l_sendline.bytesInPayload = strlen(l_sourceFilePath.c_str()) + 1;
     strcpy(l_sendline.payload, l_sourceFilePath.c_str());
 
-    g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
+    g_unixWrapper.send(g_sockfd, &l_sendline);
 //Step4
     receiveMessageFromServer(SERVER_SEND_FILE_RESP);
     int l_numberOfMessagesToCatch = g_receivedMessage.numOfMsgInFileTransfer;
@@ -406,11 +416,13 @@ void sendFileListRequestAndReceiveResponseWithProperFileListTest(char** p_argv)
 //Step2
     receiveMessageFromServer(CLIENT_WELCOME_MSG_IND);
 //Step3
+    std::string l_sampleMsg = "File list request.";
     Message l_sendline = {};
     l_sendline.msgId = SERVER_SEND_FILE_LIST_REQ;
-    strcpy(l_sendline.payload, "File list request.");
+    l_sendline.bytesInPayload = strlen(l_sampleMsg.c_str()) + 1;
+    strcpy(l_sendline.payload, l_sampleMsg.c_str());
 
-    g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
+    g_unixWrapper.send(g_sockfd, &l_sendline);
 //Step4
     receiveMessageFromServer(SERVER_SEND_FILE_LIST_RESP);
 //Step5
@@ -441,11 +453,13 @@ void sendFileListRequestNextChoseOneFileAndRequestForIt(char** p_argv)
 //Step2
     receiveMessageFromServer(CLIENT_WELCOME_MSG_IND);
 //Step3
+    std::string l_sampleMsg = "File list request.";
     Message l_sendline = {};
     l_sendline.msgId = SERVER_SEND_FILE_LIST_REQ;
-    strcpy(l_sendline.payload, "File list request.");
+     l_sendline.bytesInPayload = strlen(l_sampleMsg.c_str()) + 1;
+    strcpy(l_sendline.payload, l_sampleMsg.c_str());
 
-    g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
+    g_unixWrapper.send(g_sockfd, &l_sendline);
 //Step4
     receiveMessageFromServer(SERVER_SEND_FILE_LIST_RESP);
 //Step5
@@ -456,8 +470,9 @@ void sendFileListRequestNextChoseOneFileAndRequestForIt(char** p_argv)
     l_sendline = {};
     l_sendline.msgId = SERVER_SEND_FILE_REQ;
     std::string l_sourceFilePath = "./moduleTest/plikiPrzykladowe/" + l_fileList[0];
+    l_sendline.bytesInPayload = strlen(l_sourceFilePath.c_str()) + 1;
     strcpy(l_sendline.payload, l_sourceFilePath.c_str());
-    g_unixWrapper.send(g_sockfd, &l_sendline, sizeof(l_sendline));
+    g_unixWrapper.send(g_sockfd, &l_sendline);
 //Step6
     receiveMessageFromServer(SERVER_SEND_FILE_RESP);
     int l_numberOfMessagesToCatch = g_receivedMessage.numOfMsgInFileTransfer;

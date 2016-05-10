@@ -38,7 +38,7 @@ TEST_F(ServerSendFileListRequestHandlerTestSuite, testHandleMethodInSuccessfullC
                                                Field(&Message::numOfMsgInFileTransfer, 0),
                                                Field(&Message::bytesInPayload, std::string("someFile.txt").size()),
                                                Field(&Message::payload, StartsWith("someFile.txt"))),
-                                         sizeof(Message),
+                                         sizeof(RawMessage),
                                          0));
     m_sut.handle(l_clientSocket, l_msg);
 }
@@ -54,7 +54,7 @@ TEST_F(ServerSendFileListRequestHandlerTestSuite, testHandleMethodInCaseWhenSear
                                          AllOf(Field(&Message::msgId, SERVER_SEND_FILE_LIST_RESP),
                                                Field(&Message::numOfMsgInFileTransfer, 0),
                                                Field(&Message::bytesInPayload, 0)),
-                                         sizeof(Message),
+                                         sizeof(RawMessage),
                                          0));
     m_sut.handle(l_clientSocket, l_msg);
 }
@@ -72,7 +72,7 @@ TEST_F(ServerSendFileListRequestHandlerTestSuite, testHandleMethodInCaseWhenExec
                                          AllOf(Field(&Message::msgId, SERVER_SEND_FILE_LIST_RESP),
                                                Field(&Message::numOfMsgInFileTransfer, 0),
                                                Field(&Message::bytesInPayload, 0)),
-                                         sizeof(Message),
+                                         sizeof(RawMessage),
                                          0));
     m_sut.handle(l_clientSocket, l_msg);
 }

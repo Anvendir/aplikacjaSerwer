@@ -292,10 +292,10 @@ TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testNumOfMsgInFileTrans
     ASSERT_EQ('\0', l_convertedMsg.numOfMsgInFileTransfer[9]);
 }
 
-TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueGreaterThan999999999)
+TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueGreaterThan1024)
 {
     Message l_inputMsg = {};
-    l_inputMsg.bytesInPayload = 1000000000;
+    l_inputMsg.bytesInPayload = 1025;
 
     EXPECT_CALL(*m_errorHandler, handleHardError(::testing::_));
     RawMessage l_convertedMsg = m_sut.convertMessageToRawMessage(l_inputMsg);
@@ -313,11 +313,6 @@ TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForVa
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[2]);
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[3]);
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[4]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[5]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[6]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[7]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[8]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[9]);
 }
 
 TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueFrom0To9)
@@ -332,11 +327,6 @@ TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForVa
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[2]);
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[3]);
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[4]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[5]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[6]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[7]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[8]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[9]);
 }
 
 TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueFrom10To99)
@@ -351,11 +341,6 @@ TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForVa
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[2]);
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[3]);
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[4]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[5]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[6]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[7]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[8]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[9]);
 }
 
 TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueFrom100To999)
@@ -370,125 +355,34 @@ TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForVa
     ASSERT_EQ('6', l_convertedMsg.bytesInPayload[2]);
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[3]);
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[4]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[5]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[6]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[7]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[8]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[9]);
 }
 
-TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueFrom1000To9999)
+TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueFrom1000To1024)
 {
     Message l_inputMsg = {};
-    l_inputMsg.bytesInPayload = 3338;
+    l_inputMsg.bytesInPayload = 1004;
 
     RawMessage l_convertedMsg = m_sut.convertMessageToRawMessage(l_inputMsg);
 
-    ASSERT_EQ('3', l_convertedMsg.bytesInPayload[0]);
-    ASSERT_EQ('3', l_convertedMsg.bytesInPayload[1]);
-    ASSERT_EQ('3', l_convertedMsg.bytesInPayload[2]);
-    ASSERT_EQ('8', l_convertedMsg.bytesInPayload[3]);
+    ASSERT_EQ('1', l_convertedMsg.bytesInPayload[0]);
+    ASSERT_EQ('0', l_convertedMsg.bytesInPayload[1]);
+    ASSERT_EQ('0', l_convertedMsg.bytesInPayload[2]);
+    ASSERT_EQ('4', l_convertedMsg.bytesInPayload[3]);
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[4]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[5]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[6]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[7]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[8]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[9]);
 }
 
-TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueFrom10000To99999)
+TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueEqualTo1024)
 {
     Message l_inputMsg = {};
-    l_inputMsg.bytesInPayload = 12345;
+    l_inputMsg.bytesInPayload = 1024;
 
     RawMessage l_convertedMsg = m_sut.convertMessageToRawMessage(l_inputMsg);
 
     ASSERT_EQ('1', l_convertedMsg.bytesInPayload[0]);
-    ASSERT_EQ('2', l_convertedMsg.bytesInPayload[1]);
-    ASSERT_EQ('3', l_convertedMsg.bytesInPayload[2]);
+    ASSERT_EQ('0', l_convertedMsg.bytesInPayload[1]);
+    ASSERT_EQ('2', l_convertedMsg.bytesInPayload[2]);
     ASSERT_EQ('4', l_convertedMsg.bytesInPayload[3]);
-    ASSERT_EQ('5', l_convertedMsg.bytesInPayload[4]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[5]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[6]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[7]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[8]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[9]);
-}
-
-TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueFrom100000To999999)
-{
-    Message l_inputMsg = {};
-    l_inputMsg.bytesInPayload = 123456;
-
-    RawMessage l_convertedMsg = m_sut.convertMessageToRawMessage(l_inputMsg);
-
-    ASSERT_EQ('1', l_convertedMsg.bytesInPayload[0]);
-    ASSERT_EQ('2', l_convertedMsg.bytesInPayload[1]);
-    ASSERT_EQ('3', l_convertedMsg.bytesInPayload[2]);
-    ASSERT_EQ('4', l_convertedMsg.bytesInPayload[3]);
-    ASSERT_EQ('5', l_convertedMsg.bytesInPayload[4]);
-    ASSERT_EQ('6', l_convertedMsg.bytesInPayload[5]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[6]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[7]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[8]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[9]);
-}
-
-TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueFrom1000000To9999999)
-{
-    Message l_inputMsg = {};
-    l_inputMsg.bytesInPayload = 1234567;
-
-    RawMessage l_convertedMsg = m_sut.convertMessageToRawMessage(l_inputMsg);
-
-    ASSERT_EQ('1', l_convertedMsg.bytesInPayload[0]);
-    ASSERT_EQ('2', l_convertedMsg.bytesInPayload[1]);
-    ASSERT_EQ('3', l_convertedMsg.bytesInPayload[2]);
-    ASSERT_EQ('4', l_convertedMsg.bytesInPayload[3]);
-    ASSERT_EQ('5', l_convertedMsg.bytesInPayload[4]);
-    ASSERT_EQ('6', l_convertedMsg.bytesInPayload[5]);
-    ASSERT_EQ('7', l_convertedMsg.bytesInPayload[6]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[7]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[8]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[9]);
-}
-
-TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueFrom10000000To99999999)
-{
-    Message l_inputMsg = {};
-    l_inputMsg.bytesInPayload = 12345670;
-
-    RawMessage l_convertedMsg = m_sut.convertMessageToRawMessage(l_inputMsg);
-
-    ASSERT_EQ('1', l_convertedMsg.bytesInPayload[0]);
-    ASSERT_EQ('2', l_convertedMsg.bytesInPayload[1]);
-    ASSERT_EQ('3', l_convertedMsg.bytesInPayload[2]);
-    ASSERT_EQ('4', l_convertedMsg.bytesInPayload[3]);
-    ASSERT_EQ('5', l_convertedMsg.bytesInPayload[4]);
-    ASSERT_EQ('6', l_convertedMsg.bytesInPayload[5]);
-    ASSERT_EQ('7', l_convertedMsg.bytesInPayload[6]);
-    ASSERT_EQ('0', l_convertedMsg.bytesInPayload[7]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[8]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[9]);
-}
-
-TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testBytesInPayloadForValueFrom100000000To999999999)
-{
-    Message l_inputMsg = {};
-    l_inputMsg.bytesInPayload = 123456701;
-
-    RawMessage l_convertedMsg = m_sut.convertMessageToRawMessage(l_inputMsg);
-
-    ASSERT_EQ('1', l_convertedMsg.bytesInPayload[0]);
-    ASSERT_EQ('2', l_convertedMsg.bytesInPayload[1]);
-    ASSERT_EQ('3', l_convertedMsg.bytesInPayload[2]);
-    ASSERT_EQ('4', l_convertedMsg.bytesInPayload[3]);
-    ASSERT_EQ('5', l_convertedMsg.bytesInPayload[4]);
-    ASSERT_EQ('6', l_convertedMsg.bytesInPayload[5]);
-    ASSERT_EQ('7', l_convertedMsg.bytesInPayload[6]);
-    ASSERT_EQ('0', l_convertedMsg.bytesInPayload[7]);
-    ASSERT_EQ('1', l_convertedMsg.bytesInPayload[8]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[9]);
+    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[4]);
 }
 
 TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testConvertMessageToRawMessageAsAWhole)
@@ -523,11 +417,6 @@ TEST_F(MessageConverterFromMessageToRawMessageTestSuite, testConvertMessageToRaw
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[2]);
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[3]);
     ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[4]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[5]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[6]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[7]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[8]);
-    ASSERT_EQ('\0', l_convertedMsg.bytesInPayload[9]);
 
     ASSERT_STREQ(l_inputMsg.payload, l_convertedMsg.payload);
 }
@@ -881,11 +770,6 @@ TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForVa
     l_inputMsg.bytesInPayload[2] = '\0';
     l_inputMsg.bytesInPayload[3] = '\0';
     l_inputMsg.bytesInPayload[4] = '\0';
-    l_inputMsg.bytesInPayload[5] = '\0';
-    l_inputMsg.bytesInPayload[6] = '\0';
-    l_inputMsg.bytesInPayload[7] = '\0';
-    l_inputMsg.bytesInPayload[8] = '\0';
-    l_inputMsg.bytesInPayload[9] = '\0';
 
     Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
 
@@ -901,11 +785,6 @@ TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadWhenE
     l_inputMsg.bytesInPayload[2] = '\0';
     l_inputMsg.bytesInPayload[3] = '\0';
     l_inputMsg.bytesInPayload[4] = '\0';
-    l_inputMsg.bytesInPayload[5] = '\0';
-    l_inputMsg.bytesInPayload[6] = '\0';
-    l_inputMsg.bytesInPayload[7] = '\0';
-    l_inputMsg.bytesInPayload[8] = '\0';
-    l_inputMsg.bytesInPayload[9] = '\0';
 
     EXPECT_CALL(*m_errorHandler, handleHardError(::testing::_));
     m_sut.convertRawMessageToMessage(l_inputMsg);
@@ -920,11 +799,6 @@ TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadWhenI
     l_inputMsg.bytesInPayload[2] = 'd';
     l_inputMsg.bytesInPayload[3] = 'b';
     l_inputMsg.bytesInPayload[4] = '\0';
-    l_inputMsg.bytesInPayload[5] = '\0';
-    l_inputMsg.bytesInPayload[6] = '\0';
-    l_inputMsg.bytesInPayload[7] = '\0';
-    l_inputMsg.bytesInPayload[8] = '\0';
-    l_inputMsg.bytesInPayload[9] = '\0';
 
     EXPECT_CALL(*m_errorHandler, handleHardError(::testing::_));
     m_sut.convertRawMessageToMessage(l_inputMsg);
@@ -939,11 +813,6 @@ TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForVa
     l_inputMsg.bytesInPayload[2] = '\0';
     l_inputMsg.bytesInPayload[3] = '\0';
     l_inputMsg.bytesInPayload[4] = '\0';
-    l_inputMsg.bytesInPayload[5] = '\0';
-    l_inputMsg.bytesInPayload[6] = '\0';
-    l_inputMsg.bytesInPayload[7] = '\0';
-    l_inputMsg.bytesInPayload[8] = '\0';
-    l_inputMsg.bytesInPayload[9] = '\0';
 
     Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
 
@@ -959,11 +828,6 @@ TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForVa
     l_inputMsg.bytesInPayload[2] = '\0';
     l_inputMsg.bytesInPayload[3] = '\0';
     l_inputMsg.bytesInPayload[4] = '\0';
-    l_inputMsg.bytesInPayload[5] = '\0';
-    l_inputMsg.bytesInPayload[6] = '\0';
-    l_inputMsg.bytesInPayload[7] = '\0';
-    l_inputMsg.bytesInPayload[8] = '\0';
-    l_inputMsg.bytesInPayload[9] = '\0';
 
     Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
 
@@ -979,135 +843,40 @@ TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForVa
     l_inputMsg.bytesInPayload[2] = '2';
     l_inputMsg.bytesInPayload[3] = '\0';
     l_inputMsg.bytesInPayload[4] = '\0';
-    l_inputMsg.bytesInPayload[5] = '\0';
-    l_inputMsg.bytesInPayload[6] = '\0';
-    l_inputMsg.bytesInPayload[7] = '\0';
-    l_inputMsg.bytesInPayload[8] = '\0';
-    l_inputMsg.bytesInPayload[9] = '\0';
 
     Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
 
     ASSERT_EQ(912, l_convertedMsg.bytesInPayload);
 }
 
-TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom1000To9999)
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom1000To1024)
 {
     RawMessage l_inputMsg = {};
     initializeRawMessagesWithDefaultValues(l_inputMsg);
-    l_inputMsg.bytesInPayload[0] = '9';
-    l_inputMsg.bytesInPayload[1] = '1';
+    l_inputMsg.bytesInPayload[0] = '1';
+    l_inputMsg.bytesInPayload[1] = '0';
     l_inputMsg.bytesInPayload[2] = '2';
     l_inputMsg.bytesInPayload[3] = '3';
     l_inputMsg.bytesInPayload[4] = '\0';
-    l_inputMsg.bytesInPayload[5] = '\0';
-    l_inputMsg.bytesInPayload[6] = '\0';
-    l_inputMsg.bytesInPayload[7] = '\0';
-    l_inputMsg.bytesInPayload[8] = '\0';
-    l_inputMsg.bytesInPayload[9] = '\0';
 
     Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
 
-    ASSERT_EQ(9123, l_convertedMsg.bytesInPayload);
+    ASSERT_EQ(1023, l_convertedMsg.bytesInPayload);
 }
 
-TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom10000To99999)
+TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueEqualTo1024)
 {
     RawMessage l_inputMsg = {};
     initializeRawMessagesWithDefaultValues(l_inputMsg);
-    l_inputMsg.bytesInPayload[0] = '9';
-    l_inputMsg.bytesInPayload[1] = '1';
+    l_inputMsg.bytesInPayload[0] = '1';
+    l_inputMsg.bytesInPayload[1] = '0';
     l_inputMsg.bytesInPayload[2] = '2';
-    l_inputMsg.bytesInPayload[3] = '3';
-    l_inputMsg.bytesInPayload[4] = '4';
-    l_inputMsg.bytesInPayload[5] = '\0';
-    l_inputMsg.bytesInPayload[6] = '\0';
-    l_inputMsg.bytesInPayload[7] = '\0';
-    l_inputMsg.bytesInPayload[8] = '\0';
-    l_inputMsg.bytesInPayload[9] = '\0';
+    l_inputMsg.bytesInPayload[3] = '4';
+    l_inputMsg.bytesInPayload[4] = '\0';
 
     Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
 
-    ASSERT_EQ(91234, l_convertedMsg.bytesInPayload);
-}
-
-TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom100000To999999)
-{
-    RawMessage l_inputMsg = {};
-    initializeRawMessagesWithDefaultValues(l_inputMsg);
-    l_inputMsg.bytesInPayload[0] = '9';
-    l_inputMsg.bytesInPayload[1] = '1';
-    l_inputMsg.bytesInPayload[2] = '2';
-    l_inputMsg.bytesInPayload[3] = '3';
-    l_inputMsg.bytesInPayload[4] = '4';
-    l_inputMsg.bytesInPayload[5] = '3';
-    l_inputMsg.bytesInPayload[6] = '\0';
-    l_inputMsg.bytesInPayload[7] = '\0';
-    l_inputMsg.bytesInPayload[8] = '\0';
-    l_inputMsg.bytesInPayload[9] = '\0';
-
-    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
-
-    ASSERT_EQ(912343, l_convertedMsg.bytesInPayload);
-}
-
-TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom1000000To9999999)
-{
-    RawMessage l_inputMsg = {};
-    initializeRawMessagesWithDefaultValues(l_inputMsg);
-    l_inputMsg.bytesInPayload[0] = '9';
-    l_inputMsg.bytesInPayload[1] = '1';
-    l_inputMsg.bytesInPayload[2] = '2';
-    l_inputMsg.bytesInPayload[3] = '3';
-    l_inputMsg.bytesInPayload[4] = '4';
-    l_inputMsg.bytesInPayload[5] = '3';
-    l_inputMsg.bytesInPayload[6] = '2';
-    l_inputMsg.bytesInPayload[7] = '\0';
-    l_inputMsg.bytesInPayload[8] = '\0';
-    l_inputMsg.bytesInPayload[9] = '\0';
-
-    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
-
-    ASSERT_EQ(9123432, l_convertedMsg.bytesInPayload);
-}
-
-TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom10000000To99999999)
-{
-    RawMessage l_inputMsg = {};
-    initializeRawMessagesWithDefaultValues(l_inputMsg);
-    l_inputMsg.bytesInPayload[0] = '9';
-    l_inputMsg.bytesInPayload[1] = '1';
-    l_inputMsg.bytesInPayload[2] = '2';
-    l_inputMsg.bytesInPayload[3] = '3';
-    l_inputMsg.bytesInPayload[4] = '4';
-    l_inputMsg.bytesInPayload[5] = '3';
-    l_inputMsg.bytesInPayload[6] = '2';
-    l_inputMsg.bytesInPayload[7] = '8';
-    l_inputMsg.bytesInPayload[8] = '\0';
-    l_inputMsg.bytesInPayload[9] = '\0';
-
-    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
-
-    ASSERT_EQ(91234328, l_convertedMsg.bytesInPayload);
-}
-
-TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testBytesInPayloadForValueFrom100000000To999999999)
-{
-    RawMessage l_inputMsg = {};
-    initializeRawMessagesWithDefaultValues(l_inputMsg);
-    l_inputMsg.bytesInPayload[0] = '9';
-    l_inputMsg.bytesInPayload[1] = '1';
-    l_inputMsg.bytesInPayload[2] = '2';
-    l_inputMsg.bytesInPayload[3] = '3';
-    l_inputMsg.bytesInPayload[4] = '4';
-    l_inputMsg.bytesInPayload[5] = '3';
-    l_inputMsg.bytesInPayload[6] = '2';
-    l_inputMsg.bytesInPayload[7] = '8';
-    l_inputMsg.bytesInPayload[8] = '1';
-    l_inputMsg.bytesInPayload[9] = '\0';
-
-    Message l_convertedMsg = m_sut.convertRawMessageToMessage(l_inputMsg);
-
-    ASSERT_EQ(912343281, l_convertedMsg.bytesInPayload);
+    ASSERT_EQ(1024, l_convertedMsg.bytesInPayload);
 }
 
 TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testConvertRawMessageToMessageAsAWhole)
@@ -1136,11 +905,6 @@ TEST_F(MessageConverterFromRawMessageToMessageTestSuite, testConvertRawMessageTo
     l_inputMsg.bytesInPayload[2] = '\0';
     l_inputMsg.bytesInPayload[3] = '\0';
     l_inputMsg.bytesInPayload[4] = '\0';
-    l_inputMsg.bytesInPayload[5] = '\0';
-    l_inputMsg.bytesInPayload[6] = '\0';
-    l_inputMsg.bytesInPayload[7] = '\0';
-    l_inputMsg.bytesInPayload[8] = '\0';
-    l_inputMsg.bytesInPayload[9] = '\0';
 
     strcpy(l_inputMsg.payload, l_payload.c_str());
 

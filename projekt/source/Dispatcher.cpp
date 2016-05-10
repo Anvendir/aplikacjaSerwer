@@ -70,5 +70,5 @@ void Dispatcher::sendServerTestFirstResp(int p_clientSocket) const
     Message l_sendline = {};
     l_sendline.msgId = SERVER_TEST_FIRST_RESP;
     strcpy(l_sendline.payload, "Odpowiedz");
-    m_unixWrapper->send(p_clientSocket, &l_sendline, sizeof(l_sendline));
+    m_unixWrapper->send(p_clientSocket, &l_sendline);
 }
