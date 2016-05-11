@@ -23,8 +23,8 @@ Server::Server() :
 void Server::start() const
 {
     int l_serverSocket = m_networkWrapper->socket(AF_INET, SOCK_STREAM);
-    SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.254.1", 9878);
-    //SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.1.6", 9878);
+    //SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.254.1", 9878);
+    SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.1.6", 9878);
 
     m_networkWrapper->bind(l_serverSocket,
                            reinterpret_cast<GenericSockAddr*>(&l_serverAddrStruct),
@@ -84,9 +84,11 @@ SockAddrIn Server::initializeSocketAddresStructure(const char* p_ipAddres, const
 
 void Server::sendWelcomeMessage(int p_clientSocket) const
 {
+    const std::string l_welcomeMessageContent = "Welcome on server!";
     Message l_welcomeMessage = {};
     l_welcomeMessage.msgId = CLIENT_WELCOME_MSG_IND;
-    strcpy(l_welcomeMessage.payload, "Welcome on server!");
+    l_welcomeMessage.bytesInPayload = strlen(l_welcomeMessageContent.c_str()) + 1;
+    strcpy(l_welcomeMessage.payload, l_welcomeMessageContent.c_str());
 
     m_unixWrapper->send(p_clientSocket, &l_welcomeMessage);
 }

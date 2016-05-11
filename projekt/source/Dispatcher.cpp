@@ -67,8 +67,10 @@ bool Dispatcher::dispatch(int p_clientSocket, const Message p_receivedMsg) const
 
 void Dispatcher::sendServerTestFirstResp(int p_clientSocket) const
 {
+    std::string l_msgContent = "Odpowiedz";
     Message l_sendline = {};
     l_sendline.msgId = SERVER_TEST_FIRST_RESP;
-    strcpy(l_sendline.payload, "Odpowiedz");
+    l_sendline.bytesInPayload = strlen(l_msgContent.c_str()) + 1;
+    strcpy(l_sendline.payload, l_msgContent.c_str());
     m_unixWrapper->send(p_clientSocket, &l_sendline);
 }
