@@ -6,7 +6,8 @@ objects = Main.o \
 		  Server.o ServerTestSuite.o \
 		  ServerSendFileRequestHandler.o ServerSendFileRequestHandlerTestSuite.o \
 	      ServerSendFileListRequestHandler.o ServerSendFileListRequestHandlerTestSuite.o \
-		  MessageConverter.o MessageConverterTestSuite.o
+		  MessageConverter.o MessageConverterTestSuite.o \
+		  ServerParseDicomFileRequestHandler.o ServerParseDicomFileRequestHandlerTestSuite.o
 
 GTEST_DIR = ./googleTestRepo/googletest
 GMOCK_DIR = ./googleTestRepo/googlemock
@@ -70,16 +71,19 @@ ServerSendFileRequestHandler.o : ../source/ServerSendFileRequestHandler.cpp ../i
 	g++ -c -std=c++14 -I ../include \
 			../source/ServerSendFileRequestHandler.cpp
 
-ServerSendFileRequestHandlerTestSuite.o : ./test_modules/ServerSendFileRequestHandlerTestSuite.cpp ../include/ServerSendFileRequestHandler.hpp
+ServerSendFileRequestHandlerTestSuite.o : ./test_modules/ServerSendFileRequestHandlerTestSuite.cpp \
+   									      ../include/ServerSendFileRequestHandler.hpp
 	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
 			-I ./mocks -I ../include/ \
 			./test_modules/ServerSendFileRequestHandlerTestSuite.cpp
 
-ServerSendFileListRequestHandler.o : ../source/ServerSendFileListRequestHandler.cpp ../include/ServerSendFileListRequestHandler.hpp
+ServerSendFileListRequestHandler.o : ../source/ServerSendFileListRequestHandler.cpp \
+									 ../include/ServerSendFileListRequestHandler.hpp
 	g++ -c -std=c++14 -I ../include \
 			../source/ServerSendFileListRequestHandler.cpp
 
-ServerSendFileListRequestHandlerTestSuite.o : ./test_modules/ServerSendFileListRequestHandlerTestSuite.cpp ../include/ServerSendFileListRequestHandler.hpp
+ServerSendFileListRequestHandlerTestSuite.o : ./test_modules/ServerSendFileListRequestHandlerTestSuite.cpp \
+   										      ../include/ServerSendFileListRequestHandler.hpp
 	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
 			-I ./mocks -I ../include/ \
 			./test_modules/ServerSendFileListRequestHandlerTestSuite.cpp
@@ -92,6 +96,17 @@ MessageConverterTestSuite.o : ./test_modules/MessageConverterTestSuite.cpp ../in
 	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
 			-I ./mocks -I ../include/ \
 			./test_modules/MessageConverterTestSuite.cpp
+
+ServerParseDicomFileRequestHandler.o : ../source/ServerParseDicomFileRequestHandler.cpp \
+									   ../include/ServerParseDicomFileRequestHandler.hpp
+	g++ -c -std=c++14 -I ../include \
+			../source/ServerParseDicomFileRequestHandler.cpp
+
+ServerParseDicomFileRequestHandlerTestSuite.o : ./test_modules/ServerParseDicomFileRequestHandlerTestSuite.cpp \
+   												../include/ServerParseDicomFileRequestHandler.hpp
+	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
+			-I ./mocks -I ../include/ \
+			./test_modules/ServerParseDicomFileRequestHandlerTestSuite.cpp
 
 .PHONY : clean
 clean:

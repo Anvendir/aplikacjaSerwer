@@ -5,6 +5,7 @@
 #include "Dispatcher.hpp"
 #include "ServerSendFileRequestHandler.hpp"
 #include "ServerSendFileListRequestHandler.hpp"
+#include "ServerParseDicomFileRequestHandler.hpp"
 #include <cstring>
 #include <iostream>
 #include <climits>
@@ -15,7 +16,8 @@ Server::Server() :
     m_unixWrapper(std::make_shared<UnixWrappers>(m_errorHandler)),
     m_dispatcher(std::make_unique<Dispatcher>(m_unixWrapper,
                                               std::make_shared<ServerSendFileRequestHandler>(m_unixWrapper),
-                                              std::make_shared<ServerSendFileListRequestHandler>(m_unixWrapper)))
+                                              std::make_shared<ServerSendFileListRequestHandler>(m_unixWrapper),
+                                              std::make_shared<ServerParseDicomFileRequestHandler>()))
 {
 
 }
@@ -23,8 +25,8 @@ Server::Server() :
 void Server::start() const
 {
     int l_serverSocket = m_networkWrapper->socket(AF_INET, SOCK_STREAM);
-    //SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.254.1", 9878);
-    SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.1.6", 9878);
+    SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.254.1", 9878);  /*adres dla modul testow*/
+    //SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.1.6", 9878); /*adres dla Androida */
 
     m_networkWrapper->bind(l_serverSocket,
                            reinterpret_cast<GenericSockAddr*>(&l_serverAddrStruct),

@@ -2,6 +2,7 @@
 #include "UnixWrappers.hpp"
 #include "IServerSendFileRequestHandler.hpp"
 #include "IServerSendFileListRequestHandler.hpp"
+#include "IServerParseDicomFileRequestHandler.hpp"
 #include "CommonTypes.h"
 #include <iostream>
 #include <memory>
@@ -10,10 +11,12 @@
 
 Dispatcher::Dispatcher(std::shared_ptr<IUnixWrappers> p_unixWrapper,
                        std::shared_ptr<IServerSendFileRequestHandler> p_serverSendFileRequestHandler,
-                       std::shared_ptr<IServerSendFileListRequestHandler> p_serverSendFileListRequestHandler)
+                       std::shared_ptr<IServerSendFileListRequestHandler> p_serverSendFileListRequestHandler,
+                       std::shared_ptr<IServerParseDicomFileRequestHandler> p_serverParseDicomFileRequestHandler)
     : m_unixWrapper(p_unixWrapper),
       m_serverSendFileRequestHandler(p_serverSendFileRequestHandler),
-      m_serverSendFileListRequestHandler(p_serverSendFileListRequestHandler)
+      m_serverSendFileListRequestHandler(p_serverSendFileListRequestHandler),
+      m_serverParseDicomFileRequestHandler(p_serverParseDicomFileRequestHandler)
 {
 
 }
@@ -53,6 +56,15 @@ bool Dispatcher::dispatch(int p_clientSocket, const Message p_receivedMsg) const
                       << std::endl;
 
             m_serverSendFileRequestHandler->handle(p_clientSocket, p_receivedMsg);
+            break;
+        }
+        case SERVER_PARSE_DICOM_FILE_REQ:
+        {
+            std::cout << "PID: " << m_unixWrapper->getPid() << " | "
+                      << "Case SERVER_PARSE_DICOM_FILE_REQ: received message - " << p_receivedMsg.payload
+                      << std::endl;
+
+            m_serverParseDicomFileRequestHandler->handle(p_clientSocket, p_receivedMsg);
             break;
         }
         default:

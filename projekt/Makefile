@@ -6,7 +6,8 @@ objects = Main.o \
 		  Server.o \
 		  ServerSendFileRequestHandler.o \
 		  ServerSendFileListRequestHandler.o \
-		  MessageConverter.o
+		  MessageConverter.o \
+		  ServerParseDicomFileRequestHandler.o
 
 Program : $(objects)
 	g++ -std=c++14 -o Program $(objects)
@@ -39,13 +40,19 @@ ServerSendFileRequestHandler.o : ./source/ServerSendFileRequestHandler.cpp ./inc
 	g++ -c -std=c++14 -I ./include \
 	   	./source/ServerSendFileRequestHandler.cpp
 
-ServerSendFileListRequestHandler.o : ./source/ServerSendFileListRequestHandler.cpp ./include/ServerSendFileListRequestHandler.hpp
+ServerSendFileListRequestHandler.o : ./source/ServerSendFileListRequestHandler.cpp \
+									 ./include/ServerSendFileListRequestHandler.hpp
 	g++ -c -std=c++14 -I ./include \
 	   	./source/ServerSendFileListRequestHandler.cpp
 
 MessageConverter.o : ./source/MessageConverter.cpp ./include/MessageConverter.hpp
 	g++ -c -std=c++14 -I ./include \
 	   	./source/MessageConverter.cpp
+
+ServerParseDicomFileRequestHandler.o : ./source/ServerParseDicomFileRequestHandler.cpp \
+   								      ./include/ServerParseDicomFileRequestHandler.hpp
+	g++ -c -std=c++14 -I ./include \
+	   	./source/ServerParseDicomFileRequestHandler.cpp
 
 .PHONY : clean
 clean:
