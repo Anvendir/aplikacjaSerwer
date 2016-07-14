@@ -1,3 +1,22 @@
+//13.07.2016
+1. Dodanie handlera dla wiadomosci SERVER_PARSE_DICOM_FILE_REQ
+2. Sciagniecie i budowa biblioteki dcmtk
+3. Podgladniecie dzialania programu z sciezka wykonania do konwersji pliku DICOM na jpeg, png, tiff, bmp.
+
+Do zrobienia:
+1. Wpięcie biblioteki DICOM w projekt (Makefile)
+2. Wyciagniecie kilku wybranych informacji z pliku DICOM i zapisanie ich do pliku tekstowego.
+3. Dodanie mozliwosci konwersji z DICOM na png czy tiff.
+4. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser
+    * konwersja DICOM do JPEG
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczyoraz UT
+5. Obsluga sytuacji brzegowyvch:
+-> zerwanie połaczenia w trakcie trnsmisji przez klienta
+-> request pliku ktorego nie ma
+-> wiadomosc nie przychodzi dlugi czas ( kiedy zamykac polaczenia, timery?)
+6. Plik DICOM skonwertowany jest inny niz w progaie MicroDicom, zabawa kilkoma opcjami zeby rozjasnic zdjecie.
+
 //09.05.2016
 Zrobione:
 1. Wpiecie konwertera z punktu 1 do UnixWrapera do metody recv i send
