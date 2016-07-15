@@ -1,3 +1,29 @@
+commonPartSrc = -c -std=c++14 -I ../include
+gtestIncludes = -I ./googleTestRepo/googletest/include -I ./googleTestRepo/googlemock/include
+commonPartUt = $(commonPartSrc) -pthread $(gtestIncludes) -I ./mocks
+
+dicomIncludesPath = -I ../dcmtk/config/include \
+			     	-I ../dcmtk/dcmdata/include \
+					-I ../dcmtk/oflog/include \
+					-I ../dcmtk/ofstd/include \
+			   		-I ../dcmtk/dcmimgle/include
+
+dicomLibrariesPath = -L ../dcmtk/dcmimgle/libsrc \
+					 -L ../dcmtk/dcmdata/libsrc \
+					 -L ../dcmtk/oflog/libsrc \
+					 -L ../dcmtk/ofstd/libsrc
+
+dicomLibraries = -ldcmimgle \
+				 -ldcmdata \
+				 -loflog \
+				 -lofstd
+
+gtestLibraries = -lgtest -lgmock
+
+staticLibraries = -lz $(dicomLibraries) $(gtestLibraries)
+
+staticLibriariesPath = -L ./libs $(dicomLibrariesPath)
+
 objects = Main.o \
 		  Dispatcher.o DispatcherTestSuite.o \
 		  ErrorHandler.o ErrorHandlerTestSuite.o \
@@ -9,104 +35,65 @@ objects = Main.o \
 		  MessageConverter.o MessageConverterTestSuite.o \
 		  ServerParseDicomFileRequestHandler.o ServerParseDicomFileRequestHandlerTestSuite.o
 
-GTEST_DIR = ./googleTestRepo/googletest
-GMOCK_DIR = ./googleTestRepo/googlemock
-
 UnitTests : $(objects)
-	g++ -std=c++14 -o UnitTests $(objects) \
-		./libs/libgtest.a  ./libs/libgmock.a -pthread \
-	   	-isystem $(GTEST_DIR)/include -isystem ${GMOCK_DIR}/include
+	g++ -std=c++14 -pthread $(gtestIncludes) $(staticLibriariesPath) -o UnitTests $(objects) $(staticLibraries)
 
 Main.o : ./test_modules/Main.cpp
-	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread \
-			-I ./mocks \
-			./test_modules/Main.cpp
+	g++ $(commonPartUt) ./test_modules/Main.cpp
 
-Dispatcher.o : ../source/Dispatcher.cpp ../include/Dispatcher.hpp
-	g++ -c -std=c++14 -I ../include \
-			../source/Dispatcher.cpp
+Dispatcher.o : ../source/Dispatcher.cpp
+	g++ $(commonPartSrc) ../source/Dispatcher.cpp
 
-DispatcherTestSuite.o : ./test_modules/DispatcherTestSuite.cpp ../include/Dispatcher.hpp
-	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
-			-I ./mocks -I ../include/ \
-			./test_modules/DispatcherTestSuite.cpp
+DispatcherTestSuite.o : ./test_modules/DispatcherTestSuite.cpp
+	g++ $(commonPartUt) ./test_modules/DispatcherTestSuite.cpp
 
-ErrorHandler.o : ../source/ErrorHandler.cpp ../include/ErrorHandler.hpp
-	g++ -c -std=c++14 -I ../include \
-			../source/ErrorHandler.cpp
+ErrorHandler.o : ../source/ErrorHandler.cpp
+	g++ $(commonPartSrc) ../source/ErrorHandler.cpp
 
-ErrorHandlerTestSuite.o : ./test_modules/ErrorHandlerTestSuite.cpp ../include/ErrorHandler.hpp
-	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread \
-			-I ./mocks -I ../include/ \
-			./test_modules/ErrorHandlerTestSuite.cpp
+ErrorHandlerTestSuite.o : ./test_modules/ErrorHandlerTestSuite.cpp
+	g++ $(commonPartUt) ./test_modules/ErrorHandlerTestSuite.cpp
 
-NetworkWrappers.o : ../source/NetworkWrappers.cpp ../include/NetworkWrappers.hpp
-	g++ -c -std=c++14 -I ../include \
-			../source/NetworkWrappers.cpp
+NetworkWrappers.o : ../source/NetworkWrappers.cpp
+	g++ $(commonPartSrc) ../source/NetworkWrappers.cpp
 
-NetworkWrappersTestSuite.o : ./test_modules/NetworkWrappersTestSuite.cpp ../include/NetworkWrappers.hpp
-	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
-			-I ./mocks -I ../include/ \
-			./test_modules/NetworkWrappersTestSuite.cpp
+NetworkWrappersTestSuite.o : ./test_modules/NetworkWrappersTestSuite.cpp
+	g++ $(commonPartUt) ./test_modules/NetworkWrappersTestSuite.cpp
 
-UnixWrappers.o : ../source/UnixWrappers.cpp ../include/UnixWrappers.hpp
-	g++ -c -std=c++14 -I ../include \
-			../source/UnixWrappers.cpp
+UnixWrappers.o : ../source/UnixWrappers.cpp
+	g++ $(commonPartSrc) ../source/UnixWrappers.cpp
 
-UnixWrappersTestSuite.o : ./test_modules/UnixWrappersTestSuite.cpp ../include/UnixWrappers.hpp
-	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
-			-I ./mocks -I ../include/ \
-			./test_modules/UnixWrappersTestSuite.cpp
+UnixWrappersTestSuite.o : ./test_modules/UnixWrappersTestSuite.cpp
+	g++ $(commonPartUt) ./test_modules/UnixWrappersTestSuite.cpp
 
-Server.o : ../source/Server.cpp ../include/Server.hpp
-	g++ -c -std=c++14 -I ../include \
-			../source/Server.cpp
+Server.o : ../source/Server.cpp
+	g++ $(commonPartSrc) ../source/Server.cpp
 
-ServerTestSuite.o : ./test_modules/ServerTestSuite.cpp ../include/Server.hpp
-	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
-			-I ./mocks -I ../include/ \
-			./test_modules/ServerTestSuite.cpp
+ServerTestSuite.o : ./test_modules/ServerTestSuite.cpp
+	g++ $(commonPartUt) ./test_modules/ServerTestSuite.cpp
 
-ServerSendFileRequestHandler.o : ../source/ServerSendFileRequestHandler.cpp ../include/ServerSendFileRequestHandler.hpp
-	g++ -c -std=c++14 -I ../include \
-			../source/ServerSendFileRequestHandler.cpp
+ServerSendFileRequestHandler.o : ../source/ServerSendFileRequestHandler.cpp
+	g++ $(commonPartSrc) ../source/ServerSendFileRequestHandler.cpp
 
-ServerSendFileRequestHandlerTestSuite.o : ./test_modules/ServerSendFileRequestHandlerTestSuite.cpp \
-   									      ../include/ServerSendFileRequestHandler.hpp
-	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
-			-I ./mocks -I ../include/ \
-			./test_modules/ServerSendFileRequestHandlerTestSuite.cpp
+ServerSendFileRequestHandlerTestSuite.o : ./test_modules/ServerSendFileRequestHandlerTestSuite.cpp
+	g++ $(commonPartUt) ./test_modules/ServerSendFileRequestHandlerTestSuite.cpp
 
-ServerSendFileListRequestHandler.o : ../source/ServerSendFileListRequestHandler.cpp \
-									 ../include/ServerSendFileListRequestHandler.hpp
-	g++ -c -std=c++14 -I ../include \
-			../source/ServerSendFileListRequestHandler.cpp
+ServerSendFileListRequestHandler.o : ../source/ServerSendFileListRequestHandler.cpp
+	g++ $(commonPartSrc) ../source/ServerSendFileListRequestHandler.cpp
 
-ServerSendFileListRequestHandlerTestSuite.o : ./test_modules/ServerSendFileListRequestHandlerTestSuite.cpp \
-   										      ../include/ServerSendFileListRequestHandler.hpp
-	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
-			-I ./mocks -I ../include/ \
-			./test_modules/ServerSendFileListRequestHandlerTestSuite.cpp
+ServerSendFileListRequestHandlerTestSuite.o : ./test_modules/ServerSendFileListRequestHandlerTestSuite.cpp
+	g++ $(commonPartUt) ./test_modules/ServerSendFileListRequestHandlerTestSuite.cpp
 
-MessageConverter.o : ../source/MessageConverter.cpp ../include/MessageConverter.hpp
-	g++ -c -std=c++14 -I ../include \
-			../source/MessageConverter.cpp
+MessageConverter.o : ../source/MessageConverter.cpp
+	g++ $(commonPartSrc) ../source/MessageConverter.cpp
 
-MessageConverterTestSuite.o : ./test_modules/MessageConverterTestSuite.cpp ../include/MessageConverter.hpp
-	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
-			-I ./mocks -I ../include/ \
-			./test_modules/MessageConverterTestSuite.cpp
+MessageConverterTestSuite.o : ./test_modules/MessageConverterTestSuite.cpp
+	g++ $(commonPartUt) ./test_modules/MessageConverterTestSuite.cpp
 
-ServerParseDicomFileRequestHandler.o : ../source/ServerParseDicomFileRequestHandler.cpp \
-									   ../include/ServerParseDicomFileRequestHandler.hpp
-	g++ -c -std=c++14 -I ../include \
-			../source/ServerParseDicomFileRequestHandler.cpp
+ServerParseDicomFileRequestHandler.o : ../source/ServerParseDicomFileRequestHandler.cpp
+	g++ $(commonPartSrc) $(dicomIncludesPath) ../source/ServerParseDicomFileRequestHandler.cpp
 
-ServerParseDicomFileRequestHandlerTestSuite.o : ./test_modules/ServerParseDicomFileRequestHandlerTestSuite.cpp \
-   												../include/ServerParseDicomFileRequestHandler.hpp
-	g++ -c -std=c++14 -isystem $(GTEST_DIR)/include -pthread -isystem ${GMOCK_DIR}/include \
-			-I ./mocks -I ../include/ \
-			./test_modules/ServerParseDicomFileRequestHandlerTestSuite.cpp
+ServerParseDicomFileRequestHandlerTestSuite.o : ./test_modules/ServerParseDicomFileRequestHandlerTestSuite.cpp
+	g++ $(commonPartUt) $(dicomIncludesPath) ./test_modules/ServerParseDicomFileRequestHandlerTestSuite.cpp
 
 .PHONY : clean
 clean:

@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 }*/
 
 //komenda do budowy tego gowna
-// g++ -pthread -lz -I ./dcmtk/config/include/ -I ./dcmtk/dcmdata/include/ -I ./dcmtk/oflog/include -I ./dcmtk/ofstd/include/ -I ./dcmtk/dcmimgle/include  test.cpp -L. -ldcmimgle -ldcmdata -loflog -lofstd  -o raz
+// g++ -pthread -lz -I ./projekt/dcmtk/config/include/ -I ./projekt/dcmtk/dcmdata/include/ -I ./projekt/dcmtk/oflog/include -I ./projekt/dcmtk/ofstd/include/ -I ./projekt/dcmtk/dcmimgle/include  test.cpp -L./projekt/dcmtk/dcmimgle/libsrc/ -ldcmimgle -L./projekt/dcmtk/dcmdata/libsrc/ -ldcmdata -L./projekt/dcmtk/oflog/libsrc/ -loflog -L./projekt/dcmtk/ofstd/libsrc/ -lofstd  -o raz
 
 #include "dcmtk/config/osconfig.h"
 #include "dcmtk/dcmdata/dctk.h"

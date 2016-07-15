@@ -1,3 +1,5 @@
+commonPart = -c -std=c++14 -I ../include
+
 objects = ComponentTests.o \
 		  ComponentTestsFunctions.o \
 		  ErrorHandler.o \
@@ -6,30 +8,24 @@ objects = ComponentTests.o \
 		  MessageConverter.o
 
 ComponentTests : $(objects)
-	g++ -std=c++14 -o ComponentTests $(objects) \
-	   	-I ../include
-
+	g++ -std=c++14 -I ../include -o ComponentTests $(objects)
 ComponentTests.o : ./ComponentTests.cpp
-	g++ -c -std=c++14 -I ../include ./ComponentTests.cpp
+	g++ $(commonPart) ./ComponentTests.cpp
 
 ComponentTestsFunctions.o : ./ComponentTestsFunctions.cpp
-	g++ -c -std=c++14 -I ../include ./ComponentTestsFunctions.cpp
+	g++ $(commonPart) ./ComponentTestsFunctions.cpp
 
-ErrorHandler.o : ../source/ErrorHandler.cpp ../include/ErrorHandler.hpp
-	g++ -c -std=c++14 -I ../include \
-    		../source/ErrorHandler.cpp
+ErrorHandler.o : ../source/ErrorHandler.cpp
+	g++ $(commonPart) ../source/ErrorHandler.cpp
 
-NetworkWrappers.o : ../source/NetworkWrappers.cpp ../include/NetworkWrappers.hpp
-	g++ -c -std=c++14 -I ../include \
-            ../source/NetworkWrappers.cpp
+NetworkWrappers.o : ../source/NetworkWrappers.cpp
+	g++ $(commonPart) ../source/NetworkWrappers.cpp
 
-UnixWrappers.o : ../source/UnixWrappers.cpp ../include/UnixWrappers.hpp
-	g++ -c -std=c++14 -I ../include \
-            ../source/UnixWrappers.cpp
+UnixWrappers.o : ../source/UnixWrappers.cpp
+	g++ $(commonPart) ../source/UnixWrappers.cpp
 
-MessageConverter.o : ../source/MessageConverter.cpp ../include/MessageConverter.hpp
-	g++ -c -std=c++14 -I ../include \
-	   	../source/MessageConverter.cpp
+MessageConverter.o : ../source/MessageConverter.cpp
+	g++ $(commonPart) ../source/MessageConverter.cpp
 
 .PHONY : clean
 clean:
