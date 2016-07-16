@@ -31,15 +31,16 @@ ServerParseDicomFileRequestHandler::ServerParseDicomFileRequestHandler(std::shar
 {
 }
 
-void ServerParseDicomFileRequestHandler::handle(int p_clientSocket, const Message& p_receivedMsg) const
+void ServerParseDicomFileRequestHandler::handle(int p_clientSocket, const Message& p_receivedMsg)
 {
     std::cout << "Handling message ServerParseDicomFileRequest" << std::endl;
+    m_textFileName = std::string(p_receivedMsg.payload) + ".txt";
 
     DcmFileFormat l_fileFormat;
     OFCondition l_status = l_fileFormat.loadFile(p_receivedMsg.payload);
     if (l_status.good())
     {
-        getInformationFromDicomFile(l_fileFormat);
+        getInformationFromDicomFile(p_clientSocket, l_fileFormat);
         sendPositiveResponse(p_clientSocket);
     }
     else
@@ -49,22 +50,34 @@ void ServerParseDicomFileRequestHandler::handle(int p_clientSocket, const Messag
     }
 }
 
-void ServerParseDicomFileRequestHandler::getInformationFromDicomFile(DcmFileFormat& p_fileFormat) const
+void ServerParseDicomFileRequestHandler::getInformationFromDicomFile(int p_clientSocket,
+                                                                     DcmFileFormat& p_fileFormat) const
 {
-    for(auto l_element: s_studyDataContainer)
+    std::ofstream l_textFile(m_textFileName);
+    if (l_textFile.is_open())
     {
-        getSingleInformationElemenFromFile(p_fileFormat, l_element);
+        for(auto l_element: s_studyDataContainer)
+        {
+            getSingleInformationElemenFromFile(p_fileFormat, l_textFile, l_element);
+        }
+
+        l_textFile.close();
+    }
+    else
+    {
+        sendNegativeResponse(p_clientSocket, "Unable to create text file!");
     }
 }
 
 void ServerParseDicomFileRequestHandler::getSingleInformationElemenFromFile(
     DcmFileFormat& p_fileFormat,
+    std::ofstream& p_textFile,
     std::pair<std::string, DcmTagKey> p_dataElementAndName) const
 {
     OFString l_patientData;
     if (p_fileFormat.getDataset()->findAndGetOFString(p_dataElementAndName.second, l_patientData).good())
     {
-        std::cout << p_dataElementAndName.first << ": " << l_patientData << std::endl;
+        p_textFile << p_dataElementAndName.first << ": " << l_patientData << std::endl;
     }
     else
     {
@@ -74,7 +87,7 @@ void ServerParseDicomFileRequestHandler::getSingleInformationElemenFromFile(
 
 void ServerParseDicomFileRequestHandler::sendPositiveResponse(int p_clientSocket) const
 {
-    std::string l_outputFileList = m_textFileName + m_binaryFileName;
+    std::string l_outputFileList = m_textFileName + " " + m_binaryFileName;
 
     Message l_msg = {};
     l_msg.msgId = SERVER_PARSE_DICOM_FILE_RESP;

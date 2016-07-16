@@ -17,10 +17,11 @@ class ServerParseDicomFileRequestHandler : public IServerParseDicomFileRequestHa
 public:
     ServerParseDicomFileRequestHandler(std::shared_ptr<IUnixWrappers> p_unixWrapper);
 
-    void handle(int p_clientSocket, const Message& p_receivedMsg) const override;
+    void handle(int p_clientSocket, const Message& p_receivedMsg) override;
 private:
-    void getInformationFromDicomFile(DcmFileFormat& p_fileFormat) const;
+    void getInformationFromDicomFile(int p_clientSocket, DcmFileFormat& p_fileFormat) const;
     void getSingleInformationElemenFromFile(DcmFileFormat& p_fileFormat,
+                                            std::ofstream& p_textFile,
                                             std::pair<std::string, DcmTagKey> p_dataElementAndName) const;
     void sendPositiveResponse(int p_clientSocket) const;
     void sendNegativeResponse(int p_clientSocket, std::string p_cause) const;

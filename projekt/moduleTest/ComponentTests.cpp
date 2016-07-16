@@ -6,20 +6,22 @@
 
 int main(int p_argc, char** p_argv)
 {
-    std::map<std::string, void(*)(char**)> l_testcaseContainer
-        = { {"connectToServer", connectToServerTest},
-            {"exchangeAFewSimpleMessagesWithServer", exchangeAFewSimpleMessagesWithServerTest},
-            {"sendFileTransferRequestAndReceiveRequestedFileTest_largeTextFile", sendFileTransferRequestAndReceiveRequestedFileTest_largeTextFile},
-            {"sendFileTransferRequestAndReceiveRequestedFileTest_smallTextFile", sendFileTransferRequestAndReceiveRequestedFileTest_smallTextFile},
-            {"sendFileTransferRequestAndReceiveRequestedFileTest_smallBinaryFile", sendFileTransferRequestAndReceiveRequestedFileTest_smallBinaryFile},
-            {"sendFileTransferRequestAndReceiveRequestedFileTest_largeBinaryFile", sendFileTransferRequestAndReceiveRequestedFileTest_largeBinaryFile},
-            {"sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile", sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile},
-            {"sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024", sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024},
-            {"sendFileListRequestAndReceiveResponseWithProperFileListTest", sendFileListRequestAndReceiveResponseWithProperFileListTest},
-            {"sendFileListRequestNextChoseOneFileAndRequestForIt", sendFileListRequestNextChoseOneFileAndRequestForIt},
-            {"sendServerParseDicomFileReqAndReceivePositiveAnswer", sendServerParseDicomFileReqAndReceivePositiveAnswer},
-            {"sendServerParseDicomFileReqAndReceiveNegativeAnswer", sendServerParseDicomFileReqAndReceiveNegativeAnswer}
-          };
+    std::map<std::string, void(*)(char**)> l_testcaseContainer =
+{
+  { "connectToServer", connectToServerTest },
+  { "exchangeAFewSimpleMessagesWithServer", exchangeAFewSimpleMessagesWithServerTest },
+  { "sendFileTransferRequestAndReceiveRequestedFileTest_largeTextFile", sendFileTransferRequestAndReceiveRequestedFileTest_largeTextFile },
+  { "sendFileTransferRequestAndReceiveRequestedFileTest_smallTextFile", sendFileTransferRequestAndReceiveRequestedFileTest_smallTextFile },
+  { "sendFileTransferRequestAndReceiveRequestedFileTest_smallBinaryFile", sendFileTransferRequestAndReceiveRequestedFileTest_smallBinaryFile },
+  { "sendFileTransferRequestAndReceiveRequestedFileTest_largeBinaryFile", sendFileTransferRequestAndReceiveRequestedFileTest_largeBinaryFile },
+  { "sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile", sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile },
+  { "sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024", sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024 },
+  { "sendFileListRequestAndReceiveResponseWithProperFileListTest", sendFileListRequestAndReceiveResponseWithProperFileListTest },
+  { "sendFileListRequestNextChoseOneFileAndRequestForIt", sendFileListRequestNextChoseOneFileAndRequestForIt },
+  { "sendServerParseDicomFileReqAndReceivePositiveAnswer", sendServerParseDicomFileReqAndReceivePositiveAnswer },
+  { "sendServerParseDicomFileReqAndReceiveNegativeAnswer", sendServerParseDicomFileReqAndReceiveNegativeAnswer },
+  { "sendRequestParseOfSomeDicomFileThenAskForTextFileWithResultOfParsing", sendRequestParseOfSomeDicomFileThenAskForTextFileWithResultOfParsing }
+};
 
     switch (p_argc)
     {
@@ -555,6 +557,64 @@ void sendServerParseDicomFileReqAndReceiveNegativeAnswer(char** p_argv)
     receiveMessageFromServer(SERVER_PARSE_DICOM_FILE_RESP);
     checkIfNegativeMessageIsReceived(g_receivedMessage.payload);
 //Step5
+    g_unixWrapper.close(g_sockfd);
+    std::cout << "Testcase " << __FUNCTION__ << " finished successfully." << std::endl;
+}
+
+/**************************************************************************
+ * Test scenario:
+ * Step1: Setup connection with server with address 192.168.254.1
+ * Step2: Receive CLIENT_WELCOME_MSG_IND message from server
+ * Step3: Send message SERVER_SEND_FILE_LIST_REQ to the server
+ * Step4: Receive message SERVER_SEND_FILE_LIST_RESP from server with positive answer with file list
+ * Step5: Request of text file with result of parsing
+ * Step6: Recieve requested file
+ * Step7: Close connection
+**************************************************************************/
+void sendRequestParseOfSomeDicomFileThenAskForTextFileWithResultOfParsing(char** p_argv)
+{
+    std::cout << "Testcase " << __FUNCTION__ << " started." << std::endl;
+//Step1
+    initializeConnection(p_argv);
+//Step2
+    receiveMessageFromServer(CLIENT_WELCOME_MSG_IND);
+//Step3
+    std::string l_sampleMsg = "./moduleTest/plikiPrzykladowe/CT0001.dcm";
+    Message l_sendline = {};
+    l_sendline.msgId = SERVER_PARSE_DICOM_FILE_REQ;
+    l_sendline.bytesInPayload = strlen(l_sampleMsg.c_str()) + 1;
+    strcpy(l_sendline.payload, l_sampleMsg.c_str());
+
+    g_unixWrapper.send(g_sockfd, &l_sendline);
+//Step4
+    receiveMessageFromServer(SERVER_PARSE_DICOM_FILE_RESP);
+    checkIfPossitiveMessageIsReceived(g_receivedMessage.payload);
+    std::string l_temp = g_receivedMessage.payload;
+    std::string l_textFile = l_temp.substr(0, l_temp.find(" "));
+    std::cout << l_temp << std::endl;
+
+//Step5
+    l_sendline = {};
+    l_sendline.msgId = SERVER_SEND_FILE_REQ;
+    std::string l_sourceFilePath = l_textFile;
+    l_sendline.bytesInPayload = strlen(l_sourceFilePath.c_str()) + 1;
+    strcpy(l_sendline.payload, l_sourceFilePath.c_str());
+    g_unixWrapper.send(g_sockfd, &l_sendline);
+//Step6
+    receiveMessageFromServer(SERVER_SEND_FILE_RESP);
+    int l_numberOfMessagesToCatch = g_receivedMessage.numOfMsgInFileTransfer;
+    std::cout << "Number of messages to catch: " << l_numberOfMessagesToCatch << std::endl;
+//Step6.1
+    long long l_sumOfReceivedBytes = 0;
+    std::string l_outFileName = "odebranyRezultatParsowania.txt";
+    std::ofstream l_outFile(l_outFileName);
+    for (int i = 0; i < l_numberOfMessagesToCatch; i++)
+    {
+        receiveMessageClientSendFileIndFromServer(l_outFile, l_sumOfReceivedBytes);
+    }
+    std::cout << "Amount of received bytes: " << l_sumOfReceivedBytes << std::endl;
+    l_outFile.close();
+//Step7
     g_unixWrapper.close(g_sockfd);
     std::cout << "Testcase " << __FUNCTION__ << " finished successfully." << std::endl;
 }

@@ -5,5 +5,5 @@
 class IServerParseDicomFileRequestHandler
 {
 public:
-    virtual void handle(int p_clientSocket, const Message& p_receivedMsg) const = 0;
+    virtual void handle(int p_clientSocket, const Message& p_receivedMsg) = 0;
 };
