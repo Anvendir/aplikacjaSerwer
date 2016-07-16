@@ -48,7 +48,7 @@ UnixWrappers.o : ./source/UnixWrappers.cpp
 	g++ $(commonPart) ./source/UnixWrappers.cpp
 
 Server.o : ./source/Server.cpp
-	g++ $(commonPart) ./source/Server.cpp
+	g++ $(commonPart) $(dicomIncludesPath) ./source/Server.cpp
 
 ServerSendFileRequestHandler.o : ./source/ServerSendFileRequestHandler.cpp
 	g++ $(commonPart) ./source/ServerSendFileRequestHandler.cpp

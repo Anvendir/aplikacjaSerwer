@@ -225,6 +225,24 @@ again:
     }
 }
 
+void checkIfPossitiveMessageIsReceived(std::string p_msgPayload)
+{
+    if (p_msgPayload.find("Message status NOK") != std::string::npos)
+    {
+        failTestcase("Received message with status NOK!");
+        exit(0);
+    }
+}
+
+void checkIfNegativeMessageIsReceived(std::string p_msgPayload)
+{
+    if (p_msgPayload.find("Message status NOK") == std::string::npos)
+    {
+        failTestcase("Received message with status OK, and NOK was expected!");
+        exit(0);
+    }
+}
+
 //some function wrappers
 void Fputs(const char *ptr, FILE *stream)
 {

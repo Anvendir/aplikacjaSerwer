@@ -1,5 +1,23 @@
+/16.07.2016
+1. Wyciagniecie wybranych informacji z pliku DICOM i wysiwetlenie ich na ektanie + dwa testy komponentowe na to
+
+Do zrobienia:
+1. Zapisanie wyciagnietych danych do pliku tekstowego i odesłanie nazw plikow w wiadomosciach.
+1a. Stworzenie testu komponentowego na prosbe o parsowanie danego pliku a pozniej zamowienie pliku teksotwego
+    z wyviagnietymi informacjami.
+2. Dodanie mozliwosci konwersji z DICOM na png czy tiff.
+3. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser
+    * konwersja DICOM do JPEG
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczyoraz UT
+4. Obsluga sytuacji brzegowyvch:
+-> zerwanie połaczenia w trakcie trnsmisji przez klienta
+-> request pliku ktorego nie ma
+-> wiadomosc nie przychodzi dlugi czas ( kiedy zamykac polaczenia, timery?)
+5. Plik DICOM skonwertowany jest inny niz w progaie MicroDicom, zabawa kilkoma opcjami zeby rozjasnic zdjecie.
+
 //14.07.2016
-1. Wpięcie biblioteki DICOM w projekt (Makefile)
+1. Wpięcie biblioteki DICOM w projekt (Makefile wszsytkie)
 
 Do zrobienia:
 1. Wyciagniecie kilku wybranych informacji z pliku DICOM i zapisanie ich do pliku tekstowego.

@@ -17,7 +17,7 @@ Server::Server() :
     m_dispatcher(std::make_unique<Dispatcher>(m_unixWrapper,
                                               std::make_shared<ServerSendFileRequestHandler>(m_unixWrapper),
                                               std::make_shared<ServerSendFileListRequestHandler>(m_unixWrapper),
-                                              std::make_shared<ServerParseDicomFileRequestHandler>()))
+                                              std::make_shared<ServerParseDicomFileRequestHandler>(m_unixWrapper)))
 {
 
 }

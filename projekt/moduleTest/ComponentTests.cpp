@@ -16,7 +16,9 @@ int main(int p_argc, char** p_argv)
             {"sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile", sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile},
             {"sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024", sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024},
             {"sendFileListRequestAndReceiveResponseWithProperFileListTest", sendFileListRequestAndReceiveResponseWithProperFileListTest},
-            {"sendFileListRequestNextChoseOneFileAndRequestForIt", sendFileListRequestNextChoseOneFileAndRequestForIt}
+            {"sendFileListRequestNextChoseOneFileAndRequestForIt", sendFileListRequestNextChoseOneFileAndRequestForIt},
+            {"sendServerParseDicomFileReqAndReceivePositiveAnswer", sendServerParseDicomFileReqAndReceivePositiveAnswer},
+            {"sendServerParseDicomFileReqAndReceiveNegativeAnswer", sendServerParseDicomFileReqAndReceiveNegativeAnswer}
           };
 
     switch (p_argc)
@@ -456,7 +458,7 @@ void sendFileListRequestNextChoseOneFileAndRequestForIt(char** p_argv)
     std::string l_sampleMsg = "File list request.";
     Message l_sendline = {};
     l_sendline.msgId = SERVER_SEND_FILE_LIST_REQ;
-     l_sendline.bytesInPayload = strlen(l_sampleMsg.c_str()) + 1;
+    l_sendline.bytesInPayload = strlen(l_sampleMsg.c_str()) + 1;
     strcpy(l_sendline.payload, l_sampleMsg.c_str());
 
     g_unixWrapper.send(g_sockfd, &l_sendline);
@@ -494,3 +496,67 @@ void sendFileListRequestNextChoseOneFileAndRequestForIt(char** p_argv)
     g_unixWrapper.close(g_sockfd);
     std::cout << "Testcase " << __FUNCTION__ << " finished successfully." << std::endl;
 }
+
+/**************************************************************************
+ * Test scenario:
+ * Step1: Setup connection with server with address 192.168.254.1
+ * Step2: Receive CLIENT_WELCOME_MSG_IND message from server
+ * Step3: Send message SERVER_SEND_FILE_LIST_REQ to the server
+ * Step4: Receive message SERVER_SEND_FILE_LIST_RESP from server with positive answer
+ * Step5: Close connection
+**************************************************************************/
+void sendServerParseDicomFileReqAndReceivePositiveAnswer(char** p_argv)
+{
+    std::cout << "Testcase " << __FUNCTION__ << " started." << std::endl;
+//Step1
+    initializeConnection(p_argv);
+//Step2
+    receiveMessageFromServer(CLIENT_WELCOME_MSG_IND);
+//Step3
+    std::string l_sampleMsg = "./moduleTest/plikiPrzykladowe/CT0001.dcm";
+    Message l_sendline = {};
+    l_sendline.msgId = SERVER_PARSE_DICOM_FILE_REQ;
+    l_sendline.bytesInPayload = strlen(l_sampleMsg.c_str()) + 1;
+    strcpy(l_sendline.payload, l_sampleMsg.c_str());
+
+    g_unixWrapper.send(g_sockfd, &l_sendline);
+//Step4
+    receiveMessageFromServer(SERVER_PARSE_DICOM_FILE_RESP);
+    checkIfPossitiveMessageIsReceived(g_receivedMessage.payload);
+//Step5
+    g_unixWrapper.close(g_sockfd);
+    std::cout << "Testcase " << __FUNCTION__ << " finished successfully." << std::endl;
+}
+
+/**************************************************************************
+ * Test scenario:
+ * Step1: Setup connection with server with address 192.168.254.1
+ * Step2: Receive CLIENT_WELCOME_MSG_IND message from server
+ * Step3: Send message SERVER_SEND_FILE_LIST_REQ to the server
+ * Step4: Receive message SERVER_SEND_FILE_LIST_RESP from server with negative answer
+ * Step5: Close connection
+**************************************************************************/
+void sendServerParseDicomFileReqAndReceiveNegativeAnswer(char** p_argv)
+{
+    std::cout << "Testcase " << __FUNCTION__ << " started." << std::endl;
+//Step1
+    initializeConnection(p_argv);
+//Step2
+    receiveMessageFromServer(CLIENT_WELCOME_MSG_IND);
+//Step3
+    std::string l_sampleMsg = "./moduleTest/plikiPrzykladowe/brakPliku";
+    Message l_sendline = {};
+    l_sendline.msgId = SERVER_PARSE_DICOM_FILE_REQ;
+    l_sendline.bytesInPayload = strlen(l_sampleMsg.c_str()) + 1;
+    strcpy(l_sendline.payload, l_sampleMsg.c_str());
+
+    g_unixWrapper.send(g_sockfd, &l_sendline);
+//Step4
+    receiveMessageFromServer(SERVER_PARSE_DICOM_FILE_RESP);
+    checkIfNegativeMessageIsReceived(g_receivedMessage.payload);
+//Step5
+    g_unixWrapper.close(g_sockfd);
+    std::cout << "Testcase " << __FUNCTION__ << " finished successfully." << std::endl;
+}
+
+

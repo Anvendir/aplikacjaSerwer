@@ -66,7 +66,7 @@ UnixWrappersTestSuite.o : ./test_modules/UnixWrappersTestSuite.cpp
 	g++ $(commonPartUt) ./test_modules/UnixWrappersTestSuite.cpp
 
 Server.o : ../source/Server.cpp
-	g++ $(commonPartSrc) ../source/Server.cpp
+	g++ $(commonPartSrc) $(dicomIncludesPath) ../source/Server.cpp
 
 ServerTestSuite.o : ./test_modules/ServerTestSuite.cpp
 	g++ $(commonPartUt) ./test_modules/ServerTestSuite.cpp

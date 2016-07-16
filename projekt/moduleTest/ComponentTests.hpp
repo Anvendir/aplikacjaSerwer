@@ -37,6 +37,8 @@ void receiveMessageFromServer(const int p_msgId);
 void receiveMessageClientSendFileIndFromServer(std::ofstream& p_outFile, long long& p_sumOfReceivedBytes);
 void checkIfRequestedAndReceivedFilesMatch(std::string p_file1, std::string p_file2);
 void checkIfReceivedAndActualFileListMatch();
+void checkIfPossitiveMessageIsReceived(std::string p_msgPayload);
+void checkIfNegativeMessageIsReceived(std::string p_msgPayload);
 
 //main functions
 void runAllTestcases(std::map<std::string, void(*)(char**)>& p_testcaseContainer, char** p_argv);
@@ -55,5 +57,5 @@ void sendFileTransferRequestAndReceiveRequestedFileTest_dicomFile(char** p_argv)
 void sendFileTransferRequestAndReceiveRequestedFileTest_fileIsMultipleOf1024(char** p_argv);
 void sendFileListRequestAndReceiveResponseWithProperFileListTest(char** p_argv);
 void sendFileListRequestNextChoseOneFileAndRequestForIt(char** p_argv);
-
-
+void sendServerParseDicomFileReqAndReceivePositiveAnswer(char** p_argv);
+void sendServerParseDicomFileReqAndReceiveNegativeAnswer(char** p_argv);
