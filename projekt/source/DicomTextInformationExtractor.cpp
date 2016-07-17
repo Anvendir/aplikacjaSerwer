@@ -29,9 +29,7 @@ DicomTextInformationExtractor::DicomTextInformationExtractor()
 {
 }
 
-bool DicomTextInformationExtractor::extract(int p_clientSocket,
-                                            DcmFileFormat& p_fileFormat,
-                                            std::string p_textFileName) const
+bool DicomTextInformationExtractor::extract(DcmFileFormat& p_fileFormat, std::string p_textFileName) const
 {
     std::ofstream l_textFile(p_textFileName);
     if (l_textFile.is_open())

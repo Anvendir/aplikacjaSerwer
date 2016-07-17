@@ -6,8 +6,8 @@
 
 #pragma once
 
-class IDicomTextInformationExtractor
+class IDicomBinaryInformationExtractor
 {
 public:
-    virtual bool extract(DcmFileFormat& p_fileFormat, std::string p_textFileName) const= 0;
+    virtual bool extract(DcmFileFormat& p_fileFormat, std::string p_binaryFileName) const= 0;
 };

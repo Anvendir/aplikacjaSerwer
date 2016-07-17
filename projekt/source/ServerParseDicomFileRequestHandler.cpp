@@ -1,6 +1,7 @@
 #include "ServerParseDicomFileRequestHandler.hpp"
 #include "UnixWrappers.hpp"
 #include "DicomTextInformationExtractor.hpp"
+#include "DicomBinaryInformationExtractor.hpp"
 #include "CommonTypes.h"
 #include <iostream>
 #include <vector>
@@ -12,11 +13,13 @@
 
 ServerParseDicomFileRequestHandler::ServerParseDicomFileRequestHandler(
     std::shared_ptr<IUnixWrappers> p_unixWrapper,
-    std::shared_ptr<IDicomTextInformationExtractor> p_dicomTextInformationExtractor)
+    std::shared_ptr<IDicomTextInformationExtractor> p_dicomTextInformationExtractor,
+    std::shared_ptr<IDicomBinaryInformationExtractor> p_dicomBinaryInformationExtractor)
   : m_unixWrapper(p_unixWrapper),
     m_textFileName(),
     m_binaryFileName(),
-    m_dicomTextInformationExtractor(p_dicomTextInformationExtractor)
+    m_dicomTextInformationExtractor(p_dicomTextInformationExtractor),
+    m_dicomBinaryInformationExtractor(p_dicomBinaryInformationExtractor)
 {
 }
 
@@ -24,6 +27,7 @@ void ServerParseDicomFileRequestHandler::handle(int p_clientSocket, const Messag
 {
     std::cout << "Handling message ServerParseDicomFileRequest" << std::endl;
     m_textFileName = std::string(p_receivedMsg.payload) + ".txt";
+    m_binaryFileName = std::string(p_receivedMsg.payload) + ".png";
 
     DcmFileFormat l_fileFormat;
     OFCondition l_status = l_fileFormat.loadFile(p_receivedMsg.payload);
@@ -63,14 +67,15 @@ void ServerParseDicomFileRequestHandler::sendNegativeResponse(int p_clientSocket
 
 void ServerParseDicomFileRequestHandler::parseDicomFile(int p_clientSocket, DcmFileFormat& p_fileFormat) const
 {
-    bool l_status = m_dicomTextInformationExtractor->extract(p_clientSocket, p_fileFormat, m_textFileName);
+    bool l_status = m_dicomTextInformationExtractor->extract(p_fileFormat, m_textFileName) and
+                    m_dicomBinaryInformationExtractor->extract(p_fileFormat, m_binaryFileName);
     if(l_status)
     {
         sendPositiveResponse(p_clientSocket);
     }
     else
     {
-        sendNegativeResponse(p_clientSocket, "Error during text data extraction");
+        sendNegativeResponse(p_clientSocket, "Error during data extraction");
     }
 }
 

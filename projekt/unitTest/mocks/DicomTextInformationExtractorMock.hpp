@@ -6,5 +6,5 @@
 class DicomTextInformationExtractorMock : public IDicomTextInformationExtractor
 {
 public:
-    MOCK_CONST_METHOD3(extract, bool(int, DcmFileFormat&, std::string));
+    MOCK_CONST_METHOD2(extract, bool(DcmFileFormat&, std::string));
 };

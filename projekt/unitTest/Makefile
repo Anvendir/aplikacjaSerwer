@@ -34,7 +34,8 @@ objects = Main.o \
 	      ServerSendFileListRequestHandler.o ServerSendFileListRequestHandlerTestSuite.o \
 		  MessageConverter.o MessageConverterTestSuite.o \
 		  ServerParseDicomFileRequestHandler.o ServerParseDicomFileRequestHandlerTestSuite.o \
-		  DicomTextInformationExtractor.o DicomTextInformationExtractorTestSuite.o
+		  DicomTextInformationExtractor.o DicomTextInformationExtractorTestSuite.o \
+		  DicomBinaryInformationExtractor.o DicomBinaryInformationExtractorTestSuite.o
 
 UnitTests : $(objects)
 	g++ -std=c++14 -pthread $(gtestIncludes) $(staticLibriariesPath) -o UnitTests $(objects) $(staticLibraries)
@@ -101,6 +102,12 @@ DicomTextInformationExtractor.o : ../source/DicomTextInformationExtractor.cpp
 
 DicomTextInformationExtractorTestSuite.o : ./test_modules/DicomTextInformationExtractorTestSuite.cpp
 	g++ $(commonPartUt) $(dicomIncludesPath) ./test_modules/DicomTextInformationExtractorTestSuite.cpp
+
+DicomBinaryInformationExtractor.o : ../source/DicomBinaryInformationExtractor.cpp
+	g++ $(commonPartSrc) $(dicomIncludesPath) ../source/DicomBinaryInformationExtractor.cpp
+
+DicomBinaryInformationExtractorTestSuite.o : ./test_modules/DicomBinaryInformationExtractorTestSuite.cpp
+	g++ $(commonPartUt) $(dicomIncludesPath) ./test_modules/DicomBinaryInformationExtractorTestSuite.cpp
 
 .PHONY : clean
 clean:

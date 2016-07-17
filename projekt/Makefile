@@ -28,7 +28,8 @@ objects = Main.o \
 		  ServerSendFileListRequestHandler.o \
 		  MessageConverter.o \
 		  ServerParseDicomFileRequestHandler.o \
-		  DicomTextInformationExtractor.o
+		  DicomTextInformationExtractor.o \
+		  DicomBinaryInformationExtractor.o
 
 Program : $(objects)
 	g++ -std=c++14 $(dicomLibrariesPath) -pthread -o Program $(objects) $(staticLibraries)
@@ -65,6 +66,9 @@ ServerParseDicomFileRequestHandler.o : ./source/ServerParseDicomFileRequestHandl
 
 DicomTextInformationExtractor.o : ./source/DicomTextInformationExtractor.cpp
 	g++ $(commonPart) $(dicomIncludesPath) ./source/DicomTextInformationExtractor.cpp
+
+DicomBinaryInformationExtractor.o : ./source/DicomBinaryInformationExtractor.cpp
+	g++ $(commonPart) $(dicomIncludesPath) ./source/DicomBinaryInformationExtractor.cpp
 
 .PHONY : clean
 clean:

@@ -1,6 +1,7 @@
 #include "IServerParseDicomFileRequestHandler.hpp"
 #include "UnixWrappers.hpp"
 #include "DicomTextInformationExtractor.hpp"
+#include "DicomBinaryInformationExtractor.hpp"
 #include "CommonTypes.h"
 #include <memory>
 #include <string>
@@ -18,7 +19,8 @@ class ServerParseDicomFileRequestHandler : public IServerParseDicomFileRequestHa
 public:
     ServerParseDicomFileRequestHandler(
         std::shared_ptr<IUnixWrappers> p_unixWrapper,
-        std::shared_ptr<IDicomTextInformationExtractor> p_dicomTextInformationExtractor = std::make_shared<DicomTextInformationExtractor>());
+        std::shared_ptr<IDicomTextInformationExtractor> p_dicomTextInformationExtractor = std::make_shared<DicomTextInformationExtractor>(),
+        std::shared_ptr<IDicomBinaryInformationExtractor> p_dicomBinaryInformationExtractor = std::make_shared<DicomBinaryInformationExtractor>());
 
     void handle(int p_clientSocket, const Message& p_receivedMsg) override;
 private:
@@ -30,4 +32,5 @@ private:
     std::string m_textFileName;
     std::string m_binaryFileName;
     std::shared_ptr<IDicomTextInformationExtractor> m_dicomTextInformationExtractor;
+    std::shared_ptr<IDicomBinaryInformationExtractor> m_dicomBinaryInformationExtractor;
 };

@@ -1,6 +1,8 @@
 //17.07.2016
 1. Refaktoring, wyciągniecie kodu dpowiedizalnego za wyciaganie danych tkstowych z pliku DICOM do klasy
    DicomTextInformationExtractor
+2. Dodanie pustych klas dla extractora danych binarnych, wyrownanie testow. Usuniecie zbednego parametru w extraktorze
+   do danych tekstowych.
 
 Do zrobienia:
 
