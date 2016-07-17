@@ -3,11 +3,14 @@
    DicomTextInformationExtractor
 2. Dodanie pustych klas dla extractora danych binarnych, wyrownanie testow. Usuniecie zbednego parametru w extraktorze
    do danych tekstowych.
+3. Konwersja pliku DICOM na plik png.
 
 Do zrobienia:
-
-1. Dodanie mozliwosci konwersji z DICOM na png czy tiff.
-2. Rozparsowanie pliku DICOM.
+0. Dodac ustawianie zmiennej srodowiskowej w extractorze.
+01. Dodac test modulowy na sprawdzenieu pliku png.
+002. Refactor kalsy handlera, przekazywanie nazwy pliku z payloadu zamiast DIcomFIle czy jakos tak, podobnie refactor 
+     extractora dla pliku teksotwego.
+1. Rozparsowanie pliku DICOM.
     * podgladnac jak robi to jakis darmowy parser
     * konwersja DICOM do JPEG
     * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczyoraz UT

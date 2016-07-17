@@ -4,19 +4,22 @@ dicomIncludesPath = -I ./dcmtk/config/include \
 			     	-I ./dcmtk/dcmdata/include \
 					-I ./dcmtk/oflog/include \
 					-I ./dcmtk/ofstd/include \
-			   		-I ./dcmtk/dcmimgle/include
+			   		-I ./dcmtk/dcmimgle/include \
+					-I ./dcmtk/dcmimage/include
 
 dicomLibrariesPath = -L ./dcmtk/dcmimgle/libsrc \
 					 -L ./dcmtk/dcmdata/libsrc \
+					 -L ./dcmtk/dcmimage/libsrc \
 					 -L ./dcmtk/oflog/libsrc \
 					 -L ./dcmtk/ofstd/libsrc
 
-dicomLibraries = -ldcmimgle \
+dicomLibraries = -ldcmimage \
+				 -ldcmimgle \
 				 -ldcmdata \
 				 -loflog \
 				 -lofstd
 
-staticLibraries = -lz $(dicomLibraries)
+staticLibraries = -lz -lpng $(dicomLibraries)
 
 objects = Main.o \
 		  Dispatcher.o \
