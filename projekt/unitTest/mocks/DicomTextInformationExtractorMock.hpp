@@ -1,0 +1,10 @@
+#include "gmock/gmock.h"
+#include "IDicomTextInformationExtractor.hpp"
+
+#pragma once
+
+class DicomTextInformationExtractorMock : public IDicomTextInformationExtractor
+{
+public:
+    MOCK_CONST_METHOD3(extract, bool(int, DcmFileFormat&, std::string));
+};

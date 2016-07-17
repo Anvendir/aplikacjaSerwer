@@ -6,5 +6,5 @@
 class ServerParseDicomFileRequestHandlerMock : public IServerParseDicomFileRequestHandler
 {
 public:
-    MOCK_CONST_METHOD2(handle, void(int, const Message&));
+    MOCK_METHOD2(handle, void(int, const Message&));
 };

@@ -1,5 +1,6 @@
 #include "ServerParseDicomFileRequestHandler.hpp"
 #include "UnixWrappers.hpp"
+#include "DicomTextInformationExtractor.hpp"
 #include "CommonTypes.h"
 #include <iostream>
 #include <vector>
@@ -9,25 +10,13 @@
 #include "dcmtk/dcmdata/dctk.h"
 #include "dcmtk/dcmimgle/dcmimage.h"
 
-std::vector<std::pair<std::string, DcmTagKey>> ServerParseDicomFileRequestHandler::s_studyDataContainer =
-{
-    { "Patient's Name", DCM_PatientName },
-    { "Patient's Sex", DCM_PatientSex },
-    { "Patient's Birth Data", DCM_PatientBirthDate },
-    { "Patient's Age", DCM_PatientAge },
-    { "Patient's Weight", DCM_PatientWeight },
-
-    { "Study Date", DCM_StudyDate },
-    { "Study Time", DCM_StudyTime },
-    { "Study Modality", DCM_Modality },
-
-    { "Manufacturer", DCM_Manufacturer },
-    { "DeviceSerialNumber", DCM_DeviceSerialNumber },
-    { "Software Version", DCM_SoftwareVersions }
-};
-
-ServerParseDicomFileRequestHandler::ServerParseDicomFileRequestHandler(std::shared_ptr<IUnixWrappers> p_unixWrapper)
-    : m_unixWrapper(p_unixWrapper), m_textFileName(), m_binaryFileName()
+ServerParseDicomFileRequestHandler::ServerParseDicomFileRequestHandler(
+    std::shared_ptr<IUnixWrappers> p_unixWrapper,
+    std::shared_ptr<IDicomTextInformationExtractor> p_dicomTextInformationExtractor)
+  : m_unixWrapper(p_unixWrapper),
+    m_textFileName(),
+    m_binaryFileName(),
+    m_dicomTextInformationExtractor(p_dicomTextInformationExtractor)
 {
 }
 
@@ -40,48 +29,12 @@ void ServerParseDicomFileRequestHandler::handle(int p_clientSocket, const Messag
     OFCondition l_status = l_fileFormat.loadFile(p_receivedMsg.payload);
     if (l_status.good())
     {
-        getInformationFromDicomFile(p_clientSocket, l_fileFormat);
-        sendPositiveResponse(p_clientSocket);
+        parseDicomFile(p_clientSocket, l_fileFormat);
     }
     else
     {
         std::cerr << "Error: cannot read DICOM file (" << l_status.text() << ")" << std::endl;
         sendNegativeResponse(p_clientSocket, l_status.text());
-    }
-}
-
-void ServerParseDicomFileRequestHandler::getInformationFromDicomFile(int p_clientSocket,
-                                                                     DcmFileFormat& p_fileFormat) const
-{
-    std::ofstream l_textFile(m_textFileName);
-    if (l_textFile.is_open())
-    {
-        for(auto l_element: s_studyDataContainer)
-        {
-            getSingleInformationElemenFromFile(p_fileFormat, l_textFile, l_element);
-        }
-
-        l_textFile.close();
-    }
-    else
-    {
-        sendNegativeResponse(p_clientSocket, "Unable to create text file!");
-    }
-}
-
-void ServerParseDicomFileRequestHandler::getSingleInformationElemenFromFile(
-    DcmFileFormat& p_fileFormat,
-    std::ofstream& p_textFile,
-    std::pair<std::string, DcmTagKey> p_dataElementAndName) const
-{
-    OFString l_patientData;
-    if (p_fileFormat.getDataset()->findAndGetOFString(p_dataElementAndName.second, l_patientData).good())
-    {
-        p_textFile << p_dataElementAndName.first << ": " << l_patientData << std::endl;
-    }
-    else
-    {
-        std::cerr << "Error: cannot access " << p_dataElementAndName.first << "!" << std::endl;
     }
 }
 
@@ -106,5 +59,18 @@ void ServerParseDicomFileRequestHandler::sendNegativeResponse(int p_clientSocket
     strcpy(l_msg.payload, l_negativeAnswer.c_str());
 
     m_unixWrapper->send(p_clientSocket, &l_msg);
+}
+
+void ServerParseDicomFileRequestHandler::parseDicomFile(int p_clientSocket, DcmFileFormat& p_fileFormat) const
+{
+    bool l_status = m_dicomTextInformationExtractor->extract(p_clientSocket, p_fileFormat, m_textFileName);
+    if(l_status)
+    {
+        sendPositiveResponse(p_clientSocket);
+    }
+    else
+    {
+        sendNegativeResponse(p_clientSocket, "Error during text data extraction");
+    }
 }
 
