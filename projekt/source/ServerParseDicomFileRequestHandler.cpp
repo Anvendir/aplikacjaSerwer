@@ -29,17 +29,7 @@ void ServerParseDicomFileRequestHandler::handle(int p_clientSocket, const Messag
     m_textFileName = std::string(p_receivedMsg.payload) + ".txt";
     m_binaryFileName = std::string(p_receivedMsg.payload) + ".png";
 
-    DcmFileFormat l_fileFormat;
-    OFCondition l_status = l_fileFormat.loadFile(p_receivedMsg.payload);
-    if (l_status.good())
-    {
-        parseDicomFile(p_clientSocket, l_fileFormat);
-    }
-    else
-    {
-        std::cerr << "Error: cannot read DICOM file (" << l_status.text() << ")" << std::endl;
-        sendNegativeResponse(p_clientSocket, l_status.text());
-    }
+    parseDicomFile(p_clientSocket, p_receivedMsg.payload);
 }
 
 void ServerParseDicomFileRequestHandler::sendPositiveResponse(int p_clientSocket) const
@@ -65,10 +55,10 @@ void ServerParseDicomFileRequestHandler::sendNegativeResponse(int p_clientSocket
     m_unixWrapper->send(p_clientSocket, &l_msg);
 }
 
-void ServerParseDicomFileRequestHandler::parseDicomFile(int p_clientSocket, DcmFileFormat& p_fileFormat) const
+void ServerParseDicomFileRequestHandler::parseDicomFile(int p_clientSocket, const char* p_dicomFileName) const
 {
-    bool l_status = m_dicomTextInformationExtractor->extract(p_fileFormat, m_textFileName) and
-                    m_dicomBinaryInformationExtractor->extract(p_fileFormat, m_binaryFileName);
+    bool l_status = m_dicomTextInformationExtractor->extract(p_dicomFileName, m_textFileName) and
+                    m_dicomBinaryInformationExtractor->extract(p_dicomFileName, m_binaryFileName);
     if(l_status)
     {
         sendPositiveResponse(p_clientSocket);

@@ -1,3 +1,34 @@
+//18.07.2016
+1. Proces dziecko w linuxie nie moze edytowac zmiennych srodowiskowcyh procesu rodzica. Przez co jedynym rozwiazaniem
+   na ustawienie tej z zmiennej jest ustawienie jej w bash.rc badz recznie
+2. Refactor kalsy handlera, przekazywanie nazwy pliku z payloadu zamiast DIcomFIle czy jakos tak, podobnie refactor
+   extractora dla pliku teksotwego.
+3. Dodac test modulowy na sprawdzenieu pliku png.
+
+4. Rozparsowanie pliku DICOM.
+    * podgladnac jak robi to jakis darmowy parser (program dcm2pnm z biblioteki dcmtk)
+    * konwersja DICOM do PNG  (mozliwsoc rozwoju na inne formaty jak tiff, jpeg)
+    * przygotowanie wlasnej wersji parsera z wykorzystraniem biblioteki od dr Turczyoraz UT - parser to duzo powiedziane
+      raczej wyciecie funkcji konwersji z pliku DIOCM na png z programu dcm2pnm.
+
+Do zrobienia:
+
+1. Plik DICOM skonwertowany jest inny niz w progrmamie MicroDicom:
+    * jasnosć jest zupełnie inna, plik jest u mnie ciemniejszy i mniej czytelny
+-> zabawa kilkoma opcjami zeby rozjasnic zdjecie.
+-> opcja sprawdzania isMonochromoe w bibliotece
+-> podlagdnac jak sprawa sie ma z plikami Monochrome2 oraz RGB
+-> skalowanie obrazu za pomoca funkcji bibliotecznych (w programie dcm2pnm), moze sie przydac do aplikacji klienkciej,
+   request o powiekszenie wybranego fragmentu.
+
+2. Przeczytać poradnik DICOM is easy w całości, szcegolnie na temat obchodzenia sie z pixelData:
+http://dicomiseasy.blogspot.co.il/2012/08/chapter-12-pixel-data.html
+
+3. Obsluga sytuacji brzegowyvch:
+-> zerwanie połaczenia w trakcie trnsmisji przez klienta
+-> request pliku ktorego nie ma
+-> wiadomosc nie przychodzi dlugi czas ( kiedy zamykac polaczenia, timery?)
+
 //17.07.2016
 1. Refaktoring, wyciągniecie kodu dpowiedizalnego za wyciaganie danych tkstowych z pliku DICOM do klasy
    DicomTextInformationExtractor
@@ -8,7 +39,7 @@
 Do zrobienia:
 0. Dodac ustawianie zmiennej srodowiskowej w extractorze.
 01. Dodac test modulowy na sprawdzenieu pliku png.
-002. Refactor kalsy handlera, przekazywanie nazwy pliku z payloadu zamiast DIcomFIle czy jakos tak, podobnie refactor 
+002. Refactor kalsy handlera, przekazywanie nazwy pliku z payloadu zamiast DIcomFIle czy jakos tak, podobnie refactor
      extractora dla pliku teksotwego.
 1. Rozparsowanie pliku DICOM.
     * podgladnac jak robi to jakis darmowy parser

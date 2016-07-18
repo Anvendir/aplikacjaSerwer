@@ -13,7 +13,7 @@ class DicomBinaryInformationExtractor : public IDicomBinaryInformationExtractor
 public:
     DicomBinaryInformationExtractor();
 
-    bool extract(DcmFileFormat& p_dicomFileFormat, std::string p_textFileName) const override;
+    bool extract(const char* p_dicomFileName, std::string p_textFileName) const override;
 private:
     bool processFile(FILE*& p_binaryFile, std::string p_fileName) const;
     bool loadDicomFile(DcmFileFormat*& p_dicomFile, std::string p_fileName) const;

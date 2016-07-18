@@ -60,3 +60,4 @@ void sendFileListRequestNextChoseOneFileAndRequestForIt(char** p_argv);
 void sendServerParseDicomFileReqAndReceivePositiveAnswer(char** p_argv);
 void sendServerParseDicomFileReqAndReceiveNegativeAnswer(char** p_argv);
 void sendRequestParseOfSomeDicomFileThenAskForTextFileWithResultOfParsing(char** p_argv);
+void sendRequestParseOfSomeDicomFileThenAskForBinaryFileWithResultOfParsing(char** p_argv);

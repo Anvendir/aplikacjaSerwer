@@ -16,8 +16,9 @@ class DicomTextInformationExtractor : public IDicomTextInformationExtractor
 public:
     DicomTextInformationExtractor();
 
-    bool extract(DcmFileFormat& p_fileFormat, std::string p_textFileName) const override;
+    bool extract(const char* p_dicomFileName, std::string p_textFileName) const override;
 private:
+    bool extractDataAndSaveInOutputFile(DcmFileFormat& p_fileFormat, std::string p_textFileName) const;
     bool extractSingleInformationElemenFromFile(DcmFileFormat& p_fileFormat,
                                                 std::ofstream& p_textFile,
                                                 std::pair<std::string, DcmTagKey> p_dataElementAndName) const;

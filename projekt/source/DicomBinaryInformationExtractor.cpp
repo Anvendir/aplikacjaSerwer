@@ -12,13 +12,12 @@ DicomBinaryInformationExtractor::DicomBinaryInformationExtractor()
 {
 }
 
-bool DicomBinaryInformationExtractor::extract(DcmFileFormat& p_dicomFileFormat, std::string p_binaryFileName) const
+bool DicomBinaryInformationExtractor::extract(const char* p_dicomFileName, std::string p_binaryFileName) const
 {
-    std::string l_fileName = "../../serwer_old/przykladoweDICOM/DISCIMG/IMAGES/CT0001";
     FILE* l_binaryOutputFile = fopen(p_binaryFileName.c_str(), "wb");
     if (l_binaryOutputFile != NULL)
     {
-        bool l_status = processFile(l_binaryOutputFile, l_fileName);
+        bool l_status = processFile(l_binaryOutputFile, p_dicomFileName);
         fclose(l_binaryOutputFile);
         return l_status;
     }

@@ -9,5 +9,5 @@
 class IDicomBinaryInformationExtractor
 {
 public:
-    virtual bool extract(DcmFileFormat& p_dicomFileFormat, std::string p_binaryFileName) const= 0;
+    virtual bool extract(const char* p_dicomFileName, std::string p_binaryFileName) const= 0;
 };

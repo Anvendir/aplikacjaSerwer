@@ -29,7 +29,24 @@ DicomTextInformationExtractor::DicomTextInformationExtractor()
 {
 }
 
-bool DicomTextInformationExtractor::extract(DcmFileFormat& p_fileFormat, std::string p_textFileName) const
+bool DicomTextInformationExtractor::extract(const char* p_dicomFileName, std::string p_textFileName) const
+{
+    DcmFileFormat l_fileFormat;
+    OFCondition l_status = l_fileFormat.loadFile(p_dicomFileName);
+    if (not l_status.good())
+    {
+        std::cerr << "Error: cannot read DICOM file (" << l_status.text() << ")" << std::endl;
+        return false;
+    }
+
+    if (not extractDataAndSaveInOutputFile(l_fileFormat, p_textFileName))
+    {
+        return false;
+    }
+    return true;
+}
+
+bool DicomTextInformationExtractor::extractDataAndSaveInOutputFile(DcmFileFormat& p_fileFormat, std::string p_textFileName) const
 {
     std::ofstream l_textFile(p_textFileName);
     if (l_textFile.is_open())

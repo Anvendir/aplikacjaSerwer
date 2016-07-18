@@ -6,5 +6,5 @@
 class DicomBinaryInformationExtractorMock : public IDicomBinaryInformationExtractor
 {
 public:
-    MOCK_CONST_METHOD2(extract, bool(DcmFileFormat&, std::string));
+    MOCK_CONST_METHOD2(extract, bool(const char*, std::string));
 };

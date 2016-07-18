@@ -24,7 +24,7 @@ public:
 
     void handle(int p_clientSocket, const Message& p_receivedMsg) override;
 private:
-    void parseDicomFile(int p_clientSocket, DcmFileFormat& p_fileFormat) const;
+    void parseDicomFile(int p_clientSocket, const char* p_dicomFileName) const;
     void sendPositiveResponse(int p_clientSocket) const;
     void sendNegativeResponse(int p_clientSocket, std::string p_cause) const;
 

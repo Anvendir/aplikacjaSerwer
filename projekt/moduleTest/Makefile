@@ -30,4 +30,4 @@ MessageConverter.o : ../source/MessageConverter.cpp
 .PHONY : clean
 clean:
 	rm -f ComponentTests odebrany.txt odebrany.jpg odebrany.dcm odebranyRezultatParsowania.txt \
-	   	./plikiPrzykladowe/CT0001.dcm.txt $(objects)
+	   	./plikiPrzykladowe/CT0001.dcm.txt ./plikiPrzykladowe/CT0001.dcm.png $(objects)

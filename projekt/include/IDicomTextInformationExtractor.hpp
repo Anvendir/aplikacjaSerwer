@@ -9,5 +9,5 @@
 class IDicomTextInformationExtractor
 {
 public:
-    virtual bool extract(DcmFileFormat& p_fileFormat, std::string p_textFileName) const= 0;
+    virtual bool extract(const char* p_dicomFileName, std::string p_textFileName) const= 0;
 };
