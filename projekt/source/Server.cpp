@@ -25,8 +25,8 @@ Server::Server() :
 void Server::start() const
 {
     int l_serverSocket = m_networkWrapper->socket(AF_INET, SOCK_STREAM);
-    SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.254.1", 9878);  /*adres dla modul testow*/
-    //SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.1.6", 9878); /*adres dla Androida */
+    //SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.254.1", 9878);  /*adres dla modul testow*/
+    SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.1.8", 9878); /*adres dla Androida */
 
     m_networkWrapper->bind(l_serverSocket,
                            reinterpret_cast<GenericSockAddr*>(&l_serverAddrStruct),
