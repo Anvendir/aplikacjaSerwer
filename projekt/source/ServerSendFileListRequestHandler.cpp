@@ -32,7 +32,7 @@ std::string ServerSendFileListRequestHandler::getFileList() const
     }
 
     l_repositoryRootPath.back() = '/';
-    std::string l_filesPath = l_repositoryRootPath + "projekt/moduleTest/plikiPrzykladowe/";
+    std::string l_filesPath = l_repositoryRootPath + "projekt/moduleTest/plikiTestyAndroid/";
 
     return m_unixWrapper->executeCommand(("ls " + l_filesPath).c_str());
 }
