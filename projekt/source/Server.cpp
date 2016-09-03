@@ -25,8 +25,8 @@ Server::Server() :
 void Server::start() const
 {
     int l_serverSocket = m_networkWrapper->socket(AF_INET, SOCK_STREAM);
-    //SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.254.1", 9878);  /*adres dla modul testow*/
-    SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.1.8", 9878); /*adres dla Androida */
+    SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.254.1", 9878);  /*adres dla modul testow*/
+    //SockAddrIn l_serverAddrStruct = initializeSocketAddresStructure("192.168.1.8", 9878); /*adres dla Androida */
 
     m_networkWrapper->bind(l_serverSocket,
                            reinterpret_cast<GenericSockAddr*>(&l_serverAddrStruct),
@@ -104,22 +104,22 @@ void Server::processConnection(int p_clientSocket) const
 
     sendWelcomeMessage(p_clientSocket);
 
-again:
-	while ((l_receivedBytes = m_unixWrapper->recv(p_clientSocket, &l_receivedMessage)) > 0)
+	do
     {
-        l_status = m_dispatcher->dispatch(p_clientSocket, l_receivedMessage);
-        if (l_status == false)
+        while ((l_receivedBytes = m_unixWrapper->recv(p_clientSocket,
+                                                      &l_receivedMessage)) > 0)
         {
-		    m_errorHandler->handleHardError("processConnection: dispatching error");
+            l_status = m_dispatcher->dispatch(p_clientSocket,
+                                              l_receivedMessage);
+            if (l_status == false)
+            {
+		        m_errorHandler->handleHardError("processConnection: dispatching error");
+            }
+        }
+        if (l_receivedBytes < 0 && errno != EINTR)
+        {
+		    m_errorHandler->handleHardError("processConnection: recv error");
         }
     }
-
-	if (l_receivedBytes < 0 && errno == EINTR)
-    {
-		goto again;
-    }
-	else if (l_receivedBytes < 0)
-    {
-		m_errorHandler->handleHardError("processConnection: recv error");
-    }
+    while(l_receivedBytes < 0 && errno == EINTR);
 }

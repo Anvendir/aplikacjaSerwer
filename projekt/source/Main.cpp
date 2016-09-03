@@ -7,8 +7,8 @@ int main()
 {
     std::cout << "Hello World" << std::endl;
 
-    Server s;
-    s.start();
+    Server l_server;
+    l_server.start();
 
     return 0;
 }
